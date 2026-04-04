@@ -5,3 +5,8 @@ target/
 .project 
 .settings/ 
 *.iml 
+.m2/
+.mvnrepo/
+boot.out
+boot.err
+data/
