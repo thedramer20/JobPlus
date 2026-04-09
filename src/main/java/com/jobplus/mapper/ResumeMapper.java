@@ -4,6 +4,8 @@ import com.jobplus.entity.Resume;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -32,4 +34,10 @@ public interface ResumeMapper {
         """)
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insert(Resume resume);
+
+    @Delete("""
+        DELETE FROM resumes
+        WHERE id = #{id} AND user_id = #{userId}
+        """)
+    int deleteByIdAndUserId(@Param("id") Long id, @Param("userId") Long userId);
 }

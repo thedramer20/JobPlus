@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
+
 @Mapper
 public interface UserMapper {
 
@@ -29,6 +31,16 @@ public interface UserMapper {
 
     @Select("SELECT COUNT(*) > 0 FROM users WHERE email = #{email}")
     boolean existsByEmail(String email);
+
+    @Select("""
+        SELECT id, username, full_name, email, password_hash AS password, phone, role, status, created_at, updated_at
+        FROM users
+        ORDER BY created_at DESC
+        """)
+    List<User> findAll();
+
+    @Select("SELECT COUNT(*) FROM users")
+    long countAll();
 
     @Insert("""
         INSERT INTO users (username, full_name, email, password_hash, phone, role, status, created_at, updated_at)

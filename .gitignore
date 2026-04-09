@@ -11,3 +11,5 @@ target/
 boot.out
 boot.err
 data/
+frontend/node_modules/
+frontend/dist/

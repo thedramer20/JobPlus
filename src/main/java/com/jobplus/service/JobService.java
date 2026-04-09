@@ -33,8 +33,22 @@ public class JobService {
         this.userService = userService;
     }
 
-    public List<JobResponse> getOpenJobs() {
-        return jobMapper.findAllOpenJobs().stream().map(this::toResponse).collect(Collectors.toList());
+    public List<JobResponse> getOpenJobs(String query,
+                                         List<String> jobTypes,
+                                         List<String> experienceLevels,
+                                         List<String> locations,
+                                         List<String> companies,
+                                         List<String> workModes,
+                                         Integer minSalary) {
+        return jobMapper.findOpenJobsFiltered(
+            blankToNull(query),
+            normalizeEnumList(jobTypes),
+            normalizeEnumList(experienceLevels),
+            trimList(locations),
+            trimList(companies),
+            normalizeWorkModes(workModes),
+            minSalary
+        ).stream().map(this::toResponse).collect(Collectors.toList());
     }
 
     public JobResponse getJobById(Long id) {
@@ -180,6 +194,39 @@ public class JobService {
 
     private String blankToNull(String value) {
         return value == null || value.isBlank() ? null : value.trim();
+    }
+
+    private List<String> trimList(List<String> values) {
+        if (values == null || values.isEmpty()) {
+            return null;
+        }
+        List<String> normalized = values.stream()
+            .map(this::blankToNull)
+            .filter(value -> value != null)
+            .collect(Collectors.toList());
+        return normalized.isEmpty() ? null : normalized;
+    }
+
+    private List<String> normalizeEnumList(List<String> values) {
+        if (values == null || values.isEmpty()) {
+            return null;
+        }
+        List<String> normalized = values.stream()
+            .map(this::blankToNull)
+            .filter(value -> value != null)
+            .map(value -> value.toUpperCase().replace("-", "_").replace(" ", "_"))
+            .collect(Collectors.toList());
+        return normalized.isEmpty() ? null : normalized;
+    }
+
+    private List<String> normalizeWorkModes(List<String> values) {
+        List<String> normalized = normalizeEnumList(values);
+        if (normalized == null) {
+            return null;
+        }
+        return normalized.stream()
+            .map(value -> "ON_SITE".equals(value) ? "ONSITE" : value)
+            .collect(Collectors.toList());
     }
 
     private String defaultValue(String value, String fallback) {

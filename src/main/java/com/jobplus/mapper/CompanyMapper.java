@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
+
 @Mapper
 public interface CompanyMapper {
 
@@ -39,6 +41,15 @@ public interface CompanyMapper {
         WHERE c.owner_user_id = #{ownerUserId}
         """)
     Company findByOwnerUserId(Long ownerUserId);
+
+    @Select("""
+        SELECT c.id, c.owner_user_id, u.username AS owner_username, c.company_name, c.description, c.industry, c.location,
+               c.website, c.logo_url, c.company_size, c.status, c.created_at, c.updated_at
+        FROM companies c
+        JOIN users u ON u.id = c.owner_user_id
+        ORDER BY c.company_name
+        """)
+    List<Company> findAll();
 
     @Update("""
         UPDATE companies

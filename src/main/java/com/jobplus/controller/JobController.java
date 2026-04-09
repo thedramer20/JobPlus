@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,8 +28,14 @@ public class JobController {
     }
 
     @GetMapping
-    public List<JobResponse> getOpenJobs() {
-        return jobService.getOpenJobs();
+    public List<JobResponse> getOpenJobs(@RequestParam(required = false) String query,
+                                         @RequestParam(required = false, name = "jobType") List<String> jobTypes,
+                                         @RequestParam(required = false, name = "experienceLevel") List<String> experienceLevels,
+                                         @RequestParam(required = false, name = "locations") List<String> locations,
+                                         @RequestParam(required = false, name = "companies") List<String> companies,
+                                         @RequestParam(required = false, name = "workType") List<String> workModes,
+                                         @RequestParam(required = false) Integer minSalary) {
+        return jobService.getOpenJobs(query, jobTypes, experienceLevels, locations, companies, workModes, minSalary);
     }
 
     @GetMapping("/{id}")

@@ -32,6 +32,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf().disable()
+            .cors()
+            .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
@@ -40,7 +42,7 @@ public class SecurityConfig {
             .and()
             .authorizeRequests()
             .antMatchers("/auth/**", "/h2-console/**").permitAll()
-            .antMatchers(HttpMethod.GET, "/jobs/**", "/api/companies/**").permitAll()
+            .antMatchers(HttpMethod.GET, "/jobs/**", "/api/companies/**", "/job-categories/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .headers(headers -> headers.frameOptions().disable())

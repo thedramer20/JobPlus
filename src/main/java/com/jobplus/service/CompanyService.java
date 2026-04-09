@@ -10,6 +10,9 @@ import com.jobplus.exception.ResourceNotFoundException;
 import com.jobplus.mapper.CompanyMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CompanyService {
     private final CompanyMapper companyMapper;
@@ -58,6 +61,10 @@ public class CompanyService {
             throw new ResourceNotFoundException("Company not found");
         }
         return toResponse(company);
+    }
+
+    public List<CompanyResponse> getAllCompanies() {
+        return companyMapper.findAll().stream().map(this::toResponse).collect(Collectors.toList());
     }
 
     public CompanyResponse updateCompany(String username, Long companyId, CompanyUpdateRequest request) {
