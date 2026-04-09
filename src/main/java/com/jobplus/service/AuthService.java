@@ -4,7 +4,7 @@ import com.jobplus.dto.AuthResponse;
 import com.jobplus.dto.LoginRequest;
 import com.jobplus.dto.RegisterRequest;
 import com.jobplus.entity.User;
-import com.jobplus.repository.UserRepository;
+import com.jobplus.mapper.UserMapper;
 import com.jobplus.security.JwtService;
 import com.jobplus.security.UserDetailsServiceImpl;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,18 +16,18 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-    private final UserRepository userRepository;
+    private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtService jwtService;
 
-    public AuthService(UserRepository userRepository,
+    public AuthService(UserMapper userMapper,
                        PasswordEncoder passwordEncoder,
                        AuthenticationManager authenticationManager,
                        UserDetailsServiceImpl userDetailsService,
                        JwtService jwtService) {
-        this.userRepository = userRepository;
+        this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
@@ -45,15 +45,17 @@ public class AuthService {
         if (password == null || password.length() < 6) {
             throw new IllegalArgumentException("Password must be at least 6 characters");
         }
-        if (userRepository.existsByUsername(username)) {
+        if (userMapper.existsByUsername(username)) {
             throw new IllegalArgumentException("Username already exists");
         }
 
         User user = new User();
         user.setUsername(username);
+        user.setFullName(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(role);
-        userRepository.save(user);
+        user.setStatus("ACTIVE");
+        userMapper.insert(user);
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         String token = jwtService.generateToken(userDetails);
@@ -71,8 +73,10 @@ public class AuthService {
             throw new BadCredentialsException("Invalid username or password");
         }
 
-        User user = userRepository.findByUsername(username)
-            .orElseThrow(() -> new BadCredentialsException("Invalid username or password"));
+        User user = userMapper.findByUsername(username);
+        if (user == null) {
+            throw new BadCredentialsException("Invalid username or password");
+        }
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         String token = jwtService.generateToken(userDetails);
         return new AuthResponse(token, user.getUsername(), user.getRole());
@@ -80,10 +84,14 @@ public class AuthService {
 
     private String normalizeRole(String role) {
         if (role == null || role.isBlank()) {
-            return "ROLE_USER";
+            return "ROLE_CANDIDATE";
         }
         String normalized = role.trim().toUpperCase();
-        return normalized.startsWith("ROLE_") ? normalized : "ROLE_" + normalized;
+        String prefixed = normalized.startsWith("ROLE_") ? normalized : "ROLE_" + normalized;
+        if (!prefixed.equals("ROLE_CANDIDATE") && !prefixed.equals("ROLE_EMPLOYER") && !prefixed.equals("ROLE_ADMIN")) {
+            throw new IllegalArgumentException("Role must be CANDIDATE, EMPLOYER, or ADMIN");
+        }
+        return prefixed;
     }
 
     private String safeTrim(String value) {

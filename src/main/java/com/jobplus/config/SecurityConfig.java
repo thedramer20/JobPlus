@@ -3,6 +3,7 @@ package com.jobplus.config;
 import com.jobplus.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,7 +39,8 @@ public class SecurityConfig {
             .authenticationEntryPoint(authenticationEntryPoint)
             .and()
             .authorizeRequests()
-            .antMatchers("/auth/**", "/jobs", "/h2-console/**").permitAll()
+            .antMatchers("/auth/**", "/h2-console/**").permitAll()
+            .antMatchers(HttpMethod.GET, "/jobs/**", "/api/companies/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .headers(headers -> headers.frameOptions().disable())

@@ -47,12 +47,6 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!-- Spring Boot Starter for JPA -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
         <!-- JSON Web Token (JWT) for authentication -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>

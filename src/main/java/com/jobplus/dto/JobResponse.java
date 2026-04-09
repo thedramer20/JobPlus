@@ -1,10 +1,9 @@
-package com.jobplus.entity;
+package com.jobplus.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-public class Job {
+public class JobResponse {
     private Long id;
     private Long companyId;
     private String companyName;
@@ -23,8 +22,6 @@ public class Job {
     private Integer vacancyCount;
     private LocalDate applicationDeadline;
     private String status;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
     public Long getId() {
         return id;
@@ -168,21 +165,5 @@ public class Job {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }
