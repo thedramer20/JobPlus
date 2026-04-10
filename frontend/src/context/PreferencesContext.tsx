@@ -15,22 +15,20 @@ const PreferencesContext = createContext<PreferencesContextValue | undefined>(un
 
 export function PreferencesProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<ThemeMode>(() => {
-    const saved = window.localStorage.getItem("jobplus-theme");
-    return saved === "dark" ? "dark" : "light";
+    return readStoredValue("jobplus-theme") === "dark" ? "dark" : "light";
   });
   const [language, setLanguageState] = useState<LanguageCode>(() => {
-    const saved = window.localStorage.getItem("jobplus-language");
-    return saved === "zh" ? "zh" : "en";
+    return readStoredValue("jobplus-language") === "zh" ? "zh" : "en";
   });
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
-    window.localStorage.setItem("jobplus-theme", theme);
+    writeStoredValue("jobplus-theme", theme);
   }, [theme]);
 
   useEffect(() => {
     i18n.changeLanguage(language);
-    window.localStorage.setItem("jobplus-language", language);
+    writeStoredValue("jobplus-language", language);
   }, [language]);
 
   const value = useMemo(
@@ -52,4 +50,20 @@ export function usePreferences() {
     throw new Error("usePreferences must be used within PreferencesProvider");
   }
   return context;
+}
+
+function readStoredValue(key: string): string | null {
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function writeStoredValue(key: string, value: string): void {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // Ignore storage failures so UI still renders.
+  }
 }

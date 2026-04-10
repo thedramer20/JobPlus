@@ -19,7 +19,7 @@ export const authStore = create<AuthState>((set) => ({
     set({ token: session.token, user: session.user });
   },
   logout: () => {
-    window.localStorage.removeItem("jobplus-auth");
+    removeSession();
     set({ token: null, user: null });
   },
   setDemoRole: (role) => {
@@ -41,7 +41,7 @@ export const authStore = create<AuthState>((set) => ({
 }));
 
 function loadSession(): AuthSession | null {
-  const raw = window.localStorage.getItem("jobplus-auth");
+  const raw = readSession();
   if (!raw) {
     return null;
   }
@@ -53,5 +53,25 @@ function loadSession(): AuthSession | null {
 }
 
 function saveSession(session: AuthSession): void {
-  window.localStorage.setItem("jobplus-auth", JSON.stringify(session));
+  try {
+    window.localStorage.setItem("jobplus-auth", JSON.stringify(session));
+  } catch {
+    // Ignore storage failures so auth state can still exist in memory.
+  }
+}
+
+function readSession(): string | null {
+  try {
+    return window.localStorage.getItem("jobplus-auth");
+  } catch {
+    return null;
+  }
+}
+
+function removeSession(): void {
+  try {
+    window.localStorage.removeItem("jobplus-auth");
+  } catch {
+    // Ignore storage failures so logout still clears in-memory state.
+  }
 }
