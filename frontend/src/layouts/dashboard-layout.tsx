@@ -43,6 +43,14 @@ export function DashboardLayout() {
             <h1 style={{ margin: "0.3rem 0 0" }}>Ship hiring workflows with clarity</h1>
           </div>
           <div className="row" style={{ alignItems: "center" }}>
+            <NavLink className="jp-home-link" to="/" aria-label="Go to home page" title="Home">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.9">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 10.5 12 3l9 7.5" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 9.75V21h13.5V9.75" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 21v-6h4.5v6" />
+              </svg>
+              <span>Home</span>
+            </NavLink>
             <div className="pill">Notifications: {notifications.length}</div>
             <SettingsMenu />
           </div>

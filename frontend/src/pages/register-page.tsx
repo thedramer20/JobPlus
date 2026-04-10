@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { authStore } from "../store/auth-store";
 import { register } from "../services/auth-service";
@@ -34,6 +35,9 @@ export function RegisterPage() {
             Role-first onboarding keeps JobPlus clear and scalable. Candidates enter discovery and applications. Employers
             enter company setup and hiring operations.
           </p>
+          <div className="auth-note" style={{ marginTop: "1.2rem" }}>
+            Already have an account? <Link to="/login">Log in here</Link>
+          </div>
         </div>
         <div className="surface" style={{ padding: "2rem" }}>
           <form className="stack" onSubmit={handleSubmit}>
@@ -74,9 +78,12 @@ export function RegisterPage() {
             </div>
             {message ? <div className="status status-info">{message}</div> : null}
             <button className="btn btn-primary" type="submit">
-              Create account
+              Sign up
             </button>
           </form>
+          <div className="helper" style={{ marginTop: "1rem" }}>
+            Already registered? <Link to="/login">Back to login</Link>
+          </div>
         </div>
       </div>
     </section>

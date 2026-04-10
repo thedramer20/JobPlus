@@ -406,6 +406,42 @@ img {
   border-bottom: 1px solid rgba(219, 228, 239, 0.7);
 }
 
+.jp-marketing-nav-inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+}
+
+.jp-marketing-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.jp-home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.8rem;
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 700;
+  box-shadow: var(--shadow);
+}
+
+.jp-home-link:hover,
+.jp-home-link.active {
+  border-color: var(--border-strong);
+  background: var(--surface-alt);
+  color: var(--primary-dark);
+}
+
 .hero {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
@@ -1349,6 +1385,16 @@ img {
   .row {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .jp-marketing-nav-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .jp-marketing-actions {
+    width: 100%;
+    justify-content: stretch;
+    margin-left: 0;
   }
 
   .jp-jobs-hero-metrics,

@@ -71,6 +71,10 @@ export function LoginPage() {
               <div className="helper">Use your JobPlus account to continue.</div>
             </div>
 
+            <div className="auth-note">
+              New to JobPlus? <Link to="/register">Create your sign up account</Link>
+            </div>
+
             <div className="field">
               <label>Username</label>
               <input
@@ -145,7 +149,7 @@ export function LoginPage() {
 
           <div className="stack" style={{ marginTop: "1.3rem", gap: "0.4rem" }}>
             <div className="helper">
-              Don&apos;t have an account? <Link to="/register">Create one</Link>
+              Don&apos;t have an account? <Link to="/register">Sign up now</Link>
             </div>
             <div className="helper">
               Are you hiring? <Link to="/register">Register as an employer</Link>
