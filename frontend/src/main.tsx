@@ -11,8 +11,16 @@ import "./styles/global.css";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60_000,
-      refetchOnWindowFocus: false
+      staleTime: 2 * 60 * 1000, // 2 minutes default
+      gcTime: 5 * 60 * 1000, // 5 minutes default
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+      retry: 1,
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 5000),
+    },
+    mutations: {
+      retry: 1,
     }
   }
 });

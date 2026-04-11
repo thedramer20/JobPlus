@@ -1,22 +1,53 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { AuthCard } from "../components/auth/auth-card";
+import { AuthShell } from "../components/auth/auth-shell";
+import { InlineMessage } from "../components/auth/inline-message";
+import { TextField } from "../components/auth/text-field";
+import { requestPasswordReset } from "../services/auth-service";
+
 export function ForgotPasswordPage() {
+  const [value, setValue] = useState("");
+  const [state, setState] = useState<{ error?: string; success?: string; loading?: boolean }>({});
+
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    if (!value.trim()) {
+      setState({ error: "Email or username is required." });
+      return;
+    }
+    setState({ loading: true });
+    await requestPasswordReset(value.trim());
+    setState({
+      success: "Reset link sent. Please check your inbox (or spam) and continue to reset your password.",
+      loading: false
+    });
+  }
+
   return (
-    <section className="section">
-      <div className="container grid grid-2">
-        <div className="surface" style={{ padding: "1.6rem" }}>
-          <div className="eyebrow">Account recovery</div>
-          <h1 className="headline" style={{ fontSize: "2.4rem", margin: "0.4rem 0" }}>Forgot your password?</h1>
-          <p className="helper">Enter your email or username and we will guide you through resetting access.</p>
+    <AuthShell
+      title="Recover your account with confidence."
+      subtitle="We’ll guide you through a quick and secure password reset process."
+    >
+      <AuthCard title="Forgot password?" subtitle="Enter your email or username to receive a reset link.">
+        <form className="stack" onSubmit={handleSubmit}>
+          <TextField
+            label="Email or username"
+            value={value}
+            onChange={(next) => setValue(next)}
+            placeholder="you@jobplus.app or username"
+            required
+          />
+          {state.error ? <InlineMessage type="error" message={state.error} /> : null}
+          {state.success ? <InlineMessage type="success" message={state.success} /> : null}
+          <button className="btn btn-primary" type="submit" disabled={!!state.loading}>
+            {state.loading ? "Sending..." : "Send reset link"}
+          </button>
+        </form>
+        <div className="helper" style={{ marginTop: "0.6rem" }}>
+          Back to <Link to="/login">Sign in</Link>
         </div>
-        <div className="surface" style={{ padding: "1.6rem" }}>
-          <div className="stack">
-            <div className="field">
-              <label>Email or username</label>
-              <input className="input" placeholder="Enter your account email or username" />
-            </div>
-            <button className="btn btn-primary">Send reset link</button>
-          </div>
-        </div>
-      </div>
-    </section>
+      </AuthCard>
+    </AuthShell>
   );
 }

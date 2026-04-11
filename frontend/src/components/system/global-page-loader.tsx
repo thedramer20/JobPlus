@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useIsFetching, useIsMutating } from "@tanstack/react-query";
 import { useNavigation } from "react-router-dom";
 import { getGlobalLoadingCount, subscribeGlobalLoading } from "../../lib/loading-store";
@@ -17,18 +17,39 @@ export function GlobalPageLoader() {
   const isMutating = useIsMutating();
   const manualLoadingCount = useManualLoadingCount();
   const [isVisible, setIsVisible] = useState(false);
-  const isBusy =
-    navigation.state !== "idle" || isFetching > 0 || isMutating > 0 || manualLoadingCount > 0;
+  const timerRef = useRef<number>();
+
+  // Only show loader for actual navigation, not for background queries
+  const isNavigating = navigation.state !== "idle";
+  const hasActiveQueries = isFetching > 0 || isMutating > 0 || manualLoadingCount > 0;
+  const isBusy = isNavigating || hasActiveQueries;
 
   useEffect(() => {
     if (!isBusy) {
+      // Hide immediately when not busy
       setIsVisible(false);
+      if (timerRef.current) {
+        window.clearTimeout(timerRef.current);
+        timerRef.current = undefined;
+      }
       return;
     }
 
-    // Avoid flashing the loader for very quick transitions.
-    const timer = window.setTimeout(() => setIsVisible(true), 120);
-    return () => window.clearTimeout(timer);
+    // Only show loader after a very short delay (50ms) to avoid flashing
+    // This makes the app feel more responsive
+    if (!timerRef.current) {
+      timerRef.current = window.setTimeout(() => {
+        setIsVisible(true);
+        timerRef.current = undefined;
+      }, 50);
+    }
+
+    return () => {
+      if (timerRef.current) {
+        window.clearTimeout(timerRef.current);
+        timerRef.current = undefined;
+      }
+    };
   }, [isBusy]);
 
   return (

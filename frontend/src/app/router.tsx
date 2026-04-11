@@ -1,34 +1,57 @@
+import { lazy, Suspense, type ComponentType } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import { AppFrame } from "../components/system/app-frame";
 import { DashboardLayout } from "../layouts/dashboard-layout";
+import { AdminLayout } from "../layouts/admin-layout";
 import { MarketingLayout } from "../layouts/marketing-layout";
 import { ProtectedRoute, RoleRoute } from "../components/route-guards";
-import { HomePage } from "../pages/home-page";
-import { LoginPage } from "../pages/login-page";
-import { RegisterPage } from "../pages/register-page";
-import { JobsPage } from "../pages/jobs-page";
-import { JobDetailsPage } from "../pages/job-details-page";
-import { ApplyPage } from "../pages/apply-page";
-import { CompaniesPage } from "../pages/companies-page";
-import { AboutPage } from "../pages/about-page";
-import { ContactPage } from "../pages/contact-page";
-import { ForgotPasswordPage } from "../pages/forgot-password-page";
-import { ResetPasswordPage } from "../pages/reset-password-page";
-import { CandidateDashboardPage } from "../pages/candidate-dashboard-page";
-import { ApplicationsPage } from "../pages/applications-page";
-import { NotificationsPage } from "../pages/notifications-page";
-import { ProfilePage } from "../pages/profile-page";
-import { SavedJobsPage } from "../pages/saved-jobs-page";
-import { SettingsPage } from "../pages/settings-page";
-import { EmployerDashboardPage } from "../pages/employer-dashboard-page";
-import { CompanyManagementPage } from "../pages/company-management-page";
-import { CompanyProfilePage } from "../pages/company-profile-page";
-import { EmployerJobsPage } from "../pages/employer-jobs-page";
-import { PostJobPage } from "../pages/post-job-page";
-import { EditJobPage } from "../pages/edit-job-page";
-import { AdminPage } from "../pages/admin-page";
-import { ForbiddenPage } from "../pages/forbidden-page";
-import { NotFoundPage } from "../pages/not-found-page";
+
+const HomePage = lazy(async () => ({ default: (await import("../pages/home-page")).HomePage }));
+const LoginPage = lazy(async () => ({ default: (await import("../pages/login-page")).LoginPage }));
+const RegisterPage = lazy(async () => ({ default: (await import("../pages/register-page")).RegisterPage }));
+const JobsPage = lazy(async () => ({ default: (await import("../pages/jobs-page")).JobsPage }));
+const JobDetailsPage = lazy(async () => ({ default: (await import("../pages/job-details-page")).JobDetailsPage }));
+const ApplyPage = lazy(async () => ({ default: (await import("../pages/apply-page")).ApplyPage }));
+const CompaniesPage = lazy(async () => ({ default: (await import("../pages/companies-page")).CompaniesPage }));
+const AboutPage = lazy(async () => ({ default: (await import("../pages/about-page")).AboutPage }));
+const ContactPage = lazy(async () => ({ default: (await import("../pages/contact-page")).ContactPage }));
+const TopContentPage = lazy(async () => ({ default: (await import("../pages/top-content-page")).TopContentPage }));
+const ForgotPasswordPage = lazy(async () => ({ default: (await import("../pages/forgot-password-page")).ForgotPasswordPage }));
+const ResetPasswordPage = lazy(async () => ({ default: (await import("../pages/reset-password-page")).ResetPasswordPage }));
+const CandidateDashboardPage = lazy(async () => ({ default: (await import("../pages/candidate-dashboard-page")).CandidateDashboardPage }));
+const ApplicationsPage = lazy(async () => ({ default: (await import("../pages/applications-page")).ApplicationsPage }));
+const NotificationsPage = lazy(async () => ({ default: (await import("../pages/notifications-page")).NotificationsPage }));
+const ProfilePage = lazy(async () => ({ default: (await import("../pages/profile-page")).ProfilePage }));
+const SavedJobsPage = lazy(async () => ({ default: (await import("../pages/saved-jobs-page")).SavedJobsPage }));
+const SettingsPage = lazy(async () => ({ default: (await import("../pages/settings-page")).SettingsPage }));
+const EmployerDashboardPage = lazy(async () => ({ default: (await import("../pages/employer-dashboard-page")).EmployerDashboardPage }));
+const CompanyManagementPage = lazy(async () => ({ default: (await import("../pages/company-management-page")).CompanyManagementPage }));
+const CompanyProfilePage = lazy(async () => ({ default: (await import("../pages/company-profile-page")).CompanyProfilePage }));
+const EmployerJobsPage = lazy(async () => ({ default: (await import("../pages/employer-jobs-page")).EmployerJobsPage }));
+const PostJobPage = lazy(async () => ({ default: (await import("../pages/post-job-page")).PostJobPage }));
+const EditJobPage = lazy(async () => ({ default: (await import("../pages/edit-job-page")).EditJobPage }));
+const AdminDashboardPage = lazy(async () => ({ default: (await import("../pages/admin/admin-dashboard-page")).AdminDashboardPage }));
+const AdminUsersPage = lazy(async () => ({ default: (await import("../pages/admin/admin-users-page")).AdminUsersPage }));
+const AdminCompaniesPage = lazy(async () => ({ default: (await import("../pages/admin/admin-companies-page")).AdminCompaniesPage }));
+const AdminJobsPage = lazy(async () => ({ default: (await import("../pages/admin/admin-jobs-page")).AdminJobsPage }));
+const AdminApplicationsPage = lazy(async () => ({ default: (await import("../pages/admin/admin-applications-page")).AdminApplicationsPage }));
+const AdminCategoriesPage = lazy(async () => ({ default: (await import("../pages/admin/admin-categories-page")).AdminCategoriesPage }));
+const AdminReportsPage = lazy(async () => ({ default: (await import("../pages/admin/admin-reports-page")).AdminReportsPage }));
+const AdminNotificationsPage = lazy(async () => ({ default: (await import("../pages/admin/admin-notifications-page")).AdminNotificationsPage }));
+const AdminAnalyticsPage = lazy(async () => ({ default: (await import("../pages/admin/admin-analytics-page")).AdminAnalyticsPage }));
+const AdminSettingsPage = lazy(async () => ({ default: (await import("../pages/admin/admin-settings-page")).AdminSettingsPage }));
+const AdminProfilePage = lazy(async () => ({ default: (await import("../pages/admin/admin-profile-page")).AdminProfilePage }));
+const ForbiddenPage = lazy(async () => ({ default: (await import("../pages/forbidden-page")).ForbiddenPage }));
+const NotFoundPage = lazy(async () => ({ default: (await import("../pages/not-found-page")).NotFoundPage }));
+const CategoryDetailsPage = lazy(async () => ({ default: (await import("../pages/category-details-page")).CategoryDetailsPage }));
+
+function withSuspense(Component: ComponentType) {
+  return (
+    <Suspense fallback={null}>
+      <Component />
+    </Suspense>
+  );
+}
 
 export const router = createBrowserRouter([
   {
@@ -37,18 +60,21 @@ export const router = createBrowserRouter([
       {
         element: <MarketingLayout />,
         children: [
-          { path: "/", element: <HomePage /> },
-          { path: "/login", element: <LoginPage /> },
-          { path: "/register", element: <RegisterPage /> },
-          { path: "/forgot-password", element: <ForgotPasswordPage /> },
-          { path: "/reset-password", element: <ResetPasswordPage /> },
-          { path: "/companies", element: <CompaniesPage /> },
-          { path: "/about", element: <AboutPage /> },
-          { path: "/contact", element: <ContactPage /> },
-          { path: "/jobs", element: <JobsPage /> },
-          { path: "/jobs/:jobId", element: <JobDetailsPage /> },
-          { path: "/jobs/:jobId/apply", element: <ApplyPage /> },
-          { path: "/companies/:companyId", element: <CompanyProfilePage /> }
+          { path: "/", element: withSuspense(HomePage) },
+          { path: "/login", element: withSuspense(LoginPage) },
+          { path: "/register", element: withSuspense(RegisterPage) },
+          { path: "/forgot-password", element: withSuspense(ForgotPasswordPage) },
+          { path: "/reset-password", element: withSuspense(ResetPasswordPage) },
+          { path: "/companies", element: withSuspense(CompaniesPage) },
+          { path: "/about", element: withSuspense(AboutPage) },
+          { path: "/contact", element: withSuspense(ContactPage) },
+          { path: "/top-content", element: withSuspense(TopContentPage) },
+          { path: "/jobs", element: withSuspense(JobsPage) },
+          { path: "/jobs/:jobId", element: withSuspense(JobDetailsPage) },
+          { path: "/jobs/:jobId/apply", element: withSuspense(ApplyPage) },
+          { path: "/companies/:companyId", element: withSuspense(CompanyProfilePage) },
+          { path: "/category/:categoryName", element: withSuspense(CategoryDetailsPage) },
+          { path: "/profile/:username", element: withSuspense(ProfilePage) }
         ]
       },
       {
@@ -61,12 +87,12 @@ export const router = createBrowserRouter([
                 path: "/app",
                 element: <DashboardLayout />,
                 children: [
-                  { path: "dashboard", element: <CandidateDashboardPage /> },
-                  { path: "applications", element: <ApplicationsPage /> },
-                  { path: "notifications", element: <NotificationsPage /> },
-                  { path: "profile", element: <ProfilePage /> },
-                  { path: "saved-jobs", element: <SavedJobsPage /> },
-                  { path: "settings", element: <SettingsPage /> }
+                  { path: "dashboard", element: withSuspense(CandidateDashboardPage) },
+                  { path: "applications", element: withSuspense(ApplicationsPage) },
+                  { path: "notifications", element: withSuspense(NotificationsPage) },
+                  { path: "profile", element: withSuspense(ProfilePage) },
+                  { path: "saved-jobs", element: withSuspense(SavedJobsPage) },
+                  { path: "settings", element: withSuspense(SettingsPage) }
                 ]
               }
             ]
@@ -78,12 +104,12 @@ export const router = createBrowserRouter([
                 path: "/employer",
                 element: <DashboardLayout />,
                 children: [
-                  { path: "dashboard", element: <EmployerDashboardPage /> },
-                  { path: "company", element: <CompanyManagementPage /> },
-                  { path: "jobs", element: <EmployerJobsPage /> },
-                  { path: "jobs/new", element: <PostJobPage /> },
-                  { path: "jobs/:jobId/edit", element: <EditJobPage /> },
-                  { path: "settings", element: <SettingsPage /> }
+                  { path: "dashboard", element: withSuspense(EmployerDashboardPage) },
+                  { path: "company", element: withSuspense(CompanyManagementPage) },
+                  { path: "jobs", element: withSuspense(EmployerJobsPage) },
+                  { path: "jobs/new", element: withSuspense(PostJobPage) },
+                  { path: "jobs/:jobId/edit", element: withSuspense(EditJobPage) },
+                  { path: "settings", element: withSuspense(SettingsPage) }
                 ]
               }
             ]
@@ -93,12 +119,19 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: "/admin",
-                element: <DashboardLayout />,
+                element: <AdminLayout />,
                 children: [
-                  { index: true, element: <AdminPage /> },
-                  { path: "users", element: <AdminPage /> },
-                  { path: "companies", element: <AdminPage /> },
-                  { path: "jobs", element: <AdminPage /> }
+                  { index: true, element: withSuspense(AdminDashboardPage) },
+                  { path: "users", element: withSuspense(AdminUsersPage) },
+                  { path: "companies", element: withSuspense(AdminCompaniesPage) },
+                  { path: "jobs", element: withSuspense(AdminJobsPage) },
+                  { path: "applications", element: withSuspense(AdminApplicationsPage) },
+                  { path: "categories", element: withSuspense(AdminCategoriesPage) },
+                  { path: "reports", element: withSuspense(AdminReportsPage) },
+                  { path: "notifications", element: withSuspense(AdminNotificationsPage) },
+                  { path: "analytics", element: withSuspense(AdminAnalyticsPage) },
+                  { path: "settings", element: withSuspense(AdminSettingsPage) },
+                  { path: "profile", element: withSuspense(AdminProfilePage) }
                 ]
               }
             ]
@@ -107,6 +140,6 @@ export const router = createBrowserRouter([
       }
     ]
   },
-  { path: "/403", element: <ForbiddenPage /> },
-  { path: "*", element: <NotFoundPage /> }
+  { path: "/403", element: withSuspense(ForbiddenPage) },
+  { path: "*", element: withSuspense(NotFoundPage) }
 ]);

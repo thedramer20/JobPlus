@@ -30,9 +30,16 @@ export const roleNavigation: Record<Exclude<UserRole, "guest">, NavItem[]> = {
     { label: "Settings", path: "/employer/settings" }
   ],
   admin: [
-    { label: "Overview", path: "/admin" },
+    { label: "Dashboard", path: "/admin" },
     { label: "Users", path: "/admin/users" },
     { label: "Companies", path: "/admin/companies" },
-    { label: "Jobs", path: "/admin/jobs" }
+    { label: "Jobs", path: "/admin/jobs" },
+    { label: "Applications", path: "/admin/applications" },
+    { label: "Categories", path: "/admin/categories" },
+    { label: "Reports", path: "/admin/reports" },
+    { label: "Notifications", path: "/admin/notifications" },
+    { label: "Analytics", path: "/admin/analytics" },
+    { label: "Settings", path: "/admin/settings" },
+    { label: "Profile", path: "/admin/profile" }
   ]
 };

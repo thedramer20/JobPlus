@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { authStore } from "../../store/auth-store";
 import { SettingsMenu } from "./settings-menu";
 
@@ -6,7 +6,6 @@ interface TopbarItem {
   label: string;
   path: string;
   icon: React.ReactNode;
-  isHashLink?: boolean;
 }
 
 const topbarItems: TopbarItem[] = [
@@ -23,8 +22,7 @@ const topbarItems: TopbarItem[] = [
   },
   {
     label: "Top Content",
-    path: "/#top-content",
-    isHashLink: true,
+    path: "/top-content",
     icon: (
       <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="1.9">
         <path strokeLinecap="round" strokeLinejoin="round" d="M14.5 4.5c2.2-.23 4.13.31 5 1.18.87.87 1.41 2.8 1.18 5l-5.12 2.37-3.43-3.43L14.5 4.5Z" />
@@ -91,15 +89,12 @@ const topbarItems: TopbarItem[] = [
 
 export function JobPlusTopbar() {
   const { user } = authStore();
-  const location = useLocation();
   const avatarText = (user?.name ?? "JP")
     .split(" ")
     .slice(0, 2)
     .map((part) => part[0]?.toUpperCase() ?? "")
     .join("")
     .slice(0, 2);
-
-  const topContentActive = location.pathname === "/" && location.hash === "#top-content";
 
   return (
     <header className="jp-topbar-shell surface-muted">
@@ -109,27 +104,16 @@ export function JobPlusTopbar() {
         </NavLink>
 
         <nav aria-label="Primary" className="jp-topbar-nav">
-          {topbarItems.map((item) =>
-            item.isHashLink ? (
-              <a
-                key={item.label}
-                href={item.path}
-                className={`jp-topbar-link ${topContentActive ? "is-active" : ""}`}
-              >
-                <span aria-hidden="true">{item.icon}</span>
-                <span>{item.label}</span>
-              </a>
-            ) : (
-              <NavLink
-                key={item.label}
-                to={item.path}
-                className={({ isActive }) => `jp-topbar-link ${isActive ? "is-active" : ""}`}
-              >
-                <span aria-hidden="true">{item.icon}</span>
-                <span>{item.label}</span>
-              </NavLink>
-            )
-          )}
+          {topbarItems.map((item) => (
+            <NavLink
+              key={item.label}
+              to={item.path}
+              className={({ isActive }) => `jp-topbar-link ${isActive ? "is-active" : ""}`}
+            >
+              <span aria-hidden="true">{item.icon}</span>
+              <span>{item.label}</span>
+            </NavLink>
+          ))}
         </nav>
 
         <div className="jp-topbar-actions">
@@ -144,13 +128,28 @@ export function JobPlusTopbar() {
             </>
           ) : null}
 
-          <button type="button" className="jp-topbar-avatar" aria-label="Profile" title={user?.name ?? "Profile"}>
+          <NavLink
+            to={resolveProfileHref(user?.role)}
+            className="jp-topbar-avatar"
+            aria-label="Profile"
+            title={user?.name ?? "Profile"}
+          >
             {avatarText}
-          </button>
+          </NavLink>
 
           <SettingsMenu />
         </div>
       </div>
     </header>
   );
+}
+
+function resolveProfileHref(role?: string): string {
+  if (!role) {
+    return "/login";
+  }
+  if (role === "ADMIN") {
+    return "/admin/profile";
+  }
+  return "/app/profile";
 }

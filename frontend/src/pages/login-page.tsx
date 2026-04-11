@@ -1,5 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { AuthCard } from "../components/auth/auth-card";
+import { AuthShell } from "../components/auth/auth-shell";
+import { InlineMessage } from "../components/auth/inline-message";
+import { OrDivider } from "../components/auth/or-divider";
+import { PasswordField } from "../components/auth/password-field";
+import { SocialButton } from "../components/auth/social-button";
+import { TextField } from "../components/auth/text-field";
 import { authStore } from "../store/auth-store";
 import { login } from "../services/auth-service";
 import type { UserRole } from "../types/auth";
@@ -9,159 +16,158 @@ export function LoginPage() {
   const [searchParams] = useSearchParams();
   const { login: saveSession, setDemoRole } = authStore();
   const [form, setForm] = useState({ username: "", password: "", remember: true });
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<{ username?: string; password?: string; server?: string }>({});
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-    setError(null);
+    const nextError: { username?: string; password?: string; server?: string } = {};
+    if (!form.username.trim()) {
+      nextError.username = "Email or username is required.";
+    }
+    if (form.username.includes("@") && !isEmail(form.username.trim())) {
+      nextError.username = "Please enter a valid email address.";
+    }
+    if (!form.password) {
+      nextError.password = "Password is required.";
+    }
+    if (nextError.username || nextError.password) {
+      setError(nextError);
+      return;
+    }
+    setError({});
     setLoading(true);
     try {
       const session = await login({ username: form.username, password: form.password });
       saveSession(session);
       navigate(searchParams.get("redirect") ?? resolveAuthenticatedRoute(session.user.role));
-    } catch {
-      setError("Login failed. Check your credentials or use a demo account while backend auth is still evolving.");
+    } catch (cause) {
+      const raw = String(cause ?? "").toLowerCase();
+      const serverMessage = raw.includes("404")
+        ? "Account not found."
+        : raw.includes("401")
+          ? "Invalid email or password."
+          : "Unable to sign in right now. Please try again.";
+      setError({ server: serverMessage });
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <section className="section">
-      <div className="container grid grid-2">
-        <div className="surface" style={{ padding: "2rem" }}>
-          <div className="eyebrow">Secure sign in</div>
-          <h1 className="headline" style={{ fontSize: "2.5rem", margin: "0.35rem 0" }}>
-            Access your hiring workspace with confidence.
-          </h1>
-          <p className="helper" style={{ maxWidth: "60ch" }}>
-            JobPlus gives candidates a clearer job search and gives employers structured hiring workflows that feel closer
-            to a real product than a simple class project.
-          </p>
-          <div className="grid grid-2" style={{ marginTop: "1.2rem" }}>
-            <div className="metric">
-              <span className="helper">Jobs posted</span>
-              <strong>10,000+</strong>
-              <div className="helper">Growing marketplace experience</div>
-            </div>
-            <div className="metric">
-              <span className="helper">Hiring teams</span>
-              <strong>500+</strong>
-              <div className="helper">Employers building pipeline visibility</div>
-            </div>
-          </div>
-          <div className="stack" style={{ marginTop: "1.2rem" }}>
-            <div className="subtle-card">
-              <strong>Why candidates like it</strong>
-              <div className="helper">Track applications in real time, save jobs, manage resumes, and build a stronger profile.</div>
-            </div>
-            <div className="subtle-card">
-              <strong>Why employers like it</strong>
-              <div className="helper">Post jobs, manage applicants, and organize the hiring flow in one clean workspace.</div>
-            </div>
-          </div>
-        </div>
+    <AuthShell
+      title="Find your dream job faster."
+      subtitle="Sign in to manage applications, connect with hiring teams, and track your growth with a premium workflow."
+    >
+      <AuthCard title="Welcome back" subtitle="Use your JobPlus account to continue.">
+        <form className="stack" onSubmit={handleSubmit}>
+          <TextField
+            label="Email or username"
+            value={form.username}
+            onChange={(value) => setForm((current) => ({ ...current, username: value }))}
+            placeholder="Enter email or username"
+            autoComplete="username"
+            error={error.username}
+            required
+          />
 
-        <div className="surface" style={{ padding: "2rem" }}>
-          <form className="stack" onSubmit={handleSubmit}>
-            <div>
-              <h2 style={{ margin: "0 0 0.3rem" }}>Welcome back</h2>
-              <div className="helper">Use your JobPlus account to continue.</div>
-            </div>
+          <PasswordField
+            label="Password"
+            value={form.password}
+            onChange={(value) => setForm((current) => ({ ...current, password: value }))}
+            placeholder="Enter your password"
+            autoComplete="current-password"
+            error={error.password}
+            required
+          />
 
-            <div className="auth-note">
-              New to JobPlus? <Link to="/register">Create your sign up account</Link>
-            </div>
-
-            <div className="field">
-              <label>Username</label>
+          <div className="space-between">
+            <label className="helper" style={{ display: "inline-flex", alignItems: "center", gap: "0.45rem" }}>
               <input
-                className="input"
-                value={form.username}
-                onChange={(event) => setForm((current) => ({ ...current, username: event.target.value }))}
-                placeholder="Enter your username"
+                type="checkbox"
+                checked={form.remember}
+                onChange={(event) => setForm((current) => ({ ...current, remember: event.target.checked }))}
               />
-            </div>
-
-            <div className="field">
-              <label>Password</label>
-              <div className="row" style={{ gap: "0.5rem" }}>
-                <input
-                  className="input"
-                  type={showPassword ? "text" : "password"}
-                  value={form.password}
-                  onChange={(event) => setForm((current) => ({ ...current, password: event.target.value }))}
-                  placeholder="Enter your password"
-                />
-                <button type="button" className="btn btn-secondary" onClick={() => setShowPassword((prev) => !prev)}>
-                  {showPassword ? "Hide" : "Show"}
-                </button>
-              </div>
-            </div>
-
-            <div className="space-between">
-              <label className="helper" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
-                <input
-                  type="checkbox"
-                  checked={form.remember}
-                  onChange={(event) => setForm((current) => ({ ...current, remember: event.target.checked }))}
-                />
-                Remember me
-              </label>
-              <Link className="helper" to="/forgot-password">
-                Forgot password?
-              </Link>
-            </div>
-
-            {error ? <div className="status status-danger">{error}</div> : null}
-
-            <button className="btn btn-primary" disabled={loading} type="submit">
-              {loading ? "Signing in..." : "Log in"}
-            </button>
-
-            <div className="stack">
-              <div className="helper">Continue faster</div>
-              <div className="grid grid-3">
-                <button type="button" className="btn btn-secondary">Google</button>
-                <button type="button" className="btn btn-secondary">GitHub</button>
-                <button type="button" className="btn btn-secondary">LinkedIn</button>
-              </div>
-            </div>
-          </form>
-
-          <div className="stack" style={{ marginTop: "1.3rem" }}>
-            <div className="helper">Quick demo access</div>
-            <div className="row" style={{ flexWrap: "wrap" }}>
-              <button className="btn btn-secondary" onClick={() => useDemoRole("candidate", setDemoRole, navigate)}>
-                Candidate demo
-              </button>
-              <button className="btn btn-secondary" onClick={() => useDemoRole("employer", setDemoRole, navigate)}>
-                Employer demo
-              </button>
-              <button className="btn btn-secondary" onClick={() => useDemoRole("admin", setDemoRole, navigate)}>
-                Admin demo
-              </button>
-            </div>
-            <div className="helper">Candidate demo: explore jobs and applications. Employer demo: manage company and job postings.</div>
+              Remember me
+            </label>
+            <Link className="helper" to="/forgot-password">
+              Forgot password?
+            </Link>
           </div>
 
-          <div className="stack" style={{ marginTop: "1.3rem", gap: "0.4rem" }}>
-            <div className="helper">
-              Don&apos;t have an account? <Link to="/register">Sign up now</Link>
-            </div>
-            <div className="helper">
-              Are you hiring? <Link to="/register">Register as an employer</Link>
-            </div>
-            <div className="helper">
-              By continuing, you agree to the Terms and Privacy policy.
-            </div>
+          {error.server ? <InlineMessage type="error" message={error.server} /> : null}
+
+          <button className="btn btn-primary" disabled={loading} type="submit">
+            {loading ? "Signing in..." : "Log in"}
+          </button>
+        </form>
+
+        <OrDivider />
+
+        <div className="stack" style={{ gap: "0.6rem" }}>
+          <SocialButton
+            label="Continue with Google"
+            onClick={() => undefined}
+            icon={
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path
+                  fill="#EA4335"
+                  d="M12 10.2v3.9h5.48c-.24 1.25-.95 2.32-2.02 3.03l3.27 2.54c1.9-1.75 2.99-4.34 2.99-7.42 0-.7-.06-1.37-.18-2.02H12Z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M12 22c2.7 0 4.97-.9 6.63-2.34l-3.27-2.54c-.9.6-2.06.96-3.36.96-2.58 0-4.77-1.74-5.55-4.08H3.07v2.62A9.99 9.99 0 0 0 12 22Z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M6.45 14c-.2-.6-.32-1.24-.32-2s.12-1.4.32-2V7.38H3.07A9.99 9.99 0 0 0 2 12c0 1.62.39 3.16 1.07 4.62L6.45 14Z"
+                />
+                <path
+                  fill="#4285F4"
+                  d="M12 5.92c1.47 0 2.79.5 3.83 1.47l2.88-2.88C16.97 2.9 14.7 2 12 2A9.99 9.99 0 0 0 3.07 7.38L6.45 10c.78-2.34 2.97-4.08 5.55-4.08Z"
+                />
+              </svg>
+            }
+          />
+          <SocialButton
+            label="Continue with LinkedIn"
+            onClick={() => undefined}
+            icon={
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <rect x="2" y="2" width="20" height="20" rx="4" fill="#0A66C2" />
+                <path
+                  fill="#fff"
+                  d="M7.06 9.2h2.5V17h-2.5V9.2Zm1.26-3.4a1.45 1.45 0 1 1 0 2.9 1.45 1.45 0 0 1 0-2.9Zm2.8 3.4h2.4v1.06h.03c.33-.63 1.16-1.3 2.38-1.3 2.54 0 3.01 1.67 3.01 3.84V17h-2.5v-3.72c0-.89-.02-2.03-1.24-2.03-1.24 0-1.43.97-1.43 1.96V17h-2.5V9.2Z"
+                />
+              </svg>
+            }
+          />
+        </div>
+
+        <div className="stack" style={{ gap: "0.6rem", marginTop: "0.25rem" }}>
+          <div className="helper">Quick demo access</div>
+          <div className="row" style={{ flexWrap: "wrap" }}>
+            <button type="button" className="btn btn-secondary" onClick={() => useDemoRole("candidate", setDemoRole, navigate)}>
+              Candidate demo
+            </button>
+            <button type="button" className="btn btn-secondary" onClick={() => useDemoRole("employer", setDemoRole, navigate)}>
+              Employer demo
+            </button>
+            <button type="button" className="btn btn-secondary" onClick={() => useDemoRole("admin", setDemoRole, navigate)}>
+              Admin demo
+            </button>
+          </div>
+          <div className="helper">
+            New to JobPlus? <Link to="/register">Create your account</Link>
           </div>
         </div>
-      </div>
-    </section>
+      </AuthCard>
+    </AuthShell>
   );
+}
+
+function isEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
 function useDemoRole(

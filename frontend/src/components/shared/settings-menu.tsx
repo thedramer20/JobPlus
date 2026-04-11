@@ -1,10 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { LanguageSwitcher } from "./language-switcher";
 import { ThemeToggle } from "./theme-toggle";
+import { authStore } from "../../store/auth-store";
 
 export const SettingsMenu: React.FC = () => {
+  const { user } = authStore();
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const settingsPath = user?.role === "admin" ? "/admin/settings" : user?.role === "employer" ? "/employer/settings" : "/app/settings";
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -38,6 +42,12 @@ export const SettingsMenu: React.FC = () => {
       </button>
       {open ? (
         <div className="jp-settings-panel" role="menu">
+          <div className="jp-settings-group">
+            <span className="jp-settings-label">Control Center</span>
+            <Link to={settingsPath} className="btn btn-secondary" onClick={() => setOpen(false)}>
+              Open Full Settings
+            </Link>
+          </div>
           <div className="jp-settings-group">
             <span className="jp-settings-label">Theme</span>
             <ThemeToggle />

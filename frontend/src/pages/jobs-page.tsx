@@ -40,14 +40,19 @@ export function JobsPage() {
   const [filters, setFilters] = useState<JobFilters>(defaultJobFilters);
   const { user } = authStore();
 
+  // Optimize queries with better caching
   const { data: allJobs = [] } = useQuery({
     queryKey: ["jobs", "all"],
-    queryFn: () => listJobs()
+    queryFn: () => listJobs(),
+    staleTime: 3 * 60 * 1000, // 3 minutes
+    gcTime: 5 * 60 * 1000,
   });
 
   const { data: jobs = [], isLoading, isError, isFetching } = useQuery({
     queryKey: ["jobs", filters],
-    queryFn: () => listJobs(filters)
+    queryFn: () => listJobs(filters),
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    gcTime: 5 * 60 * 1000,
   });
 
   const filterOptions = useMemo(() => buildFilterOptions(allJobs), [allJobs]);

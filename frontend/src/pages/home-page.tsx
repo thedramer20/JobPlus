@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CompanyCard } from "../components/shared/company-card";
 import { JobCard } from "../components/shared/job-card";
@@ -6,36 +7,57 @@ import { SearchBar } from "../components/shared/search-bar";
 import { StatCard } from "../components/shared/stat-card";
 import { listCompanies } from "../services/companies-service";
 import { listJobs } from "../services/jobs-service";
-import { createPost, listPostCategories, listPosts, listTrendingPosts, togglePostLike } from "../services/posts-service";
+import { createPost, createPostComment, listPostCategories, listPostComments, listPosts, listTrendingPosts, togglePostLike } from "../services/posts-service";
 import { authStore } from "../store/auth-store";
+import type { PostComment } from "../types/post";
 
-const topicItems = [
-  "Change Management",
-  "Employee Experience",
-  "Economics",
-  "Consulting",
-  "Writing",
-  "Hospitality & Tourism",
-  "Networking",
-  "Ecommerce",
-  "User Experience",
-  "Soft Skills & Emotional Intelligence",
-  "Productivity",
-  "Finance",
-  "Project Management",
-  "Technology"
-];
+// Topics will be dynamically generated from categories
+// No static topicItems needed anymore
 
 export function HomePage() {
   const queryClient = useQueryClient();
   const { user } = authStore();
-  const { data: jobs = [] } = useQuery({ queryKey: ["jobs", "featured"], queryFn: () => listJobs() });
-  const { data: companies = [] } = useQuery({ queryKey: ["companies", "featured"], queryFn: listCompanies });
-  const { data: posts = [] } = useQuery({ queryKey: ["posts"], queryFn: listPosts });
-  const { data: trendingPosts = [] } = useQuery({ queryKey: ["posts", "trending"], queryFn: listTrendingPosts });
-  const { data: categories = [] } = useQuery({ queryKey: ["post-categories"], queryFn: listPostCategories });
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [postForm, setPostForm] = useState({ content: "", imageUrl: "", categoryId: "" });
+  const [activeCommentPostId, setActiveCommentPostId] = useState<number | null>(null);
+  const [commentDraft, setCommentDraft] = useState("");
+  const [commentsByPost, setCommentsByPost] = useState<Record<number, PostComment[]>>({});
+
+  // Optimize queries with better caching and stale time
+  const { data: jobs = [] } = useQuery({ 
+    queryKey: ["jobs", "featured"], 
+    queryFn: () => listJobs(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+  });
+
+  const { data: companies = [] } = useQuery({ 
+    queryKey: ["companies", "featured"], 
+    queryFn: listCompanies,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
+
+  const { data: posts = [] } = useQuery({ 
+    queryKey: ["posts"], 
+    queryFn: listPosts,
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    gcTime: 5 * 60 * 1000,
+  });
+
+  const { data: trendingPosts = [] } = useQuery({ 
+    queryKey: ["posts", "trending"], 
+    queryFn: listTrendingPosts,
+    staleTime: 2 * 60 * 1000,
+    gcTime: 5 * 60 * 1000,
+  });
+
+  const { data: categories = [] } = useQuery({ 
+    queryKey: ["post-categories"], 
+    queryFn: listPostCategories,
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    gcTime: 15 * 60 * 1000,
+  });
 
   const categoryPostCounts = useMemo(() => {
     const counts = new Map<number, number>();
@@ -46,22 +68,88 @@ export function HomePage() {
   }, [posts]);
 
   const topicCategories = useMemo(
-    () =>
-      categories.map((category) => ({
+    () => {
+      // If no categories from backend, use fake data for demo
+      if (categories.length === 0) {
+        const fakeCategories = [
+          { id: 1, name: "Business Strategy", postCount: 24 },
+          { id: 2, name: "Marketing", postCount: 18 },
+          { id: 3, name: "Career Development", postCount: 32 },
+          { id: 4, name: "Technology", postCount: 45 },
+          { id: 5, name: "Leadership", postCount: 21 },
+          { id: 6, name: "Innovation", postCount: 15 },
+          { id: 7, name: "Finance", postCount: 19 },
+          { id: 8, name: "Sales", postCount: 14 },
+          { id: 9, name: "Corporate Social Responsibility", postCount: 8 },
+          { id: 10, name: "Artificial Intelligence", postCount: 27 },
+          { id: 11, name: "Recruitment & HR", postCount: 22 },
+          { id: 12, name: "Workplace Trends", postCount: 16 },
+          { id: 13, name: "Productivity", postCount: 29 },
+          { id: 14, name: "Communication", postCount: 25 },
+          { id: 15, name: "Customer Experience", postCount: 20 },
+        ];
+        return fakeCategories.map((category) => ({
+          ...category,
+          icon: getCategoryIcon(category.name)
+        }));
+      }
+
+      // Use real data from backend
+      return categories.map((category) => ({
         ...category,
         postCount: categoryPostCounts.get(category.id) ?? 0,
         icon: getCategoryIcon(category.name)
-      })),
+      }));
+    },
     [categories, categoryPostCounts]
   );
 
   const editorPicks = useMemo(() => {
+    // If no posts from backend, use fake data for demo
+    if (!posts.length && !trendingPosts.length) {
+      return [
+        {
+          id: 1,
+          categoryName: "Leadership",
+          content: "5 Essential Skills Every Modern Leader Needs in 2024: Emotional intelligence, adaptability, strategic thinking, effective communication, and the ability to inspire teams are crucial for success in today's rapidly changing business environment.",
+          likeCount: 142,
+          authorFullName: "Sarah Johnson",
+          authorUsername: "sarah.j"
+        },
+        {
+          id: 2,
+          categoryName: "Technology",
+          content: "How AI is Transforming the Workplace: From automating routine tasks to enhancing decision-making processes, artificial intelligence is reshaping how we work and creating new opportunities for innovation.",
+          likeCount: 98,
+          authorFullName: "Michael Chen",
+          authorUsername: "mike.chen"
+        },
+        {
+          id: 3,
+          categoryName: "Career Development",
+          content: "Building a Strong Professional Network: Quality over quantity. Focus on meaningful connections, provide value to others, and maintain relationships consistently rather than just when you need something.",
+          likeCount: 76,
+          authorFullName: "Emily Rodriguez",
+          authorUsername: "emily.r"
+        },
+        {
+          id: 4,
+          categoryName: "Productivity",
+          content: "The Power of Deep Work: Eliminate distractions, create focused work blocks, and prioritize your most important tasks. Your ability to concentrate without interruption is a valuable skill in today's distracted world.",
+          likeCount: 89,
+          authorFullName: "David Park",
+          authorUsername: "david.p"
+        }
+      ];
+    }
+
+    // Use real data from backend
     const source = trendingPosts.length ? trendingPosts : posts;
     if (!selectedTopics.length) {
       return source.slice(0, 4);
     }
     return source.filter((post) => selectedTopics.includes(post.categoryName)).slice(0, 4);
-  }, [posts, selectedTopics, trendingPosts]);
+  }, [posts, selectedTopics, trendingPosts, categories.length]);
 
   const createPostMutation = useMutation({
     mutationFn: () =>
@@ -79,11 +167,49 @@ export function HomePage() {
 
   const likePostMutation = useMutation({
     mutationFn: (postId: number) => togglePostLike(postId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
-      queryClient.invalidateQueries({ queryKey: ["posts", "trending"] });
+    onSuccess: (updatedPost) => {
+      queryClient.setQueryData(["posts"], (current: typeof posts | undefined) =>
+        (current ?? []).map((post) => (post.id === updatedPost.id ? updatedPost : post))
+      );
+      queryClient.setQueryData(["posts", "trending"], (current: typeof posts | undefined) =>
+        (current ?? []).map((post) => (post.id === updatedPost.id ? updatedPost : post))
+      );
     }
   });
+
+  const commentPostMutation = useMutation({
+    mutationFn: ({ postId, content }: { postId: number; content: string }) => createPostComment(postId, content),
+    onSuccess: ({ post: updatedPost, comment }) => {
+      queryClient.setQueryData(["posts"], (current: typeof posts | undefined) =>
+        (current ?? []).map((post) => (post.id === updatedPost.id ? updatedPost : post))
+      );
+      queryClient.setQueryData(["posts", "trending"], (current: typeof posts | undefined) =>
+        (current ?? []).map((post) => (post.id === updatedPost.id ? updatedPost : post))
+      );
+      setCommentsByPost((current) => ({
+        ...current,
+        [updatedPost.id]: [...(current[updatedPost.id] ?? []), comment]
+      }));
+      setCommentDraft("");
+      setActiveCommentPostId(null);
+    }
+  });
+
+  useEffect(() => {
+    let active = true;
+    async function loadInitialComments() {
+      const entries = await Promise.all(posts.slice(0, 6).map(async (post) => [post.id, await listPostComments(post.id)] as const));
+      if (active) {
+        setCommentsByPost(Object.fromEntries(entries));
+      }
+    }
+    if (posts.length) {
+      void loadInitialComments();
+    }
+    return () => {
+      active = false;
+    };
+  }, [posts]);
 
   return (
     <>
@@ -221,24 +347,87 @@ export function HomePage() {
                   {post.imageUrl ? <img src={post.imageUrl} alt={post.categoryName} className="jp-feed-image" /> : null}
                   <div className="stack" style={{ gap: "0.75rem" }}>
                     <div className="space-between" style={{ alignItems: "flex-start" }}>
-                      <div className="stack" style={{ gap: "0.25rem" }}>
-                        <strong>{post.authorFullName}</strong>
-                        <span className="helper">@{post.authorUsername}</span>
-                      </div>
+                      <Link
+                        to={`/profile/${encodeURIComponent(post.authorUsername)}`}
+                        className="row"
+                        style={{ alignItems: "center", gap: "0.7rem", textDecoration: "none", color: "inherit" }}
+                      >
+                        <img
+                          src={post.avatarUrl || "https://i.pravatar.cc/120?img=2"}
+                          alt={post.authorFullName}
+                          style={{ width: "40px", height: "40px", borderRadius: "50%", objectFit: "cover" }}
+                        />
+                        <div className="stack" style={{ gap: "0.1rem" }}>
+                          <strong>{post.authorFullName}</strong>
+                          <span className="helper">{post.authorTitle || `@${post.authorUsername}`}</span>
+                        </div>
+                      </Link>
                       <span className="tag">{post.categoryName}</span>
                     </div>
                     <p style={{ margin: 0, color: "var(--text-soft)", lineHeight: 1.7 }}>{post.content}</p>
-                    <button
-                      type="button"
-                      className={`jp-like-button ${post.likedByCurrentUser ? "is-active" : ""}`}
-                      onClick={() => likePostMutation.mutate(post.id)}
-                      disabled={!user || likePostMutation.isPending}
-                    >
-                      <svg viewBox="0 0 24 24" width="16" height="16" fill={post.likedByCurrentUser ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.9">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 21s-6.72-4.35-9.2-8.23C.64 9.4 2.1 5.25 6.08 4.32c2.07-.48 4.14.3 5.42 2.02 1.28-1.72 3.35-2.5 5.42-2.02 3.98.93 5.44 5.08 3.28 8.45C18.72 16.65 12 21 12 21z" />
-                      </svg>
-                      {post.likeCount} likes
-                    </button>
+                    <div className="row" style={{ gap: "0.6rem" }}>
+                      <button
+                        type="button"
+                        className={`jp-like-button ${post.likedByCurrentUser ? "is-active" : ""}`}
+                        onClick={() => likePostMutation.mutate(post.id)}
+                        disabled={!user || likePostMutation.isPending}
+                      >
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill={post.likedByCurrentUser ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.9">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 21s-6.72-4.35-9.2-8.23C.64 9.4 2.1 5.25 6.08 4.32c2.07-.48 4.14.3 5.42 2.02 1.28-1.72 3.35-2.5 5.42-2.02 3.98.93 5.44 5.08 3.28 8.45C18.72 16.65 12 21 12 21z" />
+                        </svg>
+                        {post.likeCount} likes
+                      </button>
+                      <button
+                        type="button"
+                        className="jp-like-button"
+                        onClick={() => setActiveCommentPostId((current) => (current === post.id ? null : post.id))}
+                        disabled={!user}
+                      >
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.9">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                        </svg>
+                        {post.commentCount ?? 0} comments
+                      </button>
+                    </div>
+                    {activeCommentPostId === post.id ? (
+                      <div className="stack" style={{ gap: "0.5rem" }}>
+                        {(commentsByPost[post.id] ?? []).slice(-3).map((comment) => (
+                          <div key={comment.id} className="row" style={{ alignItems: "flex-start", gap: "0.55rem" }}>
+                            <Link
+                              to={`/profile/${encodeURIComponent(comment.authorName.toLowerCase().replace(/\s+/g, "."))}`}
+                              style={{ display: "inline-flex" }}
+                            >
+                              <img src={comment.avatarUrl} alt={comment.authorName} style={{ width: 28, height: 28, borderRadius: "50%" }} />
+                            </Link>
+                            <div className="surface" style={{ padding: "0.55rem 0.7rem", borderRadius: "12px", boxShadow: "none" }}>
+                              <strong style={{ fontSize: "0.86rem" }}>{comment.authorName}</strong>
+                              <div className="helper" style={{ fontSize: "0.75rem" }}>{comment.authorTitle}</div>
+                              <div style={{ fontSize: "0.86rem", marginTop: "0.2rem" }}>{comment.content}</div>
+                            </div>
+                          </div>
+                        ))}
+                        <textarea
+                          className="textarea"
+                          style={{ minHeight: "86px" }}
+                          placeholder="Write a comment..."
+                          value={commentDraft}
+                          onChange={(event) => setCommentDraft(event.target.value)}
+                        />
+                        <div className="row" style={{ justifyContent: "flex-end", gap: "0.5rem" }}>
+                          <button className="btn btn-secondary" type="button" onClick={() => setActiveCommentPostId(null)}>
+                            Cancel
+                          </button>
+                          <button
+                            className="btn btn-primary"
+                            type="button"
+                            disabled={!commentDraft.trim() || commentPostMutation.isPending}
+                            onClick={() => commentPostMutation.mutate({ postId: post.id, content: commentDraft })}
+                          >
+                            {commentPostMutation.isPending ? "Posting..." : "Post comment"}
+                          </button>
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
                 </article>
               ))
@@ -253,41 +442,56 @@ export function HomePage() {
 
       <section className="section" id="top-content">
         <div className="container jp-top-content-root">
+          {/* Section 1: What topics do you want to explore? */}
           <div className="jp-top-topics-block">
             <h2 className="headline jp-top-topics-title">What topics do you want to explore?</h2>
             <div className="jp-topic-pill-grid">
-              {topicItems.map((topic) => {
-                const selected = selectedTopics.includes(topic);
+              {categories.map((category) => {
+                const selected = selectedTopics.includes(category.name);
                 return (
-                  <button
-                    key={topic}
-                    type="button"
+                  <Link
+                    key={category.id}
+                    to={`/category/${encodeURIComponent(category.name)}`}
                     className={`jp-topic-pill ${selected ? "is-selected" : ""}`}
-                    onClick={() =>
-                      setSelectedTopics((current) =>
-                        current.includes(topic) ? current.filter((item) => item !== topic) : [...current, topic]
-                      )
-                    }
+                    onClick={(e) => {
+                      if (!e.ctrlKey && !e.metaKey) {
+                        e.preventDefault();
+                        setSelectedTopics((current) =>
+                          current.includes(category.name) 
+                            ? current.filter((item) => item !== category.name)
+                            : [...current, category.name]
+                        );
+                        setTimeout(() => {
+                          window.location.href = `/category/${encodeURIComponent(category.name)}`;
+                        }, 150);
+                      }
+                    }}
                   >
                     <span className={`jp-topic-pill-icon ${selected ? "is-selected" : ""}`} aria-hidden="true">
                       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14" />
                       </svg>
                     </span>
-                    <span>{topic}</span>
-                  </button>
+                    <span>{category.name}</span>
+                  </Link>
                 );
               })}
             </div>
           </div>
 
+          {/* Section 2: Editor's Picks */}
           <div className="jp-top-editors-block">
             <h3 className="jp-top-section-title">Editor&apos;s Picks</h3>
             <p className="helper jp-top-section-subtitle">Handpicked ideas and insights from professionals</p>
             <div className="jp-editor-grid">
               {editorPicks.length ? (
                 editorPicks.map((post) => (
-                  <article key={post.id} className="jp-editor-card">
+                  <Link
+                    key={post.id}
+                    to={`/category/${encodeURIComponent(post.categoryName)}`}
+                    className="jp-editor-card"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
                     <div className="space-between" style={{ alignItems: "flex-start" }}>
                       <span className="tag">{post.categoryName}</span>
                       <span className="jp-editor-card-icon" aria-hidden="true">
@@ -304,13 +508,13 @@ export function HomePage() {
                         </svg>
                         {post.likeCount} likes
                       </span>
-                      <button type="button" className="jp-save-button" aria-label="Save editor pick">
+                      <button type="button" className="jp-save-button" aria-label="Save editor pick" onClick={(e) => e.preventDefault()}>
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.9">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M7 4.75h10A1.25 1.25 0 0 1 18.25 6v14l-6.25-3-6.25 3V6A1.25 1.25 0 0 1 7 4.75Z" />
                         </svg>
                       </button>
                     </div>
-                  </article>
+                  </Link>
                 ))
               ) : (
                 <div className="empty-state" style={{ gridColumn: "1 / -1" }}>
@@ -320,30 +524,39 @@ export function HomePage() {
             </div>
           </div>
 
+          {/* Section 3: Topic Categories */}
           <div className="jp-top-categories-block">
             <h3 className="jp-top-section-title">Topic Categories</h3>
             <div className="jp-category-grid">
               {topicCategories.map((category) => {
                 const selected = selectedTopics.includes(category.name);
                 return (
-                  <button
+                  <Link
                     key={category.id}
-                    type="button"
+                    to={`/category/${encodeURIComponent(category.name)}`}
                     className={`jp-category-card ${selected ? "is-active" : ""}`}
-                    onClick={() =>
-                      setSelectedTopics((current) =>
-                        current.includes(category.name)
-                          ? current.filter((item) => item !== category.name)
-                          : [...current, category.name]
-                      )
-                    }
+                    onClick={(e) => {
+                      // Allow Ctrl/Cmd+click to open in new tab
+                      if (!e.ctrlKey && !e.metaKey) {
+                        e.preventDefault();
+                        setSelectedTopics((current) =>
+                          current.includes(category.name)
+                            ? current.filter((item) => item !== category.name)
+                            : [...current, category.name]
+                        );
+                        // Navigate after a short delay to show selection
+                        setTimeout(() => {
+                          window.location.href = `/category/${encodeURIComponent(category.name)}`;
+                        }, 150);
+                      }
+                    }}
                   >
                     <span className="jp-category-icon" aria-hidden="true">
                       {category.icon}
                     </span>
                     <strong className="jp-category-name">{category.name}</strong>
                     <span className="helper">{category.postCount} posts</span>
-                  </button>
+                  </Link>
                 );
               })}
             </div>
