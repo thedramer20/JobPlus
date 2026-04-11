@@ -1,33 +1,89 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CompanyCard } from "../components/shared/company-card";
 import { JobCard } from "../components/shared/job-card";
 import { SearchBar } from "../components/shared/search-bar";
 import { StatCard } from "../components/shared/stat-card";
 import { listCompanies } from "../services/companies-service";
 import { listJobs } from "../services/jobs-service";
+import { createPost, listPostCategories, listPosts, listTrendingPosts, togglePostLike } from "../services/posts-service";
+import { authStore } from "../store/auth-store";
 
 const topicItems = [
-  "Tips for Managing Stressors with Mental Toughness",
-  "How to Navigate Difficult Conversations for Personal Growth",
-  "Top Emerging AI Use Cases and Their Capabilities",
-  "How Leaders Foster Psychological Safety",
-  "Tips for Curating a Professional Network",
-  "Tips for Strategic Career Planning",
-  "How to Find the Right Mentor for Your Career",
-  "Tips for Optimizing Your Profile",
-  "How to Set Priorities as a Leader"
-];
-
-const editorPicks = [
-  { category: "Career", title: "Career Advancement Tips", likes: "818K likes" },
-  { category: "Leadership", title: "Team Performance and Morale", likes: "489K likes" },
-  { category: "Innovation", title: "AI Trends and Innovations", likes: "450K likes" },
-  { category: "Training & Development", title: "Mindset Development Tips", likes: "435K likes" }
+  "Change Management",
+  "Employee Experience",
+  "Economics",
+  "Consulting",
+  "Writing",
+  "Hospitality & Tourism",
+  "Networking",
+  "Ecommerce",
+  "User Experience",
+  "Soft Skills & Emotional Intelligence",
+  "Productivity",
+  "Finance",
+  "Project Management",
+  "Technology"
 ];
 
 export function HomePage() {
+  const queryClient = useQueryClient();
+  const { user } = authStore();
   const { data: jobs = [] } = useQuery({ queryKey: ["jobs", "featured"], queryFn: () => listJobs() });
   const { data: companies = [] } = useQuery({ queryKey: ["companies", "featured"], queryFn: listCompanies });
+  const { data: posts = [] } = useQuery({ queryKey: ["posts"], queryFn: listPosts });
+  const { data: trendingPosts = [] } = useQuery({ queryKey: ["posts", "trending"], queryFn: listTrendingPosts });
+  const { data: categories = [] } = useQuery({ queryKey: ["post-categories"], queryFn: listPostCategories });
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [postForm, setPostForm] = useState({ content: "", imageUrl: "", categoryId: "" });
+
+  const categoryPostCounts = useMemo(() => {
+    const counts = new Map<number, number>();
+    posts.forEach((post) => {
+      counts.set(post.categoryId, (counts.get(post.categoryId) ?? 0) + 1);
+    });
+    return counts;
+  }, [posts]);
+
+  const topicCategories = useMemo(
+    () =>
+      categories.map((category) => ({
+        ...category,
+        postCount: categoryPostCounts.get(category.id) ?? 0,
+        icon: getCategoryIcon(category.name)
+      })),
+    [categories, categoryPostCounts]
+  );
+
+  const editorPicks = useMemo(() => {
+    const source = trendingPosts.length ? trendingPosts : posts;
+    if (!selectedTopics.length) {
+      return source.slice(0, 4);
+    }
+    return source.filter((post) => selectedTopics.includes(post.categoryName)).slice(0, 4);
+  }, [posts, selectedTopics, trendingPosts]);
+
+  const createPostMutation = useMutation({
+    mutationFn: () =>
+      createPost({
+        categoryId: postForm.categoryId ? Number(postForm.categoryId) : undefined,
+        content: postForm.content,
+        imageUrl: postForm.imageUrl || undefined
+      }),
+    onSuccess: () => {
+      setPostForm({ content: "", imageUrl: "", categoryId: "" });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["posts", "trending"] });
+    }
+  });
+
+  const likePostMutation = useMutation({
+    mutationFn: (postId: number) => togglePostLike(postId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["posts", "trending"] });
+    }
+  });
 
   return (
     <>
@@ -90,108 +146,206 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="section">
-        <div className="container stack" style={{ alignItems: "center", textAlign: "center", gap: "1.5rem" }}>
-          <div className="stack" style={{ alignItems: "center", gap: "0.7rem", maxWidth: "48rem" }}>
-            <div className="eyebrow">Top content</div>
-            <h2 className="headline" style={{ fontSize: "2.6rem", margin: 0 }}>
-              What topics do you want to explore?
-            </h2>
-          </div>
-
-          <div
-            className="row"
-            style={{
-              flexWrap: "wrap",
-              justifyContent: "center",
-              gap: "0.85rem",
-              maxWidth: "70rem"
-            }}
-          >
-            {topicItems.map((topic) => (
-              <button
-                key={topic}
-                type="button"
-                className="surface"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.75rem",
-                  borderRadius: "999px",
-                  padding: "0.85rem 1.15rem",
-                  background: "rgba(255,255,255,0.92)",
-                  cursor: "pointer"
-                }}
-              >
-                <span
-                  aria-hidden="true"
-                  style={{
-                    width: "2rem",
-                    height: "2rem",
-                    borderRadius: "999px",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    background: "rgba(37, 99, 235, 0.1)",
-                    color: "var(--primary-dark)",
-                    flexShrink: 0
-                  }}
-                >
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.9">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14" />
-                  </svg>
-                </span>
-                <span style={{ textAlign: "left", fontWeight: 600 }}>{topic}</span>
-              </button>
-            ))}
-          </div>
-
-          <div className="stack" style={{ width: "100%", gap: "0.9rem", alignItems: "center" }}>
-            <div className="stack" style={{ gap: "0.3rem", alignItems: "center" }}>
-              <div className="eyebrow">Editor&apos;s Picks</div>
-              <h3 style={{ margin: 0, fontSize: "1.8rem" }}>Editor&apos;s Picks</h3>
-              <p className="helper" style={{ margin: 0 }}>
-                Handpicked ideas and insights from professionals
-              </p>
+      <section className="section-tight">
+        <div className="container stack" style={{ gap: "1rem" }}>
+          <div className="space-between">
+            <div>
+              <div className="eyebrow">Main Feed</div>
+              <h2 className="headline" style={{ fontSize: "2rem", margin: "0.35rem 0 0" }}>
+                Real posts now drive your content experience.
+              </h2>
             </div>
+          </div>
 
-            <div className="grid grid-4" style={{ width: "100%" }}>
-              {editorPicks.map((item) => (
-                <article key={item.title} className="card stack" style={{ textAlign: "left", minHeight: "100%" }}>
-                  <div className="space-between" style={{ alignItems: "flex-start" }}>
-                    <span className="tag">{item.category}</span>
-                    <span
-                      aria-hidden="true"
-                      style={{
-                        width: "2.4rem",
-                        height: "2.4rem",
-                        borderRadius: "14px",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        background: "rgba(37, 99, 235, 0.08)",
-                        color: "var(--primary-dark)",
-                        flexShrink: 0
-                      }}
+          {user ? (
+            <div className="surface jp-post-composer">
+              <div className="space-between" style={{ alignItems: "center" }}>
+                <strong>Create a post</strong>
+                <span className="helper">Posts appear in the feed and inside Top Content automatically.</span>
+              </div>
+              <div className="form-grid">
+                <div className="field" style={{ gridColumn: "1 / -1" }}>
+                  <label>Post content</label>
+                  <textarea
+                    className="textarea"
+                    value={postForm.content}
+                    onChange={(event) => setPostForm((current) => ({ ...current, content: event.target.value }))}
+                    placeholder="Share an idea, insight, or update with your network..."
+                  />
+                </div>
+                <div className="field">
+                  <label>Category</label>
+                  <select
+                    className="select"
+                    value={postForm.categoryId}
+                    onChange={(event) => setPostForm((current) => ({ ...current, categoryId: event.target.value }))}
+                  >
+                    <option value="">Auto-detect category</option>
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="field">
+                  <label>Image URL</label>
+                  <input
+                    className="input"
+                    value={postForm.imageUrl}
+                    onChange={(event) => setPostForm((current) => ({ ...current, imageUrl: event.target.value }))}
+                    placeholder="Optional image URL"
+                  />
+                </div>
+              </div>
+              <div className="space-between">
+                <span className="helper">Use a category or let the backend detect one from your text.</span>
+                <button
+                  className="btn btn-primary"
+                  type="button"
+                  disabled={!postForm.content.trim() || createPostMutation.isPending}
+                  onClick={() => createPostMutation.mutate()}
+                >
+                  {createPostMutation.isPending ? "Posting..." : "Publish post"}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="auth-note">Log in to create posts. Public visitors can still browse the live feed and Top Content.</div>
+          )}
+
+          <div className="grid grid-2">
+            {posts.length ? (
+              posts.slice(0, 4).map((post) => (
+                <article key={post.id} className="jp-feed-card">
+                  {post.imageUrl ? <img src={post.imageUrl} alt={post.categoryName} className="jp-feed-image" /> : null}
+                  <div className="stack" style={{ gap: "0.75rem" }}>
+                    <div className="space-between" style={{ alignItems: "flex-start" }}>
+                      <div className="stack" style={{ gap: "0.25rem" }}>
+                        <strong>{post.authorFullName}</strong>
+                        <span className="helper">@{post.authorUsername}</span>
+                      </div>
+                      <span className="tag">{post.categoryName}</span>
+                    </div>
+                    <p style={{ margin: 0, color: "var(--text-soft)", lineHeight: 1.7 }}>{post.content}</p>
+                    <button
+                      type="button"
+                      className={`jp-like-button ${post.likedByCurrentUser ? "is-active" : ""}`}
+                      onClick={() => likePostMutation.mutate(post.id)}
+                      disabled={!user || likePostMutation.isPending}
                     >
-                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 3l2.7 5.47 6.04.88-4.37 4.26 1.03 6.02L12 16.8l-5.4 2.83 1.03-6.02L3.26 9.35l6.04-.88L12 3z"
-                        />
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill={post.likedByCurrentUser ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.9">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 21s-6.72-4.35-9.2-8.23C.64 9.4 2.1 5.25 6.08 4.32c2.07-.48 4.14.3 5.42 2.02 1.28-1.72 3.35-2.5 5.42-2.02 3.98.93 5.44 5.08 3.28 8.45C18.72 16.65 12 21 12 21z" />
                       </svg>
-                    </span>
-                  </div>
-                  <h4 style={{ margin: 0, fontSize: "1.15rem", lineHeight: 1.35 }}>{item.title}</h4>
-                  <div className="helper" style={{ display: "inline-flex", alignItems: "center", gap: "0.45rem" }}>
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
-                      <path d="M12 21s-6.72-4.35-9.2-8.23C.64 9.4 2.1 5.25 6.08 4.32c2.07-.48 4.14.3 5.42 2.02 1.28-1.72 3.35-2.5 5.42-2.02 3.98.93 5.44 5.08 3.28 8.45C18.72 16.65 12 21 12 21z" />
-                    </svg>
-                    {item.likes}
+                      {post.likeCount} likes
+                    </button>
                   </div>
                 </article>
-              ))}
+              ))
+            ) : (
+              <div className="empty-state" style={{ gridColumn: "1 / -1" }}>
+                No posts yet. Create the first post to make the feed and Top Content feel alive.
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <section className="section" id="top-content">
+        <div className="container jp-top-content-root">
+          <div className="jp-top-topics-block">
+            <h2 className="headline jp-top-topics-title">What topics do you want to explore?</h2>
+            <div className="jp-topic-pill-grid">
+              {topicItems.map((topic) => {
+                const selected = selectedTopics.includes(topic);
+                return (
+                  <button
+                    key={topic}
+                    type="button"
+                    className={`jp-topic-pill ${selected ? "is-selected" : ""}`}
+                    onClick={() =>
+                      setSelectedTopics((current) =>
+                        current.includes(topic) ? current.filter((item) => item !== topic) : [...current, topic]
+                      )
+                    }
+                  >
+                    <span className={`jp-topic-pill-icon ${selected ? "is-selected" : ""}`} aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14" />
+                      </svg>
+                    </span>
+                    <span>{topic}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="jp-top-editors-block">
+            <h3 className="jp-top-section-title">Editor&apos;s Picks</h3>
+            <p className="helper jp-top-section-subtitle">Handpicked ideas and insights from professionals</p>
+            <div className="jp-editor-grid">
+              {editorPicks.length ? (
+                editorPicks.map((post) => (
+                  <article key={post.id} className="jp-editor-card">
+                    <div className="space-between" style={{ alignItems: "flex-start" }}>
+                      <span className="tag">{post.categoryName}</span>
+                      <span className="jp-editor-card-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.9">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12M6 12h12" />
+                        </svg>
+                      </span>
+                    </div>
+                    <h4 className="jp-editor-card-title">{previewText(post.content, 72)}</h4>
+                    <div className="space-between" style={{ marginTop: "auto", alignItems: "center" }}>
+                      <span className="helper" style={{ display: "inline-flex", alignItems: "center", gap: "0.45rem" }}>
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                          <path d="M12 21s-6.72-4.35-9.2-8.23C.64 9.4 2.1 5.25 6.08 4.32c2.07-.48 4.14.3 5.42 2.02 1.28-1.72 3.35-2.5 5.42-2.02 3.98.93 5.44 5.08 3.28 8.45C18.72 16.65 12 21 12 21z" />
+                        </svg>
+                        {post.likeCount} likes
+                      </span>
+                      <button type="button" className="jp-save-button" aria-label="Save editor pick">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.9">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M7 4.75h10A1.25 1.25 0 0 1 18.25 6v14l-6.25-3-6.25 3V6A1.25 1.25 0 0 1 7 4.75Z" />
+                        </svg>
+                      </button>
+                    </div>
+                  </article>
+                ))
+              ) : (
+                <div className="empty-state" style={{ gridColumn: "1 / -1" }}>
+                  No posts yet. Publish a post to start filling Editor&apos;s Picks.
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="jp-top-categories-block">
+            <h3 className="jp-top-section-title">Topic Categories</h3>
+            <div className="jp-category-grid">
+              {topicCategories.map((category) => {
+                const selected = selectedTopics.includes(category.name);
+                return (
+                  <button
+                    key={category.id}
+                    type="button"
+                    className={`jp-category-card ${selected ? "is-active" : ""}`}
+                    onClick={() =>
+                      setSelectedTopics((current) =>
+                        current.includes(category.name)
+                          ? current.filter((item) => item !== category.name)
+                          : [...current, category.name]
+                      )
+                    }
+                  >
+                    <span className="jp-category-icon" aria-hidden="true">
+                      {category.icon}
+                    </span>
+                    <strong className="jp-category-name">{category.name}</strong>
+                    <span className="helper">{category.postCount} posts</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -280,4 +434,126 @@ export function HomePage() {
       </section>
     </>
   );
+}
+
+function getCategoryIcon(name: string) {
+  const normalized = name.toLowerCase();
+
+  if (normalized.includes("technology")) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.9">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 8 4 12l4 4M16 8l4 4-4 4M14 5l-4 14" />
+      </svg>
+    );
+  }
+  if (normalized.includes("change")) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.9">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h10M7 12h10M7 17h6" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l2 2 3-4" />
+      </svg>
+    );
+  }
+  if (normalized.includes("employee")) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.9">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19a4.5 4.5 0 0 1 9 0M14 19a3.5 3.5 0 0 1 7 0" />
+      </svg>
+    );
+  }
+  if (normalized.includes("economics") || normalized.includes("finance")) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.9">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5 17 9 13l3 3 7-8" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19 19H5" />
+      </svg>
+    );
+  }
+  if (normalized.includes("consult")) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.9">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4 6.75A1.75 1.75 0 0 1 5.75 5h12.5A1.75 1.75 0 0 1 20 6.75v7.5A1.75 1.75 0 0 1 18.25 16H12l-4 3v-3H5.75A1.75 1.75 0 0 1 4 14.25v-7.5Z" />
+      </svg>
+    );
+  }
+  if (normalized.includes("writing")) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.9">
+        <path strokeLinecap="round" strokeLinejoin="round" d="m4 20 4.5-1.2L19 8.3 15.7 5 5.2 15.5 4 20Z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 7.2 16.8 10.5" />
+      </svg>
+    );
+  }
+  if (normalized.includes("hospitality") || normalized.includes("tourism")) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.9">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 17h18M6 17v-6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v6" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 9V6h8v3" />
+      </svg>
+    );
+  }
+  if (normalized.includes("network")) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.9">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 10.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4 18a4 4 0 0 1 8 0M12 18a4.5 4.5 0 0 1 9 0" />
+      </svg>
+    );
+  }
+  if (normalized.includes("ecommerce")) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.9">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5 6h14l-1.2 6.5H6.2L5 6Z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5 6 4 4H2" />
+        <circle cx="9" cy="18" r="1.5" />
+        <circle cx="17" cy="18" r="1.5" />
+      </svg>
+    );
+  }
+  if (normalized.includes("user experience")) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.9">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3 4 9l8 12 8-12-8-6Z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8.5 11h7" />
+      </svg>
+    );
+  }
+  if (normalized.includes("soft skills") || normalized.includes("emotional")) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.9">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 20s-5.5-3.7-7.6-6.9C2.6 10.4 4.1 6.8 7.5 6.2c1.8-.3 3.5.4 4.5 1.8 1-1.4 2.7-2.1 4.5-1.8 3.4.6 4.9 4.2 3.1 6.9C17.5 16.3 12 20 12 20Z" />
+      </svg>
+    );
+  }
+  if (normalized.includes("productivity")) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.9">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v8l5 3" />
+        <circle cx="12" cy="12" r="8" />
+      </svg>
+    );
+  }
+  if (normalized.includes("project")) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.9">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 6h11M8 12h11M8 18h11M4 6h.01M4 12h.01M4 18h.01" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.9">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l2.7 5.47 6.04.88-4.37 4.26 1.03 6.02L12 16.8l-5.4 2.83 1.03-6.02L3.26 9.35l6.04-.88L12 3z" />
+    </svg>
+  );
+}
+
+function previewText(value: string, maxLength: number) {
+  if (value.length <= maxLength) {
+    return value;
+  }
+  return `${value.slice(0, maxLength).trim()}...`;
 }

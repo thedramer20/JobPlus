@@ -16,7 +16,7 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
           : "warning";
 
   return (
-    <div className="card stack">
+    <article className="card stack jp-application-card">
       <div className="space-between">
         <div>
           <strong>{application.jobTitle}</strong>
@@ -25,6 +25,6 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
         <StatusBadge tone={tone} label={application.status} />
       </div>
       <div className="helper">Applied on {application.appliedAt}</div>
-    </div>
+    </article>
   );
 }

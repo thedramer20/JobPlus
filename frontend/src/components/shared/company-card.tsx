@@ -7,20 +7,27 @@ interface CompanyCardProps {
 
 export function CompanyCard({ company }: CompanyCardProps) {
   return (
-    <div className="card stack">
-      <div>
-        <h3 style={{ margin: "0 0 0.4rem" }}>{company.name}</h3>
-        <div className="helper">
-          {company.industry} · {company.location}
+    <article className="card stack jp-company-card">
+      <div className="space-between" style={{ alignItems: "flex-start" }}>
+        <div>
+          <h3 style={{ margin: "0 0 0.4rem" }}>{company.name}</h3>
+          <div className="helper">
+            {company.industry} | {company.location}
+          </div>
         </div>
+        <span className="jp-company-mark">{company.name.slice(0, 2).toUpperCase()}</span>
       </div>
-      <p style={{ margin: 0, color: "var(--text-soft)" }}>{company.description}</p>
-      <div className="space-between">
+
+      <p className="jp-company-description" style={{ margin: 0, color: "var(--text-soft)" }}>
+        {company.description}
+      </p>
+
+      <div className="space-between jp-company-footer">
         <span className="tag">{company.size}</span>
         <Link className="btn btn-secondary" to={`/companies/${company.id}`}>
           View company
         </Link>
       </div>
-    </div>
+    </article>
   );
 }

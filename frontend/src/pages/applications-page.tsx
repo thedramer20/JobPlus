@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ApplicationCard } from "../components/shared/application-card";
 import { EmptyState } from "../components/shared/empty-state";
+import { SkeletonList } from "../components/shared/skeleton-list";
 import { listMyApplications } from "../services/applications-service";
 
 export function ApplicationsPage() {
@@ -22,7 +23,7 @@ export function ApplicationsPage() {
           <span className="tag">Accepted</span>
         </div>
       </div>
-      {isLoading ? <div className="surface" style={{ padding: "1.3rem" }}>Loading applications...</div> : null}
+      {isLoading ? <SkeletonList count={3} /> : null}
       {isError ? <EmptyState title="Could not load applications" description="Check authentication and backend status." /> : null}
       {!isLoading && !isError ? (
         <div className="grid grid-2">

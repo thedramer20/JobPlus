@@ -42,7 +42,7 @@ public class SecurityConfig {
             .and()
             .authorizeRequests()
             .antMatchers("/auth/**", "/h2-console/**").permitAll()
-            .antMatchers(HttpMethod.GET, "/jobs/**", "/api/companies/**", "/job-categories/**").permitAll()
+            .antMatchers(HttpMethod.GET, "/jobs/**", "/api/companies/**", "/job-categories/**", "/post-categories/**", "/posts/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .headers(headers -> headers.frameOptions().disable())

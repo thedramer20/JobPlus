@@ -1,6 +1,7 @@
 import axios from "axios";
 import { env } from "./env";
 import { authStore } from "../store/auth-store";
+import { beginGlobalLoading, endGlobalLoading } from "./loading-store";
 
 export const http = axios.create({
   baseURL: env.apiBaseUrl,
@@ -10,6 +11,9 @@ export const http = axios.create({
 });
 
 http.interceptors.request.use((config) => {
+  if (!config.headers["x-skip-global-loader"]) {
+    beginGlobalLoading();
+  }
   const token = authStore.getState().token;
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -18,8 +22,16 @@ http.interceptors.request.use((config) => {
 });
 
 http.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    if (!response.config.headers["x-skip-global-loader"]) {
+      endGlobalLoading();
+    }
+    return response;
+  },
   (error) => {
+    if (!error?.config?.headers?.["x-skip-global-loader"]) {
+      endGlobalLoading();
+    }
     if (error?.response?.status === 401) {
       authStore.getState().logout();
     }

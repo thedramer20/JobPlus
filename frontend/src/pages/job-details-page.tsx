@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import { EmptyState } from "../components/shared/empty-state";
+import { SkeletonList } from "../components/shared/skeleton-list";
 import { StatusBadge } from "../components/shared/status-badge";
 import { getJob } from "../services/jobs-service";
 import { saveJob } from "../services/profile-service";
@@ -37,8 +38,8 @@ export function JobDetailsPage() {
   if (isLoading) {
     return (
       <section className="section">
-        <div className="container surface" style={{ padding: "1.5rem" }}>
-          Loading job details...
+        <div className="container">
+          <SkeletonList count={2} />
         </div>
       </section>
     );

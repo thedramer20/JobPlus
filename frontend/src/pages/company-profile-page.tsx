@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { EmptyState } from "../components/shared/empty-state";
 import { JobCard } from "../components/shared/job-card";
+import { SkeletonList } from "../components/shared/skeleton-list";
 import { getCompany } from "../services/companies-service";
 import { listJobs } from "../services/jobs-service";
 
@@ -18,8 +19,8 @@ export function CompanyProfilePage() {
   if (isLoading) {
     return (
       <section className="section">
-        <div className="container surface" style={{ padding: "1.5rem" }}>
-          Loading company profile...
+        <div className="container">
+          <SkeletonList count={2} />
         </div>
       </section>
     );
@@ -38,18 +39,17 @@ export function CompanyProfilePage() {
   return (
     <section className="section">
       <div className="container stack">
-        <div className="surface" style={{ padding: "2rem" }}>
+        <div className="surface jp-company-hero">
           <div className="eyebrow">{company.industry}</div>
           <h1 className="headline" style={{ fontSize: "3rem", margin: "0.3rem 0" }}>
             {company.name}
           </h1>
-          <div className="helper">
-            {company.location} · {company.size} · {company.website}
-          </div>
+          <div className="helper">{company.location} | {company.size} | {company.website}</div>
           <p className="helper" style={{ marginTop: "1rem", maxWidth: "75ch" }}>
             {company.description}
           </p>
         </div>
+
         <div>
           <div className="eyebrow">Open jobs</div>
           <h2 className="headline" style={{ fontSize: "2rem", margin: "0.35rem 0 1rem" }}>

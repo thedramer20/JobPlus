@@ -6,6 +6,7 @@ import { JobCard } from "../components/shared/job-card";
 import { JobFilterBar } from "../components/shared/job-filter-bar";
 import { JobMarketSearch } from "../components/shared/job-market-search";
 import { SelectedFilterChips } from "../components/shared/selected-filter-chips";
+import { SkeletonList } from "../components/shared/skeleton-list";
 import { listJobs } from "../services/jobs-service";
 import { authStore } from "../store/auth-store";
 import { defaultJobFilters, type Job, type JobFilterConfig, type JobFilterOption, type JobFilters } from "../types/job";
@@ -58,7 +59,7 @@ export function JobsPage() {
         <div className="jp-jobs-toolbar-shell">
           <div className="jp-jobs-toolbar-top">
             <NavLink to="/" className="jp-jobs-toolbar-brand headline">
-              JOIOPBLUS
+              JOBPLUS
             </NavLink>
             <JobMarketSearch
               query={filters.query}
@@ -113,7 +114,7 @@ export function JobsPage() {
           </div>
         </div>
 
-        {isLoading ? <div className="surface" style={{ padding: "1.4rem" }}>Loading jobs...</div> : null}
+        {isLoading ? <SkeletonList count={4} /> : null}
         {isError ? <EmptyState title="Could not load jobs" description="Check that the Spring Boot backend is running and reachable." /> : null}
         {!isLoading && !isError && jobs.length === 0 ? (
           <EmptyState title="No jobs match these filters" description="Try clearing one or two filters, or search a broader location or company name." />

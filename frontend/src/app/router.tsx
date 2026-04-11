@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import { AppFrame } from "../components/system/app-frame";
 import { DashboardLayout } from "../layouts/dashboard-layout";
 import { MarketingLayout } from "../layouts/marketing-layout";
 import { ProtectedRoute, RoleRoute } from "../components/route-guards";
@@ -31,70 +32,75 @@ import { NotFoundPage } from "../pages/not-found-page";
 
 export const router = createBrowserRouter([
   {
-    element: <MarketingLayout />,
-    children: [
-      { path: "/", element: <HomePage /> },
-      { path: "/login", element: <LoginPage /> },
-      { path: "/register", element: <RegisterPage /> },
-      { path: "/forgot-password", element: <ForgotPasswordPage /> },
-      { path: "/reset-password", element: <ResetPasswordPage /> },
-      { path: "/companies", element: <CompaniesPage /> },
-      { path: "/about", element: <AboutPage /> },
-      { path: "/contact", element: <ContactPage /> },
-      { path: "/jobs", element: <JobsPage /> },
-      { path: "/jobs/:jobId", element: <JobDetailsPage /> },
-      { path: "/jobs/:jobId/apply", element: <ApplyPage /> },
-      { path: "/companies/:companyId", element: <CompanyProfilePage /> }
-    ]
-  },
-  {
-    element: <ProtectedRoute />,
+    element: <AppFrame />,
     children: [
       {
-        element: <RoleRoute allowedRoles={["candidate"]} />,
+        element: <MarketingLayout />,
         children: [
-          {
-            path: "/app",
-            element: <DashboardLayout />,
-            children: [
-              { path: "dashboard", element: <CandidateDashboardPage /> },
-              { path: "applications", element: <ApplicationsPage /> },
-              { path: "notifications", element: <NotificationsPage /> },
-              { path: "profile", element: <ProfilePage /> },
-              { path: "saved-jobs", element: <SavedJobsPage /> },
-              { path: "settings", element: <SettingsPage /> }
-            ]
-          }
+          { path: "/", element: <HomePage /> },
+          { path: "/login", element: <LoginPage /> },
+          { path: "/register", element: <RegisterPage /> },
+          { path: "/forgot-password", element: <ForgotPasswordPage /> },
+          { path: "/reset-password", element: <ResetPasswordPage /> },
+          { path: "/companies", element: <CompaniesPage /> },
+          { path: "/about", element: <AboutPage /> },
+          { path: "/contact", element: <ContactPage /> },
+          { path: "/jobs", element: <JobsPage /> },
+          { path: "/jobs/:jobId", element: <JobDetailsPage /> },
+          { path: "/jobs/:jobId/apply", element: <ApplyPage /> },
+          { path: "/companies/:companyId", element: <CompanyProfilePage /> }
         ]
       },
       {
-        element: <RoleRoute allowedRoles={["employer"]} />,
+        element: <ProtectedRoute />,
         children: [
           {
-            path: "/employer",
-            element: <DashboardLayout />,
+            element: <RoleRoute allowedRoles={["candidate"]} />,
             children: [
-              { path: "dashboard", element: <EmployerDashboardPage /> },
-              { path: "company", element: <CompanyManagementPage /> },
-              { path: "jobs", element: <EmployerJobsPage /> },
-              { path: "jobs/new", element: <PostJobPage /> },
-              { path: "jobs/:jobId/edit", element: <EditJobPage /> },
-              { path: "settings", element: <SettingsPage /> }
+              {
+                path: "/app",
+                element: <DashboardLayout />,
+                children: [
+                  { path: "dashboard", element: <CandidateDashboardPage /> },
+                  { path: "applications", element: <ApplicationsPage /> },
+                  { path: "notifications", element: <NotificationsPage /> },
+                  { path: "profile", element: <ProfilePage /> },
+                  { path: "saved-jobs", element: <SavedJobsPage /> },
+                  { path: "settings", element: <SettingsPage /> }
+                ]
+              }
             ]
-          }
-        ]
-      },
-      {
-        element: <RoleRoute allowedRoles={["admin"]} />,
-        children: [
+          },
           {
-            path: "/admin",
-            element: <DashboardLayout />,
+            element: <RoleRoute allowedRoles={["employer"]} />,
             children: [
-              { index: true, element: <AdminPage /> },
-              { path: "users", element: <AdminPage /> },
-              { path: "companies", element: <AdminPage /> },
-              { path: "jobs", element: <AdminPage /> }
+              {
+                path: "/employer",
+                element: <DashboardLayout />,
+                children: [
+                  { path: "dashboard", element: <EmployerDashboardPage /> },
+                  { path: "company", element: <CompanyManagementPage /> },
+                  { path: "jobs", element: <EmployerJobsPage /> },
+                  { path: "jobs/new", element: <PostJobPage /> },
+                  { path: "jobs/:jobId/edit", element: <EditJobPage /> },
+                  { path: "settings", element: <SettingsPage /> }
+                ]
+              }
+            ]
+          },
+          {
+            element: <RoleRoute allowedRoles={["admin"]} />,
+            children: [
+              {
+                path: "/admin",
+                element: <DashboardLayout />,
+                children: [
+                  { index: true, element: <AdminPage /> },
+                  { path: "users", element: <AdminPage /> },
+                  { path: "companies", element: <AdminPage /> },
+                  { path: "jobs", element: <AdminPage /> }
+                ]
+              }
             ]
           }
         ]

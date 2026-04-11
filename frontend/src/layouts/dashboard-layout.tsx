@@ -16,7 +16,7 @@ export function DashboardLayout() {
   });
 
   return (
-    <div className="sidebar-layout">
+    <div className="sidebar-layout jp-dashboard-shell">
       <aside className="sidebar">
         <div className="stack">
           <div>
@@ -37,7 +37,7 @@ export function DashboardLayout() {
         </div>
       </aside>
       <main className="main-panel">
-        <div className="topbar">
+        <div className="topbar jp-dashboard-topbar surface">
           <div>
             <div className="eyebrow">Control Center</div>
             <h1 style={{ margin: "0.3rem 0 0" }}>Ship hiring workflows with clarity</h1>

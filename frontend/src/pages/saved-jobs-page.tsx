@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { EmptyState } from "../components/shared/empty-state";
 import { JobCard } from "../components/shared/job-card";
+import { SkeletonList } from "../components/shared/skeleton-list";
 import { listJobs } from "../services/jobs-service";
 import { listSavedJobs, removeSavedJob } from "../services/profile-service";
 
@@ -26,7 +27,7 @@ export function SavedJobsPage() {
         </h2>
       </div>
       <div className="stack">
-        {isLoading ? <div className="surface" style={{ padding: "1.3rem" }}>Loading saved jobs...</div> : null}
+        {isLoading ? <SkeletonList count={2} /> : null}
         {!isLoading && savedJobs.length === 0 ? (
           <EmptyState title="No saved jobs" description="Save a job from the details page to keep it here." />
         ) : null}
