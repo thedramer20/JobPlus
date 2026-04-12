@@ -26,6 +26,18 @@ public class NotificationService {
             .collect(Collectors.toList());
     }
 
+    public void createNotification(Long userId, String type, String message) {
+        if (userId == null || message == null || message.isBlank()) {
+            return;
+        }
+        Notification notification = new Notification();
+        notification.setUserId(userId);
+        notification.setType(type == null || type.isBlank() ? "SYSTEM" : type.trim().toUpperCase());
+        notification.setMessage(message.trim());
+        notification.setIsRead(false);
+        notificationMapper.insert(notification);
+    }
+
     private NotificationResponse toResponse(Notification notification) {
         NotificationResponse response = new NotificationResponse();
         response.setId(notification.getId());

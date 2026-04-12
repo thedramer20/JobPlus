@@ -20,11 +20,20 @@ export async function updateCandidateProfile(payload: {
   address: string;
   education: string;
   experienceSummary: string;
+  avatarUrl?: string;
   linkedinUrl: string;
   githubUrl: string;
 }): Promise<CandidateProfile> {
   const { data } = await http.put<CandidateProfile>("/candidate-profile/me", payload);
   return data;
+}
+
+export async function changePassword(payload: {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}): Promise<void> {
+  await http.put("/users/me/password", payload);
 }
 
 export async function listResumes(): Promise<Resume[]> {

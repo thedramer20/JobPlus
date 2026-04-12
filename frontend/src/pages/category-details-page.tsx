@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { EmptyState } from "../components/shared/empty-state";
 import PostEngagementBar from "../components/shared/post-engagement-bar";
+import { SkeletonList } from "../components/shared/skeleton-list";
 import { createPostComment, listPostCategories, listPostComments, listPosts, togglePostLike } from "../services/posts-service";
 import type { PostComment } from "../types/post";
 
@@ -114,9 +115,7 @@ export function CategoryDetailsPage() {
         <div className="detail-layout">
           <div className="stack">
             {isLoading ? (
-              <div className="surface" style={{ padding: "1.4rem" }}>
-                Loading category content...
-              </div>
+              <SkeletonList count={2} />
             ) : null}
 
             {!isLoading && categoryPosts.length === 0 ? (

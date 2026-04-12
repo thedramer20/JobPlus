@@ -1,0 +1,141 @@
+{
+  "common": {
+    "appName": "JobPlus",
+    "done": "完成",
+    "save": "保存",
+    "cancel": "取消",
+    "loading": "加载中...",
+    "home": "首页",
+    "jobs": "职位",
+    "companies": "公司",
+    "messages": "消息",
+    "notifications": "通知",
+    "profile": "个人资料",
+    "settings": "设置",
+    "language": "语言",
+    "theme": "主题",
+    "light": "浅色",
+    "dark": "深色",
+    "signIn": "登录",
+    "signUp": "注册",
+    "signOut": "退出登录",
+    "search": "搜索"
+  },
+  "languages": {
+    "en": "英语",
+    "ar": "阿拉伯语",
+    "zh": "中文",
+    "fr": "法语",
+    "es": "西班牙语"
+  },
+  "lang": {
+    "english": "英语",
+    "chinese": "中文"
+  },
+  "search": {
+    "jobs": "搜索职位、公司或技能",
+    "location": "地点"
+  },
+  "period": {
+    "startTime": "开始时间",
+    "endTime": "结束时间"
+  },
+  "topbar": {
+    "topContent": "精选内容",
+    "network": "人脉",
+    "profile": "个人资料"
+  },
+  "nav": {
+    "about": "关于",
+    "contact": "联系",
+    "forEmployers": "雇主入口",
+    "dashboard": "仪表盘",
+    "applications": "申请记录",
+    "savedJobs": "已保存职位",
+    "company": "公司",
+    "postJob": "发布职位",
+    "users": "用户",
+    "categories": "分类",
+    "reports": "举报",
+    "analytics": "分析"
+  },
+  "dashboard": {
+    "workspace": "JobPlus 工作区",
+    "controlCenter": "控制中心",
+    "headline": "清晰管理招聘流程",
+    "subtitle": "为求职者与招聘团队打造的专业工作空间。",
+    "home": "首页"
+  },
+  "auth": {
+    "loginTitle": "更快找到理想工作。",
+    "loginSubtitle": "登录后可管理申请、连接招聘团队并跟踪成长。",
+    "welcomeBack": "欢迎回来",
+    "loginCardSubtitle": "使用 JobPlus 账号继续。",
+    "emailOrUsername": "邮箱或用户名",
+    "password": "密码",
+    "rememberMe": "记住我",
+    "forgotPassword": "忘记密码？",
+    "invalidCredentials": "邮箱或密码错误。",
+    "accountNotFound": "未找到账户。",
+    "loginError": "当前无法登录，请稍后重试。",
+    "loginAction": "登录",
+    "loggingIn": "正在登录...",
+    "continueGoogle": "使用 Google 继续",
+    "continueLinkedin": "使用 LinkedIn 继续",
+    "quickDemoAccess": "快速演示入口",
+    "candidateDemo": "候选人演示",
+    "employerDemo": "雇主演示",
+    "adminDemo": "管理员演示",
+    "newToJobplus": "新用户？",
+    "createAccount": "创建你的账号",
+    "registerTitle": "创建 JobPlus 账号",
+    "registerSubtitle": "以候选人或雇主身份加入并管理你的招聘工作流。",
+    "signUpCardTitle": "注册",
+    "signUpCardSubtitle": "一分钟内完成注册。",
+    "fullName": "姓名",
+    "username": "用户名",
+    "email": "邮箱",
+    "confirmPassword": "确认密码",
+    "role": "角色",
+    "jobSeeker": "求职者",
+    "employerCompany": "雇主 / 公司",
+    "acceptTerms": "我同意条款与隐私政策。",
+    "creatingAccount": "正在创建账号...",
+    "alreadyHaveAccount": "已有账号？",
+    "demoAdminAccess": "管理员演示账号：admin / 000000",
+    "registerError": "暂时无法创建账号，请稍后重试。",
+    "validations": {
+      "requiredUsername": "请输入邮箱或用户名。",
+      "invalidEmail": "请输入有效邮箱地址。",
+      "requiredPassword": "请输入密码。",
+      "requiredFullName": "请输入姓名。",
+      "usernameMin": "用户名至少 3 个字符。",
+      "passwordMin": "密码至少 8 个字符。",
+      "passwordMismatch": "两次输入的密码不一致。",
+      "acceptTerms": "请同意条款与隐私政策。"
+    }
+  },
+  "settingsPage": {
+    "title": "个人设置",
+    "subtitle": "在一个控制中心管理资料、账号安全与偏好。",
+    "tabs": {
+      "profile": "资料设置",
+      "profileDesc": "头像、简介、链接与职业信息",
+      "account": "账号设置",
+      "accountDesc": "个人信息与账号详情",
+      "security": "安全设置",
+      "securityDesc": "密码与会话保护",
+      "notifications": "通知设置",
+      "notificationsDesc": "应用内与邮件提醒",
+      "preferences": "偏好",
+      "preferencesDesc": "主题与语言"
+    },
+    "profileStrength": "资料完整度：{{value}}%",
+    "loading": "正在加载你的设置...",
+    "saveProfile": "保存资料设置",
+    "saveAccount": "保存账号设置",
+    "changePassword": "修改密码",
+    "saveNotifications": "保存通知设置",
+    "openProfile": "打开个人资料"
+  }
+}

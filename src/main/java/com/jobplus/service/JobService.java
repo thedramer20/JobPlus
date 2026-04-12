@@ -22,15 +22,18 @@ public class JobService {
     private final JobCategoryMapper jobCategoryMapper;
     private final CompanyService companyService;
     private final UserService userService;
+    private final NotificationService notificationService;
 
     public JobService(JobMapper jobMapper,
                       JobCategoryMapper jobCategoryMapper,
                       CompanyService companyService,
-                      UserService userService) {
+                      UserService userService,
+                      NotificationService notificationService) {
         this.jobMapper = jobMapper;
         this.jobCategoryMapper = jobCategoryMapper;
         this.companyService = companyService;
         this.userService = userService;
+        this.notificationService = notificationService;
     }
 
     public List<JobResponse> getOpenJobs(String query,
@@ -74,6 +77,11 @@ public class JobService {
             request.getApplicationDeadline());
         job.setStatus("OPEN");
         jobMapper.insert(job);
+        notificationService.createNotification(
+            user.getId(),
+            "JOB",
+            "Your job \"" + job.getTitle() + "\" has been posted successfully."
+        );
         return getJobById(job.getId());
     }
 
@@ -94,6 +102,11 @@ public class JobService {
         requireOwnedJob(user, jobId);
         String status = requireText(request.getStatus(), "Job status is required").toUpperCase();
         jobMapper.updateStatus(jobId, status);
+        notificationService.createNotification(
+            user.getId(),
+            "JOB",
+            "Job status updated to " + status + "."
+        );
         return getJobById(jobId);
     }
 

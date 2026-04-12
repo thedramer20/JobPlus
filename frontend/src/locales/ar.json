@@ -1,0 +1,141 @@
+{
+  "common": {
+    "appName": "جوب بلس",
+    "done": "تم",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "loading": "جارٍ التحميل...",
+    "home": "الرئيسية",
+    "jobs": "الوظائف",
+    "companies": "الشركات",
+    "messages": "الرسائل",
+    "notifications": "الإشعارات",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "language": "اللغة",
+    "theme": "المظهر",
+    "light": "فاتح",
+    "dark": "داكن",
+    "signIn": "تسجيل الدخول",
+    "signUp": "إنشاء حساب",
+    "signOut": "تسجيل الخروج",
+    "search": "بحث"
+  },
+  "languages": {
+    "en": "الإنجليزية",
+    "ar": "العربية",
+    "zh": "الصينية",
+    "fr": "الفرنسية",
+    "es": "الإسبانية"
+  },
+  "lang": {
+    "english": "الإنجليزية",
+    "chinese": "الصينية"
+  },
+  "search": {
+    "jobs": "ابحث عن وظائف أو شركات أو مهارات",
+    "location": "الموقع"
+  },
+  "period": {
+    "startTime": "وقت البدء",
+    "endTime": "وقت الانتهاء"
+  },
+  "topbar": {
+    "topContent": "أفضل المحتوى",
+    "network": "الشبكة",
+    "profile": "الملف الشخصي"
+  },
+  "nav": {
+    "about": "حول",
+    "contact": "تواصل",
+    "forEmployers": "لأصحاب العمل",
+    "dashboard": "لوحة التحكم",
+    "applications": "طلبات التوظيف",
+    "savedJobs": "الوظائف المحفوظة",
+    "company": "الشركة",
+    "postJob": "نشر وظيفة",
+    "users": "المستخدمون",
+    "categories": "الفئات",
+    "reports": "التقارير",
+    "analytics": "التحليلات"
+  },
+  "dashboard": {
+    "workspace": "مساحة عمل جوب بلس",
+    "controlCenter": "مركز التحكم",
+    "headline": "قدّم سير التوظيف بوضوح",
+    "subtitle": "مساحة عمل احترافية للباحثين عن عمل وفرق التوظيف.",
+    "home": "الرئيسية"
+  },
+  "auth": {
+    "loginTitle": "اعثر على وظيفة أحلامك أسرع.",
+    "loginSubtitle": "سجّل الدخول لإدارة الطلبات والتواصل مع فرق التوظيف ومتابعة تطورك.",
+    "welcomeBack": "مرحباً بعودتك",
+    "loginCardSubtitle": "استخدم حساب جوب بلس للمتابعة.",
+    "emailOrUsername": "البريد الإلكتروني أو اسم المستخدم",
+    "password": "كلمة المرور",
+    "rememberMe": "تذكرني",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+    "accountNotFound": "الحساب غير موجود.",
+    "loginError": "تعذر تسجيل الدخول الآن، حاول مرة أخرى.",
+    "loginAction": "تسجيل الدخول",
+    "loggingIn": "جارٍ تسجيل الدخول...",
+    "continueGoogle": "المتابعة باستخدام Google",
+    "continueLinkedin": "المتابعة باستخدام LinkedIn",
+    "quickDemoAccess": "وصول تجريبي سريع",
+    "candidateDemo": "عرض الباحث عن عمل",
+    "employerDemo": "عرض صاحب العمل",
+    "adminDemo": "عرض المشرف",
+    "newToJobplus": "جديد في جوب بلس؟",
+    "createAccount": "أنشئ حسابك",
+    "registerTitle": "أنشئ حسابك في جوب بلس.",
+    "registerSubtitle": "انضم كباحث عن عمل أو صاحب عمل وأدر مسارك المهني بسهولة.",
+    "signUpCardTitle": "إنشاء حساب",
+    "signUpCardSubtitle": "أنشئ حسابك خلال أقل من دقيقة.",
+    "fullName": "الاسم الكامل",
+    "username": "اسم المستخدم",
+    "email": "البريد الإلكتروني",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "role": "الدور",
+    "jobSeeker": "باحث عن عمل",
+    "employerCompany": "صاحب عمل / شركة",
+    "acceptTerms": "أوافق على الشروط وسياسة الخصوصية.",
+    "creatingAccount": "جارٍ إنشاء الحساب...",
+    "alreadyHaveAccount": "لديك حساب بالفعل؟",
+    "demoAdminAccess": "دخول المشرف التجريبي: admin / 000000",
+    "registerError": "تعذر إنشاء الحساب الآن، حاول مرة أخرى.",
+    "validations": {
+      "requiredUsername": "البريد الإلكتروني أو اسم المستخدم مطلوب.",
+      "invalidEmail": "الرجاء إدخال بريد إلكتروني صالح.",
+      "requiredPassword": "كلمة المرور مطلوبة.",
+      "requiredFullName": "الاسم الكامل مطلوب.",
+      "usernameMin": "يجب أن يكون اسم المستخدم 3 أحرف على الأقل.",
+      "passwordMin": "يجب أن تكون كلمة المرور 8 أحرف على الأقل.",
+      "passwordMismatch": "كلمتا المرور غير متطابقتين.",
+      "acceptTerms": "يرجى الموافقة على الشروط وسياسة الخصوصية."
+    }
+  },
+  "settingsPage": {
+    "title": "إعدادات الملف الشخصي",
+    "subtitle": "تحكم في ملفك وأمان حسابك وتفضيلاتك من مركز واحد.",
+    "tabs": {
+      "profile": "إعدادات الملف",
+      "profileDesc": "الصورة والسيرة والروابط والمعلومات المهنية",
+      "account": "إعدادات الحساب",
+      "accountDesc": "البيانات الشخصية ومعلومات الحساب",
+      "security": "إعدادات الأمان",
+      "securityDesc": "كلمة المرور وحماية الجلسة",
+      "notifications": "إعدادات الإشعارات",
+      "notificationsDesc": "تنبيهات البريد والتطبيق",
+      "preferences": "التفضيلات",
+      "preferencesDesc": "اللغة والمظهر"
+    },
+    "profileStrength": "قوة الملف الشخصي: {{value}}%",
+    "loading": "جارٍ تحميل الإعدادات...",
+    "saveProfile": "حفظ إعدادات الملف",
+    "saveAccount": "حفظ إعدادات الحساب",
+    "changePassword": "تغيير كلمة المرور",
+    "saveNotifications": "حفظ إعدادات الإشعارات",
+    "openProfile": "فتح الملف الشخصي"
+  }
+}

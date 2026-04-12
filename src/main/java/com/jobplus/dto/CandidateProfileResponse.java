@@ -11,6 +11,7 @@ public class CandidateProfileResponse {
     private String address;
     private String education;
     private String experienceSummary;
+    private String avatarUrl;
     private String linkedinUrl;
     private String githubUrl;
     private LocalDateTime updatedAt;
@@ -77,6 +78,14 @@ public class CandidateProfileResponse {
 
     public void setExperienceSummary(String experienceSummary) {
         this.experienceSummary = experienceSummary;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public String getLinkedinUrl() {

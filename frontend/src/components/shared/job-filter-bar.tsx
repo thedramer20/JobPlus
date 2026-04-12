@@ -1,4 +1,5 @@
 import type { JobFilterConfig, JobFilterOption, JobFilters } from "../../types/job";
+import { useTranslation } from "react-i18next";
 import { FilterDropdown } from "./filter-dropdown";
 
 interface JobFilterBarProps {
@@ -11,10 +12,11 @@ interface JobFilterBarProps {
 }
 
 export function JobFilterBar({ filterConfigs, filterOptions, filters, onApply, onReset, applying }: JobFilterBarProps) {
+  const { t } = useTranslation();
   return (
     <div className="jp-filter-bar">
       <button type="button" className={`jp-filter-trigger jp-filter-reset ${applying ? "is-busy" : ""}`} onClick={onReset}>
-        <span>{applying ? "Applying..." : "Reset filters"}</span>
+        <span>{applying ? t("jobsPage.applyingFilters") : t("jobsPage.resetFilters")}</span>
       </button>
       {filterConfigs.map((config) => (
         <FilterDropdown

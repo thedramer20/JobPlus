@@ -1,5 +1,6 @@
 package com.jobplus.controller;
 
+import com.jobplus.dto.ChangePasswordRequest;
 import com.jobplus.dto.UpdateUserProfileRequest;
 import com.jobplus.dto.UserProfileResponse;
 import com.jobplus.service.UserService;
@@ -28,5 +29,11 @@ public class UserController {
     public UserProfileResponse updateCurrentUser(@RequestBody UpdateUserProfileRequest request,
                                                  Authentication authentication) {
         return userService.updateCurrentUserProfile(authentication.getName(), request);
+    }
+
+    @PutMapping("/me/password")
+    public void changePassword(@RequestBody ChangePasswordRequest request,
+                               Authentication authentication) {
+        userService.changePassword(authentication.getName(), request);
     }
 }

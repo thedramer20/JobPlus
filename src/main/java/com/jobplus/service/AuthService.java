@@ -38,6 +38,9 @@ public class AuthService {
         String username = safeTrim(request.getUsername());
         String password = request.getPassword();
         String role = normalizeRole(request.getRole());
+        String fullName = safeTrim(request.getFullName());
+        String email = safeTrim(request.getEmail());
+        String phone = safeTrim(request.getPhone());
 
         if (username == null || username.isEmpty()) {
             throw new IllegalArgumentException("Username is required");
@@ -48,10 +51,20 @@ public class AuthService {
         if (userMapper.existsByUsername(username)) {
             throw new IllegalArgumentException("Username already exists");
         }
+        if (email == null || email.isEmpty()) {
+            email = username.toLowerCase() + "@jobplus.app";
+        } else {
+            email = email.toLowerCase();
+        }
+        if (userMapper.existsByEmail(email)) {
+            throw new IllegalArgumentException("Email already exists");
+        }
 
         User user = new User();
         user.setUsername(username);
-        user.setFullName(username);
+        user.setFullName(fullName == null || fullName.isBlank() ? username : fullName);
+        user.setEmail(email);
+        user.setPhone(phone == null || phone.isBlank() ? null : phone);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(role);
         user.setStatus("ACTIVE");

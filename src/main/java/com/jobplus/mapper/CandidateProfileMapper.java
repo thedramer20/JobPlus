@@ -11,15 +11,15 @@ import org.apache.ibatis.annotations.Update;
 public interface CandidateProfileMapper {
 
     @Select("""
-        SELECT id, user_id, address, education, experience_summary, linkedin_url, github_url, updated_at
+        SELECT id, user_id, address, education, experience_summary, avatar_url, linkedin_url, github_url, updated_at
         FROM candidate_profiles
         WHERE user_id = #{userId}
         """)
     CandidateProfile findByUserId(Long userId);
 
     @Insert("""
-        INSERT INTO candidate_profiles (user_id, address, education, experience_summary, linkedin_url, github_url, updated_at)
-        VALUES (#{userId}, #{address}, #{education}, #{experienceSummary}, #{linkedinUrl}, #{githubUrl}, CURRENT_TIMESTAMP)
+        INSERT INTO candidate_profiles (user_id, address, education, experience_summary, avatar_url, linkedin_url, github_url, updated_at)
+        VALUES (#{userId}, #{address}, #{education}, #{experienceSummary}, #{avatarUrl}, #{linkedinUrl}, #{githubUrl}, CURRENT_TIMESTAMP)
         """)
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insert(CandidateProfile candidateProfile);
@@ -29,6 +29,7 @@ public interface CandidateProfileMapper {
         SET address = #{address},
             education = #{education},
             experience_summary = #{experienceSummary},
+            avatar_url = #{avatarUrl},
             linkedin_url = #{linkedinUrl},
             github_url = #{githubUrl},
             updated_at = CURRENT_TIMESTAMP

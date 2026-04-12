@@ -4,6 +4,7 @@ import com.jobplus.entity.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -58,4 +59,12 @@ public interface UserMapper {
         WHERE id = #{id}
         """)
     int updateProfile(User user);
+
+    @Update("""
+        UPDATE users
+        SET password_hash = #{passwordHash},
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = #{id}
+        """)
+    int updatePasswordHash(@Param("id") Long id, @Param("passwordHash") String passwordHash);
 }

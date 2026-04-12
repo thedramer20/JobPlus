@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { AuthCard } from "../components/auth/auth-card";
 import { AuthShell } from "../components/auth/auth-shell";
 import { InlineMessage } from "../components/auth/inline-message";
@@ -13,6 +14,7 @@ import { register } from "../services/auth-service";
 import type { UserRole } from "../types/auth";
 
 export function RegisterPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { login } = authStore();
   const [role, setRole] = useState<UserRole>("candidate");
@@ -22,7 +24,7 @@ export function RegisterPage() {
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-    const validationError = validateRegisterForm(form);
+    const validationError = validateRegisterForm(form, t);
     if (validationError) {
       setMessage({ error: validationError });
       return;
@@ -39,7 +41,7 @@ export function RegisterPage() {
       login(session);
       navigate(resolveRoute(session.user.role));
     } catch {
-      setMessage({ error: "We could not create your account right now. Please try again." });
+      setMessage({ error: t("auth.registerError") });
     } finally {
       setSubmitting(false);
     }
@@ -47,61 +49,61 @@ export function RegisterPage() {
 
   return (
     <AuthShell
-      title="Create your JobPlus account."
-      subtitle="Join as a candidate or employer and manage your career or hiring workflows from one professional workspace."
+      title={t("auth.registerTitle")}
+      subtitle={t("auth.registerSubtitle")}
     >
-      <AuthCard title="Sign up" subtitle="Build your account in under a minute.">
+      <AuthCard title={t("auth.signUpCardTitle")} subtitle={t("auth.signUpCardSubtitle")}>
         <form className="stack" onSubmit={handleSubmit}>
           <TextField
-            label="Full name"
+            label={t("auth.fullName")}
             value={form.fullName}
             onChange={(value) => setForm((current) => ({ ...current, fullName: value }))}
-            placeholder="Enter your full name"
+            placeholder={t("auth.fullName")}
             autoComplete="name"
             required
           />
           <TextField
-            label="Username"
+            label={t("auth.username")}
             value={form.username}
             onChange={(value) => setForm((current) => ({ ...current, username: value }))}
-            placeholder="Choose a username"
+            placeholder={t("auth.username")}
             autoComplete="username"
             required
           />
           <TextField
-            label="Email"
+            label={t("auth.email")}
             type="email"
             value={form.email}
             onChange={(value) => setForm((current) => ({ ...current, email: value }))}
-            placeholder="Enter your email"
+            placeholder={t("auth.email")}
             autoComplete="email"
             required
           />
           <div className="field">
-            <span>Role *</span>
+            <span>{t("auth.role")} *</span>
             <div className="row" style={{ flexWrap: "wrap" }}>
               <button type="button" className={role === "candidate" ? "btn btn-primary" : "btn btn-secondary"} onClick={() => setRole("candidate")}>
-                Job seeker
+                {t("auth.jobSeeker")}
               </button>
               <button type="button" className={role === "employer" ? "btn btn-primary" : "btn btn-secondary"} onClick={() => setRole("employer")}>
-                Employer / company
+                {t("auth.employerCompany")}
               </button>
             </div>
           </div>
           <PasswordField
-            label="Password"
+            label={t("auth.password")}
             value={form.password}
             onChange={(value) => setForm((current) => ({ ...current, password: value }))}
-            placeholder="Create password"
+            placeholder={t("auth.password")}
             autoComplete="new-password"
             required
             showStrength
           />
           <PasswordField
-            label="Confirm password"
+            label={t("auth.confirmPassword")}
             value={form.confirmPassword}
             onChange={(value) => setForm((current) => ({ ...current, confirmPassword: value }))}
-            placeholder="Confirm password"
+            placeholder={t("auth.confirmPassword")}
             autoComplete="new-password"
             required
           />
@@ -111,19 +113,19 @@ export function RegisterPage() {
               checked={form.acceptTerms}
               onChange={(event) => setForm((current) => ({ ...current, acceptTerms: event.target.checked }))}
             />
-            I agree to the Terms and Privacy Policy.
+            {t("auth.acceptTerms")}
           </label>
           {message.error ? <InlineMessage type="error" message={message.error} /> : null}
           {message.success ? <InlineMessage type="success" message={message.success} /> : null}
           <button className="btn btn-primary" type="submit" disabled={submitting}>
-            {submitting ? "Creating account..." : "Create account"}
+            {submitting ? t("auth.creatingAccount") : t("common.signUp")}
           </button>
         </form>
 
         <OrDivider />
         <div className="stack" style={{ gap: "0.6rem" }}>
           <SocialButton
-            label="Continue with Google"
+            label={t("auth.continueGoogle")}
             icon={
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                 <path
@@ -146,7 +148,7 @@ export function RegisterPage() {
             }
           />
           <SocialButton
-            label="Continue with LinkedIn"
+            label={t("auth.continueLinkedin")}
             icon={
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                 <rect x="2" y="2" width="20" height="20" rx="4" fill="#0A66C2" />
@@ -161,10 +163,10 @@ export function RegisterPage() {
 
         <div className="stack" style={{ gap: "0.4rem", marginTop: "0.25rem" }}>
           <div className="helper">
-            Already have an account? <Link to="/login">Sign in</Link>
+            {t("auth.alreadyHaveAccount")} <Link to="/login">{t("common.signIn")}</Link>
           </div>
           <div className="helper">
-            Demo admin access: username <strong>admin</strong>, password <strong>000000</strong>
+            {t("auth.demoAdminAccess")}
           </div>
         </div>
       </AuthCard>
@@ -189,12 +191,12 @@ function validateRegisterForm(form: {
   password: string;
   confirmPassword: string;
   acceptTerms: boolean;
-}): string | null {
-  if (!form.fullName.trim()) return "Full name is required.";
-  if (!form.username.trim() || form.username.trim().length < 3) return "Username must be at least 3 characters.";
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) return "Please enter a valid email address.";
-  if (form.password.length < 8) return "Password must be at least 8 characters.";
-  if (form.password !== form.confirmPassword) return "Passwords do not match.";
-  if (!form.acceptTerms) return "Please accept Terms and Privacy Policy.";
+}, t: (key: string) => string): string | null {
+  if (!form.fullName.trim()) return t("auth.validations.requiredFullName");
+  if (!form.username.trim() || form.username.trim().length < 3) return t("auth.validations.usernameMin");
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) return t("auth.validations.invalidEmail");
+  if (form.password.length < 8) return t("auth.validations.passwordMin");
+  if (form.password !== form.confirmPassword) return t("auth.validations.passwordMismatch");
+  if (!form.acceptTerms) return t("auth.validations.acceptTerms");
   return null;
 }

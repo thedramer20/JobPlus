@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { usePreferences } from "../../context/PreferencesContext";
+import { supportedLanguages, type SupportedLanguage } from "../../i18n";
 
-const langs: { code: "en" | "zh"; label: string }[] = [
-  { code: "en", label: "EN" },
-  { code: "zh", label: "中文" }
-];
+const langs: { code: SupportedLanguage }[] = supportedLanguages.map((code) => ({ code }));
 
 export const LanguageSwitcher: React.FC = () => {
   const { t } = useTranslation();
@@ -27,7 +25,7 @@ export const LanguageSwitcher: React.FC = () => {
   return (
     <div ref={selectRef} className="jp-lang-switcher">
       <button onClick={() => setOpen((prev) => !prev)} className="jp-compact-control" aria-haspopup="listbox" aria-expanded={open}>
-        <span>{language === "en" ? t("lang.english") : t("lang.chinese")}</span>
+        <span>{t(`languages.${language}`)}</span>
         <span className={`jp-chevron ${open ? "is-open" : ""}`}>v</span>
       </button>
       {open ? (
@@ -43,7 +41,7 @@ export const LanguageSwitcher: React.FC = () => {
                 role="option"
                 aria-selected={language === lang.code}
               >
-                {lang.label}
+                {t(`languages.${lang.code}`)}
               </button>
             </li>
           ))}

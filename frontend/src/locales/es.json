@@ -1,0 +1,141 @@
+{
+  "common": {
+    "appName": "JobPlus",
+    "done": "Listo",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "loading": "Cargando...",
+    "home": "Inicio",
+    "jobs": "Empleos",
+    "companies": "Empresas",
+    "messages": "Mensajes",
+    "notifications": "Notificaciones",
+    "profile": "Perfil",
+    "settings": "Configuración",
+    "language": "Idioma",
+    "theme": "Tema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "signIn": "Iniciar sesión",
+    "signUp": "Crear cuenta",
+    "signOut": "Cerrar sesión",
+    "search": "Buscar"
+  },
+  "languages": {
+    "en": "Inglés",
+    "ar": "Árabe",
+    "zh": "Chino",
+    "fr": "Francés",
+    "es": "Español"
+  },
+  "lang": {
+    "english": "Inglés",
+    "chinese": "Chino"
+  },
+  "search": {
+    "jobs": "Buscar empleos, empresas o habilidades",
+    "location": "Ubicación"
+  },
+  "period": {
+    "startTime": "Hora de inicio",
+    "endTime": "Hora de fin"
+  },
+  "topbar": {
+    "topContent": "Contenido destacado",
+    "network": "Red",
+    "profile": "Perfil"
+  },
+  "nav": {
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "forEmployers": "Para empleadores",
+    "dashboard": "Panel",
+    "applications": "Solicitudes",
+    "savedJobs": "Empleos guardados",
+    "company": "Empresa",
+    "postJob": "Publicar empleo",
+    "users": "Usuarios",
+    "categories": "Categorías",
+    "reports": "Reportes",
+    "analytics": "Analítica"
+  },
+  "dashboard": {
+    "workspace": "Espacio de trabajo JobPlus",
+    "controlCenter": "Centro de control",
+    "headline": "Gestiona contrataciones con claridad",
+    "subtitle": "Espacio premium para candidatos y equipos de contratación.",
+    "home": "Inicio"
+  },
+  "auth": {
+    "loginTitle": "Encuentra tu trabajo ideal más rápido.",
+    "loginSubtitle": "Inicia sesión para gestionar solicitudes y conectar con equipos de contratación.",
+    "welcomeBack": "Bienvenido de nuevo",
+    "loginCardSubtitle": "Usa tu cuenta de JobPlus para continuar.",
+    "emailOrUsername": "Correo o usuario",
+    "password": "Contraseña",
+    "rememberMe": "Recordarme",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "invalidCredentials": "Correo o contraseña inválidos.",
+    "accountNotFound": "Cuenta no encontrada.",
+    "loginError": "No se puede iniciar sesión ahora. Inténtalo de nuevo.",
+    "loginAction": "Iniciar sesión",
+    "loggingIn": "Iniciando sesión...",
+    "continueGoogle": "Continuar con Google",
+    "continueLinkedin": "Continuar con LinkedIn",
+    "quickDemoAccess": "Acceso demo rápido",
+    "candidateDemo": "Demo candidato",
+    "employerDemo": "Demo empleador",
+    "adminDemo": "Demo admin",
+    "newToJobplus": "¿Nuevo en JobPlus?",
+    "createAccount": "Crea tu cuenta",
+    "registerTitle": "Crea tu cuenta de JobPlus",
+    "registerSubtitle": "Únete como candidato o empleador y gestiona tu flujo de contratación.",
+    "signUpCardTitle": "Crear cuenta",
+    "signUpCardSubtitle": "Crea tu cuenta en menos de un minuto.",
+    "fullName": "Nombre completo",
+    "username": "Usuario",
+    "email": "Correo",
+    "confirmPassword": "Confirmar contraseña",
+    "role": "Rol",
+    "jobSeeker": "Buscador de empleo",
+    "employerCompany": "Empleador / empresa",
+    "acceptTerms": "Acepto los Términos y la Política de Privacidad.",
+    "creatingAccount": "Creando cuenta...",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "demoAdminAccess": "Acceso admin demo: admin / 000000",
+    "registerError": "No pudimos crear tu cuenta ahora. Inténtalo de nuevo.",
+    "validations": {
+      "requiredUsername": "Correo o usuario es obligatorio.",
+      "invalidEmail": "Ingresa un correo válido.",
+      "requiredPassword": "La contraseña es obligatoria.",
+      "requiredFullName": "El nombre completo es obligatorio.",
+      "usernameMin": "El usuario debe tener al menos 3 caracteres.",
+      "passwordMin": "La contraseña debe tener al menos 8 caracteres.",
+      "passwordMismatch": "Las contraseñas no coinciden.",
+      "acceptTerms": "Acepta Términos y Política de Privacidad."
+    }
+  },
+  "settingsPage": {
+    "title": "Configuración del perfil",
+    "subtitle": "Gestiona perfil, seguridad y preferencias desde un solo centro.",
+    "tabs": {
+      "profile": "Configuración de perfil",
+      "profileDesc": "Foto, biografía, enlaces y datos profesionales",
+      "account": "Configuración de cuenta",
+      "accountDesc": "Información personal y de cuenta",
+      "security": "Configuración de seguridad",
+      "securityDesc": "Contraseña y protección de sesión",
+      "notifications": "Configuración de notificaciones",
+      "notificationsDesc": "Alertas por correo y en la app",
+      "preferences": "Preferencias",
+      "preferencesDesc": "Tema e idioma"
+    },
+    "profileStrength": "Fortaleza del perfil: {{value}}%",
+    "loading": "Cargando tu configuración...",
+    "saveProfile": "Guardar perfil",
+    "saveAccount": "Guardar cuenta",
+    "changePassword": "Cambiar contraseña",
+    "saveNotifications": "Guardar notificaciones",
+    "openProfile": "Abrir perfil"
+  }
+}

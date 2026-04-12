@@ -4,6 +4,7 @@ public class CandidateProfileRequest {
     private String address;
     private String education;
     private String experienceSummary;
+    private String avatarUrl;
     private String linkedinUrl;
     private String githubUrl;
 
@@ -29,6 +30,14 @@ public class CandidateProfileRequest {
 
     public void setExperienceSummary(String experienceSummary) {
         this.experienceSummary = experienceSummary;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public String getLinkedinUrl() {

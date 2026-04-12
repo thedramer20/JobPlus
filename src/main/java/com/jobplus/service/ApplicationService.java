@@ -12,6 +12,7 @@ import com.jobplus.exception.ForbiddenOperationException;
 import com.jobplus.exception.ResourceNotFoundException;
 import com.jobplus.mapper.ApplicationMapper;
 import com.jobplus.mapper.ApplicationStatusHistoryMapper;
+import com.jobplus.mapper.CompanyMapper;
 import com.jobplus.mapper.ResumeMapper;
 import org.springframework.stereotype.Service;
 
@@ -23,22 +24,28 @@ public class ApplicationService {
     private final ApplicationMapper applicationMapper;
     private final ApplicationStatusHistoryMapper applicationStatusHistoryMapper;
     private final ResumeMapper resumeMapper;
+    private final CompanyMapper companyMapper;
     private final UserService userService;
     private final JobService jobService;
     private final CompanyService companyService;
+    private final NotificationService notificationService;
 
     public ApplicationService(ApplicationMapper applicationMapper,
                               ApplicationStatusHistoryMapper applicationStatusHistoryMapper,
                               ResumeMapper resumeMapper,
+                              CompanyMapper companyMapper,
                               UserService userService,
                               JobService jobService,
-                              CompanyService companyService) {
+                              CompanyService companyService,
+                              NotificationService notificationService) {
         this.applicationMapper = applicationMapper;
         this.applicationStatusHistoryMapper = applicationStatusHistoryMapper;
         this.resumeMapper = resumeMapper;
+        this.companyMapper = companyMapper;
         this.userService = userService;
         this.jobService = jobService;
         this.companyService = companyService;
+        this.notificationService = notificationService;
     }
 
     public ApplicationResponse apply(String username, ApplicationCreateRequest request) {
@@ -74,6 +81,20 @@ public class ApplicationService {
         history.setChangedByUserId(user.getId());
         history.setNote("Application submitted");
         applicationStatusHistoryMapper.insert(history);
+
+        notificationService.createNotification(
+            user.getId(),
+            "APPLICATION",
+            "Application submitted for \"" + job.getTitle() + "\"."
+        );
+        Company company = companyMapper.findById(job.getCompanyId());
+        if (company != null && company.getOwnerUserId() != null && !company.getOwnerUserId().equals(user.getId())) {
+            notificationService.createNotification(
+                company.getOwnerUserId(),
+                "APPLICATION",
+                "New application received for \"" + job.getTitle() + "\"."
+            );
+        }
 
         return toResponse(applicationMapper.findById(application.getId()));
     }
@@ -127,6 +148,12 @@ public class ApplicationService {
         history.setChangedByUserId(user.getId());
         history.setNote("Application status updated");
         applicationStatusHistoryMapper.insert(history);
+
+        notificationService.createNotification(
+            application.getCandidateUserId(),
+            "APPLICATION",
+            "Your application for \"" + job.getTitle() + "\" is now " + newStatus + "."
+        );
 
         return toResponse(applicationMapper.findById(applicationId));
     }

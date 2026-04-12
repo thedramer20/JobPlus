@@ -1,93 +1,104 @@
 import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { authStore } from "../../store/auth-store";
+import type { UserRole } from "../../types/auth";
 import { SettingsMenu } from "./settings-menu";
 
 interface TopbarItem {
-  label: string;
-  path: string;
+  key: string;
+  labelKey: string;
+  path: (role?: UserRole) => string;
   icon: React.ReactNode;
 }
 
 const topbarItems: TopbarItem[] = [
   {
-    label: "Home",
-    path: "/",
+    key: "home",
+    labelKey: "common.home",
+    path: () => "/",
     icon: (
-      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="1.9">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 10.5 12 3l9 7.5" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 9.75V21h13.5V9.75" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 21v-6h4.5v6" />
-      </svg>
+      <IconBase>
+        <path d="M4.5 10.5 12 4l7.5 6.5" />
+        <path d="M6.5 9.8V20h11V9.8" />
+        <path d="M10 20v-4.6h4V20" />
+      </IconBase>
     )
   },
   {
-    label: "Top Content",
-    path: "/top-content",
+    key: "top-content",
+    labelKey: "topbar.topContent",
+    path: () => "/top-content",
     icon: (
-      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="1.9">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M14.5 4.5c2.2-.23 4.13.31 5 1.18.87.87 1.41 2.8 1.18 5l-5.12 2.37-3.43-3.43L14.5 4.5Z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12.13 9.62 6.6 15.15a2.25 2.25 0 0 0-.58.98L5 20l3.87-1.02c.37-.1.71-.3.98-.58l5.53-5.53" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="m4 14 6 6" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M13.75 6.75 18 11" />
-      </svg>
+      <IconBase>
+        <path d="M6.5 16.5 10.2 12.8l3 2.9 4.3-5.2" />
+        <path d="M15.5 10.5h3v3" />
+        <path d="M4.5 19.5h15" />
+      </IconBase>
     )
   },
   {
-    label: "Jobs",
-    path: "/jobs",
+    key: "jobs",
+    labelKey: "common.jobs",
+    path: () => "/jobs",
     icon: (
-      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="1.9">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V5.75A1.75 1.75 0 0 1 9.75 4h4.5A1.75 1.75 0 0 1 16 5.75V7" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M4.75 7h14.5A1.75 1.75 0 0 1 21 8.75v8.5A1.75 1.75 0 0 1 19.25 19H4.75A1.75 1.75 0 0 1 3 17.25v-8.5A1.75 1.75 0 0 1 4.75 7Z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h18" />
-      </svg>
+      <IconBase>
+        <path d="M8.5 7V5.8A1.8 1.8 0 0 1 10.3 4h3.4a1.8 1.8 0 0 1 1.8 1.8V7" />
+        <rect x="3.8" y="7" width="16.4" height="12.2" rx="2" />
+        <path d="M3.8 12.3h16.4" />
+      </IconBase>
     )
   },
   {
-    label: "Companies",
-    path: "/companies",
+    key: "companies",
+    labelKey: "common.companies",
+    path: () => "/companies",
     icon: (
-      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="1.9">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M4 20V6.75A1.75 1.75 0 0 1 5.75 5h6.5A1.75 1.75 0 0 1 14 6.75V20" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M14 20V10.75A1.75 1.75 0 0 1 15.75 9h2.5A1.75 1.75 0 0 1 20 10.75V20" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8 9h2M8 12h2M8 15h2M17 13h.01M17 16h.01" />
-      </svg>
+      <IconBase>
+        <path d="M4.5 20V7a2 2 0 0 1 2-2h6v15" />
+        <path d="M12.5 20v-8.7a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2V20" />
+        <path d="M7.8 9.2h1.8M7.8 12.4h1.8M7.8 15.6h1.8M15.8 13.2h.01M15.8 16.2h.01" />
+      </IconBase>
     )
   },
   {
-    label: "Network",
-    path: "/app/profile",
+    key: "network",
+    labelKey: "topbar.network",
+    path: (role) => resolveRolePath(role, "profile"),
     icon: (
-      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="1.9">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3.5 19a4.5 4.5 0 0 1 9 0" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M13 19a3.5 3.5 0 0 1 7 0" />
-      </svg>
+      <IconBase>
+        <circle cx="8.2" cy="8.2" r="2.5" />
+        <circle cx="16.2" cy="9.8" r="2.1" />
+        <path d="M4.5 18.8a4.2 4.2 0 0 1 7.4-2.7" />
+        <path d="M12.6 18.8a3.5 3.5 0 0 1 6.9 0" />
+        <path d="M10.4 9.1h3.2" />
+      </IconBase>
     )
   },
   {
-    label: "Messages",
-    path: "/contact",
+    key: "messages",
+    labelKey: "common.messages",
+    path: (role) => resolveRolePath(role, "messages"),
     icon: (
-      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="1.9">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M5.75 5h12.5A1.75 1.75 0 0 1 20 6.75v8.5A1.75 1.75 0 0 1 18.25 17H9l-4.25 3v-3H5.75A1.75 1.75 0 0 1 4 15.25v-8.5A1.75 1.75 0 0 1 5.75 5Z" />
-      </svg>
+      <IconBase>
+        <path d="M4.5 6.8A1.8 1.8 0 0 1 6.3 5h11.4a1.8 1.8 0 0 1 1.8 1.8v7.8a1.8 1.8 0 0 1-1.8 1.8H9.2L5 19.3v-2.9H6.3a1.8 1.8 0 0 1-1.8-1.8Z" />
+      </IconBase>
     )
   },
   {
-    label: "Notifications",
-    path: "/app/notifications",
+    key: "notifications",
+    labelKey: "common.notifications",
+    path: (role) => resolveRolePath(role, "notifications"),
     icon: (
-      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="1.9">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.75a4.25 4.25 0 0 1 4.25 4.25v2.33c0 .92.28 1.82.8 2.57l1.02 1.47A1 1 0 0 1 17.25 17H6.75a1 1 0 0 1-.82-1.63l1.02-1.47c.52-.75.8-1.65.8-2.57V9A4.25 4.25 0 0 1 12 4.75Z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M10 19a2 2 0 0 0 4 0" />
-      </svg>
+      <IconBase>
+        <path d="M12 4.8a4.2 4.2 0 0 1 4.2 4.2v2.2c0 1 .3 2 .9 2.8l.8 1.1a1 1 0 0 1-.8 1.6H6.9a1 1 0 0 1-.8-1.6l.8-1.1c.6-.8.9-1.8.9-2.8V9a4.2 4.2 0 0 1 4.2-4.2Z" />
+        <path d="M10.3 19a1.7 1.7 0 0 0 3.4 0" />
+      </IconBase>
     )
   }
 ];
 
 export function JobPlusTopbar() {
+  const { t } = useTranslation();
   const { user } = authStore();
   const avatarText = (user?.name ?? "JP")
     .split(" ")
@@ -100,18 +111,19 @@ export function JobPlusTopbar() {
     <header className="jp-topbar-shell surface-muted">
       <div className="container jp-topbar-grid">
         <NavLink to="/" className="headline jp-topbar-brand">
-          JobPlus
+          <span className="jp-topbar-brand-mark" aria-hidden="true" />
+          <span>{t("common.appName")}</span>
         </NavLink>
 
         <nav aria-label="Primary" className="jp-topbar-nav">
           {topbarItems.map((item) => (
             <NavLink
-              key={item.label}
-              to={item.path}
+              key={item.key}
+              to={item.path(user?.role)}
               className={({ isActive }) => `jp-topbar-link ${isActive ? "is-active" : ""}`}
             >
-              <span aria-hidden="true">{item.icon}</span>
-              <span>{item.label}</span>
+              <span className="jp-topbar-link-icon" aria-hidden="true">{item.icon}</span>
+              <span className="jp-topbar-link-label">{t(item.labelKey)}</span>
             </NavLink>
           ))}
         </nav>
@@ -120,10 +132,10 @@ export function JobPlusTopbar() {
           {!user ? (
             <>
               <NavLink className="btn btn-secondary" to="/login">
-                Log in
+                {t("common.signIn")}
               </NavLink>
               <NavLink className="btn btn-primary" to="/register">
-                Sign up
+                {t("common.signUp")}
               </NavLink>
             </>
           ) : null}
@@ -131,8 +143,8 @@ export function JobPlusTopbar() {
           <NavLink
             to={resolveProfileHref(user?.role)}
             className="jp-topbar-avatar"
-            aria-label="Profile"
-            title={user?.name ?? "Profile"}
+            aria-label={t("topbar.profile")}
+            title={user?.name ?? t("topbar.profile")}
           >
             {avatarText}
           </NavLink>
@@ -144,12 +156,57 @@ export function JobPlusTopbar() {
   );
 }
 
+function IconBase({ children }: { children: React.ReactNode }) {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.85" strokeLinecap="round" strokeLinejoin="round">
+      {children}
+    </svg>
+  );
+}
+
 function resolveProfileHref(role?: string): string {
   if (!role) {
     return "/login";
   }
-  if (role === "ADMIN") {
+  if (role.toLowerCase() === "admin") {
     return "/admin/profile";
+  }
+  if (role.toLowerCase() === "employer") {
+    return "/profile/nadia.mensah";
+  }
+  return "/app/profile";
+}
+
+function resolveRolePath(role: UserRole | undefined, key: "messages" | "notifications" | "profile"): string {
+  if (!role || role === "guest") {
+    if (key === "profile") {
+      return "/login";
+    }
+    return "/login?redirect=/app/dashboard";
+  }
+  if (role === "admin") {
+    if (key === "messages") {
+      return "/admin/notifications";
+    }
+    if (key === "notifications") {
+      return "/admin/notifications";
+    }
+    return "/admin/profile";
+  }
+  if (role === "employer") {
+    if (key === "messages") {
+      return "/employer/messages";
+    }
+    if (key === "notifications") {
+      return "/employer/notifications";
+    }
+    return "/profile/nadia.mensah";
+  }
+  if (key === "messages") {
+    return "/app/messages";
+  }
+  if (key === "notifications") {
+    return "/app/notifications";
   }
   return "/app/profile";
 }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { AuthCard } from "../components/auth/auth-card";
 import { AuthShell } from "../components/auth/auth-shell";
 import { InlineMessage } from "../components/auth/inline-message";
@@ -12,6 +13,7 @@ import { login } from "../services/auth-service";
 import type { UserRole } from "../types/auth";
 
 export function LoginPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { login: saveSession, setDemoRole } = authStore();
@@ -23,13 +25,13 @@ export function LoginPage() {
     event.preventDefault();
     const nextError: { username?: string; password?: string; server?: string } = {};
     if (!form.username.trim()) {
-      nextError.username = "Email or username is required.";
+      nextError.username = t("auth.validations.requiredUsername");
     }
     if (form.username.includes("@") && !isEmail(form.username.trim())) {
-      nextError.username = "Please enter a valid email address.";
+      nextError.username = t("auth.validations.invalidEmail");
     }
     if (!form.password) {
-      nextError.password = "Password is required.";
+      nextError.password = t("auth.validations.requiredPassword");
     }
     if (nextError.username || nextError.password) {
       setError(nextError);
@@ -44,10 +46,10 @@ export function LoginPage() {
     } catch (cause) {
       const raw = String(cause ?? "").toLowerCase();
       const serverMessage = raw.includes("404")
-        ? "Account not found."
+        ? t("auth.accountNotFound")
         : raw.includes("401")
-          ? "Invalid email or password."
-          : "Unable to sign in right now. Please try again.";
+          ? t("auth.invalidCredentials")
+          : t("auth.loginError");
       setError({ server: serverMessage });
     } finally {
       setLoading(false);
@@ -56,26 +58,26 @@ export function LoginPage() {
 
   return (
     <AuthShell
-      title="Find your dream job faster."
-      subtitle="Sign in to manage applications, connect with hiring teams, and track your growth with a premium workflow."
+      title={t("auth.loginTitle")}
+      subtitle={t("auth.loginSubtitle")}
     >
-      <AuthCard title="Welcome back" subtitle="Use your JobPlus account to continue.">
+      <AuthCard title={t("auth.welcomeBack")} subtitle={t("auth.loginCardSubtitle")}>
         <form className="stack" onSubmit={handleSubmit}>
           <TextField
-            label="Email or username"
+            label={t("auth.emailOrUsername")}
             value={form.username}
             onChange={(value) => setForm((current) => ({ ...current, username: value }))}
-            placeholder="Enter email or username"
+            placeholder={t("auth.emailOrUsername")}
             autoComplete="username"
             error={error.username}
             required
           />
 
           <PasswordField
-            label="Password"
+            label={t("auth.password")}
             value={form.password}
             onChange={(value) => setForm((current) => ({ ...current, password: value }))}
-            placeholder="Enter your password"
+            placeholder={t("auth.password")}
             autoComplete="current-password"
             error={error.password}
             required
@@ -88,17 +90,16 @@ export function LoginPage() {
                 checked={form.remember}
                 onChange={(event) => setForm((current) => ({ ...current, remember: event.target.checked }))}
               />
-              Remember me
+              {t("auth.rememberMe")}
             </label>
             <Link className="helper" to="/forgot-password">
-              Forgot password?
+              {t("auth.forgotPassword")}
             </Link>
           </div>
 
           {error.server ? <InlineMessage type="error" message={error.server} /> : null}
-
           <button className="btn btn-primary" disabled={loading} type="submit">
-            {loading ? "Signing in..." : "Log in"}
+            {loading ? t("auth.loggingIn") : t("auth.loginAction")}
           </button>
         </form>
 
@@ -106,7 +107,7 @@ export function LoginPage() {
 
         <div className="stack" style={{ gap: "0.6rem" }}>
           <SocialButton
-            label="Continue with Google"
+            label={t("auth.continueGoogle")}
             onClick={() => undefined}
             icon={
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
@@ -130,7 +131,7 @@ export function LoginPage() {
             }
           />
           <SocialButton
-            label="Continue with LinkedIn"
+            label={t("auth.continueLinkedin")}
             onClick={() => undefined}
             icon={
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
@@ -145,20 +146,20 @@ export function LoginPage() {
         </div>
 
         <div className="stack" style={{ gap: "0.6rem", marginTop: "0.25rem" }}>
-          <div className="helper">Quick demo access</div>
+          <div className="helper">{t("auth.quickDemoAccess")}</div>
           <div className="row" style={{ flexWrap: "wrap" }}>
             <button type="button" className="btn btn-secondary" onClick={() => useDemoRole("candidate", setDemoRole, navigate)}>
-              Candidate demo
+              {t("auth.candidateDemo")}
             </button>
             <button type="button" className="btn btn-secondary" onClick={() => useDemoRole("employer", setDemoRole, navigate)}>
-              Employer demo
+              {t("auth.employerDemo")}
             </button>
             <button type="button" className="btn btn-secondary" onClick={() => useDemoRole("admin", setDemoRole, navigate)}>
-              Admin demo
+              {t("auth.adminDemo")}
             </button>
           </div>
           <div className="helper">
-            New to JobPlus? <Link to="/register">Create your account</Link>
+            {t("auth.newToJobplus")} <Link to="/register">{t("auth.createAccount")}</Link>
           </div>
         </div>
       </AuthCard>

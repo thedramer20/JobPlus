@@ -1,44 +1,63 @@
 import { useMemo, useState, type Dispatch, type SetStateAction } from "react";
 import { NavLink } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { EmptyState } from "../components/shared/empty-state";
 import { JobCard } from "../components/shared/job-card";
 import { JobFilterBar } from "../components/shared/job-filter-bar";
 import { JobMarketSearch } from "../components/shared/job-market-search";
 import { SelectedFilterChips } from "../components/shared/selected-filter-chips";
 import { SkeletonList } from "../components/shared/skeleton-list";
+import { SortDropdown, type SortOption } from "../components/shared/sort-dropdown";
 import { listJobs } from "../services/jobs-service";
 import { authStore } from "../store/auth-store";
 import { defaultJobFilters, type Job, type JobFilterConfig, type JobFilterOption, type JobFilters } from "../types/job";
 
-const filterConfigs: JobFilterConfig[] = [
-  { key: "postedWithin", label: "Any time", selectionMode: "single" },
-  { key: "companies", label: "Company", selectionMode: "multiple", searchable: true, searchPlaceholder: "Add a company" },
-  { key: "jobType", label: "Job type", selectionMode: "multiple" },
-  { key: "experienceLevel", label: "Experience level", selectionMode: "multiple" },
-  { key: "locations", label: "Location", selectionMode: "multiple", searchable: true, searchPlaceholder: "Add a location" },
-  { key: "minSalary", label: "Salary", selectionMode: "single" },
-  { key: "workType", label: "Remote", selectionMode: "multiple" }
-];
-
-const salaryLabels: Record<string, string> = {
-  "40000": "$40,000+",
-  "60000": "$60,000+",
-  "80000": "$80,000+",
-  "100000": "$100,000+",
-  "120000": "$120,000+"
-};
-
-const postedWithinLabels: Record<string, string> = {
-  "any-time": "Any time",
-  "past-24-hours": "Past 24 hours",
-  "past-week": "Past week",
-  "past-month": "Past month"
-};
-
 export function JobsPage() {
+  const { t } = useTranslation();
   const [filters, setFilters] = useState<JobFilters>(defaultJobFilters);
+  const [sortBy, setSortBy] = useState<string>("newest");
   const { user } = authStore();
+  const filterConfigs: JobFilterConfig[] = useMemo(
+    () => [
+      { key: "postedWithin", label: t("jobsPage.filters.anyTime"), selectionMode: "single" },
+      { key: "companies", label: t("jobsPage.filters.company"), selectionMode: "multiple", searchable: true, searchPlaceholder: t("jobsPage.filters.addCompany") },
+      { key: "jobType", label: t("jobsPage.filters.jobType"), selectionMode: "multiple" },
+      { key: "experienceLevel", label: t("jobsPage.filters.experienceLevel"), selectionMode: "multiple" },
+      { key: "locations", label: t("jobsPage.filters.location"), selectionMode: "multiple", searchable: true, searchPlaceholder: t("jobsPage.filters.addLocation") },
+      { key: "minSalary", label: t("jobsPage.filters.salary"), selectionMode: "single" },
+      { key: "workType", label: t("jobsPage.filters.remote"), selectionMode: "multiple" }
+    ],
+    [t]
+  );
+  const salaryLabels: Record<string, string> = useMemo(
+    () => ({
+      "40000": "$40,000+",
+      "60000": "$60,000+",
+      "80000": "$80,000+",
+      "100000": "$100,000+",
+      "120000": "$120,000+"
+    }),
+    []
+  );
+  const postedWithinLabels: Record<string, string> = useMemo(
+    () => ({
+      "any-time": t("jobsPage.filters.anyTime"),
+      "past-24-hours": t("jobsPage.filters.past24h"),
+      "past-week": t("jobsPage.filters.pastWeek"),
+      "past-month": t("jobsPage.filters.pastMonth")
+    }),
+    [t]
+  );
+  const sortOptions: SortOption[] = useMemo(
+    () => [
+      { value: "newest", label: t("jobsPage.sort.newest"), helper: t("jobsPage.sort.newestHint") },
+      { value: "salary-high", label: t("jobsPage.sort.salaryHigh"), helper: t("jobsPage.sort.salaryHighHint") },
+      { value: "salary-low", label: t("jobsPage.sort.salaryLow"), helper: t("jobsPage.sort.salaryLowHint") },
+      { value: "company", label: t("jobsPage.sort.company"), helper: t("jobsPage.sort.companyHint") }
+    ],
+    [t]
+  );
 
   // Optimize queries with better caching
   const { data: allJobs = [] } = useQuery({
@@ -51,12 +70,14 @@ export function JobsPage() {
   const { data: jobs = [], isLoading, isError, isFetching } = useQuery({
     queryKey: ["jobs", filters],
     queryFn: () => listJobs(filters),
+    placeholderData: (previous) => previous,
     staleTime: 2 * 60 * 1000, // 2 minutes
     gcTime: 5 * 60 * 1000,
   });
 
-  const filterOptions = useMemo(() => buildFilterOptions(allJobs), [allJobs]);
-  const chips = useMemo(() => buildFilterChips(filters, setFilters), [filters]);
+  const filterOptions = useMemo(() => buildFilterOptions(allJobs, postedWithinLabels, salaryLabels), [allJobs, postedWithinLabels, salaryLabels]);
+  const chips = useMemo(() => buildFilterChips(filters, setFilters, postedWithinLabels, salaryLabels), [filters, postedWithinLabels, salaryLabels]);
+  const sortedJobs = useMemo(() => sortJobs(jobs, sortBy), [jobs, sortBy]);
 
   return (
     <section className="section-tight">
@@ -64,7 +85,7 @@ export function JobsPage() {
         <div className="jp-jobs-toolbar-shell">
           <div className="jp-jobs-toolbar-top">
             <NavLink to="/" className="jp-jobs-toolbar-brand headline">
-              JOBPLUS
+              {t("common.appName").toUpperCase()}
             </NavLink>
             <JobMarketSearch
               query={filters.query}
@@ -77,7 +98,7 @@ export function JobsPage() {
                 }));
               }}
             />
-            <NavLink to={resolveProfileHref(user?.role)} className="jp-toolbar-avatar" aria-label="Open account">
+            <NavLink to={resolveProfileHref(user?.role)} className="jp-toolbar-avatar" aria-label={t("jobsPage.openAccount")}>
               <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
                 <path
                   d="M20 21C20 17.6863 16.4183 15 12 15C7.58172 15 4 17.6863 4 21M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
@@ -108,29 +129,30 @@ export function JobsPage() {
         <SelectedFilterChips chips={chips} onClearAll={() => setFilters(defaultJobFilters)} />
 
         <div className="space-between">
-          <div className="helper">{isLoading ? "Loading jobs..." : `${jobs.length} roles found`}</div>
+          <div className="helper">{isLoading ? t("jobsPage.loadingJobs") : t("jobsPage.rolesFound", { count: sortedJobs.length })}</div>
           <div className="jp-jobs-toolbar">
-            <span className="helper">{isFetching && !isLoading ? "Applying filters..." : "Updated just now"}</span>
-            <select className="select" style={{ maxWidth: "220px" }}>
-              <option>Sort by newest</option>
-              <option>Sort by salary</option>
-              <option>Sort by relevance</option>
-            </select>
+            <span className="helper">{isFetching && !isLoading ? t("jobsPage.applyingFilters") : t("jobsPage.updatedNow")}</span>
+            <SortDropdown value={sortBy} options={sortOptions} onChange={setSortBy} />
+            {user?.role === "candidate" ? (
+              <NavLink className="btn btn-secondary" to="/app/saved-jobs">
+                {t("jobsPage.viewSavedJobs")}
+              </NavLink>
+            ) : null}
           </div>
         </div>
 
         {isLoading ? <SkeletonList count={4} /> : null}
-        {isError ? <EmptyState title="Could not load jobs" description="Check that the Spring Boot backend is running and reachable." /> : null}
-        {!isLoading && !isError && jobs.length === 0 ? (
-          <EmptyState title="No jobs match these filters" description="Try clearing one or two filters, or search a broader location or company name." />
+        {isError ? <EmptyState title={t("jobsPage.loadErrorTitle")} description={t("jobsPage.loadErrorDesc")} /> : null}
+        {!isLoading && !isError && sortedJobs.length === 0 ? (
+          <EmptyState title={t("jobsPage.noMatchTitle")} description={t("jobsPage.noMatchDesc")} />
         ) : null}
-        {!isLoading && !isError ? jobs.map((job) => <JobCard key={job.id} job={job} />) : null}
+        {!isLoading && !isError ? sortedJobs.map((job) => <JobCard key={job.id} job={job} />) : null}
       </div>
     </section>
   );
 }
 
-function buildFilterOptions(jobs: Job[]): Record<string, JobFilterOption[]> {
+function buildFilterOptions(jobs: Job[], postedWithinLabels: Record<string, string>, salaryLabels: Record<string, string>): Record<string, JobFilterOption[]> {
   const salaryOptions = [40000, 60000, 80000, 100000, 120000].map((amount) => ({
     value: String(amount),
     label: salaryLabels[String(amount)],
@@ -178,7 +200,7 @@ function normalizeStaticOptions(values: string[], jobs: Job[], getValue: (job: J
   }));
 }
 
-function buildFilterChips(filters: JobFilters, setFilters: Dispatch<SetStateAction<JobFilters>>) {
+function buildFilterChips(filters: JobFilters, setFilters: Dispatch<SetStateAction<JobFilters>>, postedWithinLabels: Record<string, string>, salaryLabels: Record<string, string>) {
   const chips = [
     ...filters.postedWithin.map((value) => ({ id: `posted-${value}`, label: postedWithinLabels[value] ?? value, key: "postedWithin" as const, value })),
     ...filters.jobType.map((value) => ({ id: `jobType-${value}`, label: value, key: "jobType" as const, value })),
@@ -211,4 +233,23 @@ function resolveProfileHref(role?: string) {
     return "/app/dashboard";
   }
   return "/login";
+}
+
+function sortJobs(jobs: Job[], sortBy: string): Job[] {
+  const copy = [...jobs];
+  switch (sortBy) {
+    case "salary-high":
+      return copy.sort((left, right) => extractSalaryRank(right) - extractSalaryRank(left));
+    case "salary-low":
+      return copy.sort((left, right) => extractSalaryRank(left) - extractSalaryRank(right));
+    case "company":
+      return copy.sort((left, right) => left.company.localeCompare(right.company));
+    case "newest":
+    default:
+      return copy.sort((left, right) => right.id - left.id);
+  }
+}
+
+function extractSalaryRank(job: Job): number {
+  return job.salaryMax ?? job.salaryMin ?? 0;
 }

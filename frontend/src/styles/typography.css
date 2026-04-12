@@ -8,11 +8,9 @@
    ============================================ */
 
 * {
-  /* Ensure text doesn't overflow containers */
-  overflow-wrap: break-word;
+  /* Keep readable wrapping without forcing aggressive breaks */
+  overflow-wrap: anywhere;
   word-wrap: break-word;
-  word-break: break-word;
-  hyphens: auto;
 }
 
 /* ============================================

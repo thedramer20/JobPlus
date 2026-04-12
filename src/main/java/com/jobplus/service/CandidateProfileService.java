@@ -37,6 +37,7 @@ public class CandidateProfileService {
         profile.setAddress(blankToNull(request.getAddress()));
         profile.setEducation(blankToNull(request.getEducation()));
         profile.setExperienceSummary(blankToNull(request.getExperienceSummary()));
+        profile.setAvatarUrl(blankToNull(request.getAvatarUrl()));
         profile.setLinkedinUrl(blankToNull(request.getLinkedinUrl()));
         profile.setGithubUrl(blankToNull(request.getGithubUrl()));
 
@@ -59,6 +60,7 @@ public class CandidateProfileService {
         response.setAddress(profile.getAddress());
         response.setEducation(profile.getEducation());
         response.setExperienceSummary(profile.getExperienceSummary());
+        response.setAvatarUrl(profile.getAvatarUrl());
         response.setLinkedinUrl(profile.getLinkedinUrl());
         response.setGithubUrl(profile.getGithubUrl());
         response.setUpdatedAt(profile.getUpdatedAt());

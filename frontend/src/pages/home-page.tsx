@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CompanyCard } from "../components/shared/company-card";
 import { JobCard } from "../components/shared/job-card";
 import { SearchBar } from "../components/shared/search-bar";
+import { SkeletonList } from "../components/shared/skeleton-list";
 import { StatCard } from "../components/shared/stat-card";
 import { listCompanies } from "../services/companies-service";
 import { listJobs } from "../services/jobs-service";
@@ -24,28 +25,28 @@ export function HomePage() {
   const [commentsByPost, setCommentsByPost] = useState<Record<number, PostComment[]>>({});
 
   // Optimize queries with better caching and stale time
-  const { data: jobs = [] } = useQuery({ 
+  const { data: jobs = [], isLoading: jobsLoading } = useQuery({ 
     queryKey: ["jobs", "featured"], 
     queryFn: () => listJobs(),
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
 
-  const { data: companies = [] } = useQuery({ 
+  const { data: companies = [], isLoading: companiesLoading } = useQuery({ 
     queryKey: ["companies", "featured"], 
     queryFn: listCompanies,
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
   });
 
-  const { data: posts = [] } = useQuery({ 
+  const { data: posts = [], isLoading: postsLoading } = useQuery({ 
     queryKey: ["posts"], 
     queryFn: listPosts,
     staleTime: 2 * 60 * 1000, // 2 minutes
     gcTime: 5 * 60 * 1000,
   });
 
-  const { data: trendingPosts = [] } = useQuery({ 
+  const { data: trendingPosts = [], isLoading: trendingLoading } = useQuery({ 
     queryKey: ["posts", "trending"], 
     queryFn: listTrendingPosts,
     staleTime: 2 * 60 * 1000,
@@ -212,19 +213,19 @@ export function HomePage() {
   }, [posts]);
 
   return (
-    <>
+    <div className="jp-home-root">
       <section className="section">
         <div className="container hero">
           <div className="hero-panel stack">
             <span className="pill">For ambitious candidates and growth-stage employers</span>
             <div className="stack" style={{ gap: "0.8rem" }}>
-              <div className="eyebrow" style={{ color: "rgba(255,255,255,0.75)" }}>
+              <div className="eyebrow">
                 Startup-grade hiring product
               </div>
               <h1 className="headline" style={{ fontSize: "clamp(2.8rem, 7vw, 4.8rem)", margin: 0 }}>
                 Build better careers and better teams in one marketplace.
               </h1>
-              <p style={{ color: "rgba(248,250,252,0.84)", fontSize: "1.08rem", maxWidth: "60ch" }}>
+              <p style={{ color: "var(--text-soft)", fontSize: "1.08rem", maxWidth: "60ch" }}>
                 JobPlus combines job discovery, company branding, candidate workflows, and employer hiring operations
                 into a polished platform designed to scale beyond the classroom.
               </p>
@@ -244,8 +245,16 @@ export function HomePage() {
             <div className="subtle-card stack">
               <div className="eyebrow">Marketplace snapshot</div>
               <div className="grid grid-2">
-                <StatCard label="Open roles" value={String(jobs.length || 0)} meta="Visible opportunities on the platform" />
-                <StatCard label="Employers" value={String(companies.length || 0)} meta="Companies building teams with JobPlus" />
+                <StatCard
+                  label="Open roles"
+                  value={jobsLoading ? "..." : String(jobs.length || 0)}
+                  meta="Visible opportunities on the platform"
+                />
+                <StatCard
+                  label="Employers"
+                  value={companiesLoading ? "..." : String(companies.length || 0)}
+                  meta="Companies building teams with JobPlus"
+                />
               </div>
             </div>
 
@@ -341,7 +350,11 @@ export function HomePage() {
           )}
 
           <div className="grid grid-2">
-            {posts.length ? (
+            {postsLoading || trendingLoading ? (
+              <div style={{ gridColumn: "1 / -1" }}>
+                <SkeletonList count={2} />
+              </div>
+            ) : posts.length ? (
               posts.slice(0, 4).map((post) => (
                 <article key={post.id} className="jp-feed-card">
                   {post.imageUrl ? <img src={post.imageUrl} alt={post.categoryName} className="jp-feed-image" /> : null}
@@ -578,9 +591,15 @@ export function HomePage() {
             </a>
           </div>
           <div className="grid grid-3">
-            {jobs.slice(0, 3).map((job) => (
-              <JobCard key={job.id} job={job} />
-            ))}
+            {jobsLoading ? (
+              <div style={{ gridColumn: "1 / -1" }}>
+                <SkeletonList count={3} />
+              </div>
+            ) : (
+              jobs.slice(0, 3).map((job) => (
+                <JobCard key={job.id} job={job} />
+              ))
+            )}
           </div>
         </div>
       </section>
@@ -618,9 +637,15 @@ export function HomePage() {
             </p>
           </div>
           <div className="grid grid-2">
-            {companies.slice(0, 2).map((company) => (
-              <CompanyCard key={company.id} company={company} />
-            ))}
+            {companiesLoading ? (
+              <div style={{ gridColumn: "1 / -1" }}>
+                <SkeletonList count={2} />
+              </div>
+            ) : (
+              companies.slice(0, 2).map((company) => (
+                <CompanyCard key={company.id} company={company} />
+              ))
+            )}
           </div>
         </div>
       </section>
@@ -645,7 +670,7 @@ export function HomePage() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
 

@@ -1,7 +1,9 @@
 import { Outlet } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { JobPlusTopbar } from "../components/shared/jobplus-topbar";
 
 export function MarketingLayout() {
+  const { t } = useTranslation();
   return (
     <div className="page-shell">
       <JobPlusTopbar />
@@ -9,10 +11,10 @@ export function MarketingLayout() {
       <footer className="footer">
         <div className="container space-between">
           <div>
-            <strong>JobPlus</strong>
-            <div className="helper">Modern hiring for high-growth teams.</div>
+            <strong>{t("common.appName")}</strong>
+            <div className="helper">{t("dashboard.subtitle")}</div>
           </div>
-          <div className="helper">Candidate-first UX | Employer-grade workflows | Admin-ready structure</div>
+          <div className="helper">{t("dashboard.headline")}</div>
         </div>
       </footer>
     </div>

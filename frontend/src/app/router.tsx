@@ -4,6 +4,7 @@ import { AppFrame } from "../components/system/app-frame";
 import { DashboardLayout } from "../layouts/dashboard-layout";
 import { AdminLayout } from "../layouts/admin-layout";
 import { MarketingLayout } from "../layouts/marketing-layout";
+import { AuthLayout } from "../layouts/auth-layout";
 import { ProtectedRoute, RoleRoute } from "../components/route-guards";
 
 const HomePage = lazy(async () => ({ default: (await import("../pages/home-page")).HomePage }));
@@ -21,6 +22,7 @@ const ResetPasswordPage = lazy(async () => ({ default: (await import("../pages/r
 const CandidateDashboardPage = lazy(async () => ({ default: (await import("../pages/candidate-dashboard-page")).CandidateDashboardPage }));
 const ApplicationsPage = lazy(async () => ({ default: (await import("../pages/applications-page")).ApplicationsPage }));
 const NotificationsPage = lazy(async () => ({ default: (await import("../pages/notifications-page")).NotificationsPage }));
+const MessagesPage = lazy(async () => ({ default: (await import("../pages/messages-page")).MessagesPage }));
 const ProfilePage = lazy(async () => ({ default: (await import("../pages/profile-page")).ProfilePage }));
 const SavedJobsPage = lazy(async () => ({ default: (await import("../pages/saved-jobs-page")).SavedJobsPage }));
 const SettingsPage = lazy(async () => ({ default: (await import("../pages/settings-page")).SettingsPage }));
@@ -61,10 +63,6 @@ export const router = createBrowserRouter([
         element: <MarketingLayout />,
         children: [
           { path: "/", element: withSuspense(HomePage) },
-          { path: "/login", element: withSuspense(LoginPage) },
-          { path: "/register", element: withSuspense(RegisterPage) },
-          { path: "/forgot-password", element: withSuspense(ForgotPasswordPage) },
-          { path: "/reset-password", element: withSuspense(ResetPasswordPage) },
           { path: "/companies", element: withSuspense(CompaniesPage) },
           { path: "/about", element: withSuspense(AboutPage) },
           { path: "/contact", element: withSuspense(ContactPage) },
@@ -75,6 +73,15 @@ export const router = createBrowserRouter([
           { path: "/companies/:companyId", element: withSuspense(CompanyProfilePage) },
           { path: "/category/:categoryName", element: withSuspense(CategoryDetailsPage) },
           { path: "/profile/:username", element: withSuspense(ProfilePage) }
+        ]
+      },
+      {
+        element: <AuthLayout />,
+        children: [
+          { path: "/login", element: withSuspense(LoginPage) },
+          { path: "/register", element: withSuspense(RegisterPage) },
+          { path: "/forgot-password", element: withSuspense(ForgotPasswordPage) },
+          { path: "/reset-password", element: withSuspense(ResetPasswordPage) }
         ]
       },
       {
@@ -89,6 +96,7 @@ export const router = createBrowserRouter([
                 children: [
                   { path: "dashboard", element: withSuspense(CandidateDashboardPage) },
                   { path: "applications", element: withSuspense(ApplicationsPage) },
+                  { path: "messages", element: withSuspense(MessagesPage) },
                   { path: "notifications", element: withSuspense(NotificationsPage) },
                   { path: "profile", element: withSuspense(ProfilePage) },
                   { path: "saved-jobs", element: withSuspense(SavedJobsPage) },
@@ -109,6 +117,8 @@ export const router = createBrowserRouter([
                   { path: "jobs", element: withSuspense(EmployerJobsPage) },
                   { path: "jobs/new", element: withSuspense(PostJobPage) },
                   { path: "jobs/:jobId/edit", element: withSuspense(EditJobPage) },
+                  { path: "messages", element: withSuspense(MessagesPage) },
+                  { path: "notifications", element: withSuspense(NotificationsPage) },
                   { path: "settings", element: withSuspense(SettingsPage) }
                 ]
               }

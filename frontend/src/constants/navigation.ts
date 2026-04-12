@@ -1,45 +1,49 @@
 import type { UserRole } from "../types/auth";
 
 export interface NavItem {
-  label: string;
+  key: string;
+  labelKey: string;
   path: string;
 }
 
 export const publicNavigation: NavItem[] = [
-  { label: "Jobs", path: "/jobs" },
-  { label: "Companies", path: "/companies" },
-  { label: "About", path: "/about" },
-  { label: "Contact", path: "/contact" },
-  { label: "For Employers", path: "/register" }
+  { key: "jobs", labelKey: "common.jobs", path: "/jobs" },
+  { key: "companies", labelKey: "common.companies", path: "/companies" },
+  { key: "about", labelKey: "nav.about", path: "/about" },
+  { key: "contact", labelKey: "nav.contact", path: "/contact" },
+  { key: "for-employers", labelKey: "nav.forEmployers", path: "/register" }
 ];
 
 export const roleNavigation: Record<Exclude<UserRole, "guest">, NavItem[]> = {
   candidate: [
-    { label: "Dashboard", path: "/app/dashboard" },
-    { label: "Applications", path: "/app/applications" },
-    { label: "Saved Jobs", path: "/app/saved-jobs" },
-    { label: "Notifications", path: "/app/notifications" },
-    { label: "Profile", path: "/app/profile" },
-    { label: "Settings", path: "/app/settings" }
+    { key: "dashboard", labelKey: "nav.dashboard", path: "/app/dashboard" },
+    { key: "applications", labelKey: "nav.applications", path: "/app/applications" },
+    { key: "messages", labelKey: "common.messages", path: "/app/messages" },
+    { key: "saved-jobs", labelKey: "nav.savedJobs", path: "/app/saved-jobs" },
+    { key: "notifications", labelKey: "common.notifications", path: "/app/notifications" },
+    { key: "profile", labelKey: "common.profile", path: "/app/profile" },
+    { key: "settings", labelKey: "common.settings", path: "/app/settings" }
   ],
   employer: [
-    { label: "Dashboard", path: "/employer/dashboard" },
-    { label: "Company", path: "/employer/company" },
-    { label: "Jobs", path: "/employer/jobs" },
-    { label: "Post Job", path: "/employer/jobs/new" },
-    { label: "Settings", path: "/employer/settings" }
+    { key: "dashboard", labelKey: "nav.dashboard", path: "/employer/dashboard" },
+    { key: "company", labelKey: "nav.company", path: "/employer/company" },
+    { key: "jobs", labelKey: "common.jobs", path: "/employer/jobs" },
+    { key: "messages", labelKey: "common.messages", path: "/employer/messages" },
+    { key: "notifications", labelKey: "common.notifications", path: "/employer/notifications" },
+    { key: "post-job", labelKey: "nav.postJob", path: "/employer/jobs/new" },
+    { key: "settings", labelKey: "common.settings", path: "/employer/settings" }
   ],
   admin: [
-    { label: "Dashboard", path: "/admin" },
-    { label: "Users", path: "/admin/users" },
-    { label: "Companies", path: "/admin/companies" },
-    { label: "Jobs", path: "/admin/jobs" },
-    { label: "Applications", path: "/admin/applications" },
-    { label: "Categories", path: "/admin/categories" },
-    { label: "Reports", path: "/admin/reports" },
-    { label: "Notifications", path: "/admin/notifications" },
-    { label: "Analytics", path: "/admin/analytics" },
-    { label: "Settings", path: "/admin/settings" },
-    { label: "Profile", path: "/admin/profile" }
+    { key: "dashboard", labelKey: "nav.dashboard", path: "/admin" },
+    { key: "users", labelKey: "nav.users", path: "/admin/users" },
+    { key: "companies", labelKey: "common.companies", path: "/admin/companies" },
+    { key: "jobs", labelKey: "common.jobs", path: "/admin/jobs" },
+    { key: "applications", labelKey: "nav.applications", path: "/admin/applications" },
+    { key: "categories", labelKey: "nav.categories", path: "/admin/categories" },
+    { key: "reports", labelKey: "nav.reports", path: "/admin/reports" },
+    { key: "notifications", labelKey: "common.notifications", path: "/admin/notifications" },
+    { key: "analytics", labelKey: "nav.analytics", path: "/admin/analytics" },
+    { key: "settings", labelKey: "common.settings", path: "/admin/settings" },
+    { key: "profile", labelKey: "common.profile", path: "/admin/profile" }
   ]
 };

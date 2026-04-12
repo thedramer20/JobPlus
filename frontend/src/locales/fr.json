@@ -1,0 +1,141 @@
+{
+  "common": {
+    "appName": "JobPlus",
+    "done": "Terminé",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "loading": "Chargement...",
+    "home": "Accueil",
+    "jobs": "Offres",
+    "companies": "Entreprises",
+    "messages": "Messages",
+    "notifications": "Notifications",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "language": "Langue",
+    "theme": "Thème",
+    "light": "Clair",
+    "dark": "Sombre",
+    "signIn": "Se connecter",
+    "signUp": "Créer un compte",
+    "signOut": "Se déconnecter",
+    "search": "Rechercher"
+  },
+  "languages": {
+    "en": "Anglais",
+    "ar": "Arabe",
+    "zh": "Chinois",
+    "fr": "Français",
+    "es": "Espagnol"
+  },
+  "lang": {
+    "english": "Anglais",
+    "chinese": "Chinois"
+  },
+  "search": {
+    "jobs": "Rechercher des offres, entreprises ou compétences",
+    "location": "Lieu"
+  },
+  "period": {
+    "startTime": "Heure de début",
+    "endTime": "Heure de fin"
+  },
+  "topbar": {
+    "topContent": "Top contenu",
+    "network": "Réseau",
+    "profile": "Profil"
+  },
+  "nav": {
+    "about": "À propos",
+    "contact": "Contact",
+    "forEmployers": "Pour les employeurs",
+    "dashboard": "Tableau de bord",
+    "applications": "Candidatures",
+    "savedJobs": "Offres enregistrées",
+    "company": "Entreprise",
+    "postJob": "Publier une offre",
+    "users": "Utilisateurs",
+    "categories": "Catégories",
+    "reports": "Signalements",
+    "analytics": "Analytique"
+  },
+  "dashboard": {
+    "workspace": "Espace JobPlus",
+    "controlCenter": "Centre de contrôle",
+    "headline": "Pilotez vos recrutements avec clarté",
+    "subtitle": "Espace premium pour candidats, recruteurs et opérateurs.",
+    "home": "Accueil"
+  },
+  "auth": {
+    "loginTitle": "Trouvez votre emploi idéal plus vite.",
+    "loginSubtitle": "Connectez-vous pour gérer vos candidatures et votre progression.",
+    "welcomeBack": "Bon retour",
+    "loginCardSubtitle": "Utilisez votre compte JobPlus pour continuer.",
+    "emailOrUsername": "Email ou nom d'utilisateur",
+    "password": "Mot de passe",
+    "rememberMe": "Se souvenir de moi",
+    "forgotPassword": "Mot de passe oublié ?",
+    "invalidCredentials": "Email ou mot de passe invalide.",
+    "accountNotFound": "Compte introuvable.",
+    "loginError": "Connexion impossible pour le moment. Réessayez.",
+    "loginAction": "Se connecter",
+    "loggingIn": "Connexion...",
+    "continueGoogle": "Continuer avec Google",
+    "continueLinkedin": "Continuer avec LinkedIn",
+    "quickDemoAccess": "Accès démo rapide",
+    "candidateDemo": "Démo candidat",
+    "employerDemo": "Démo employeur",
+    "adminDemo": "Démo admin",
+    "newToJobplus": "Nouveau sur JobPlus ?",
+    "createAccount": "Créer votre compte",
+    "registerTitle": "Créez votre compte JobPlus",
+    "registerSubtitle": "Inscrivez-vous en tant que candidat ou employeur.",
+    "signUpCardTitle": "Créer un compte",
+    "signUpCardSubtitle": "Créez votre compte en moins d'une minute.",
+    "fullName": "Nom complet",
+    "username": "Nom d'utilisateur",
+    "email": "Email",
+    "confirmPassword": "Confirmer le mot de passe",
+    "role": "Rôle",
+    "jobSeeker": "Candidat",
+    "employerCompany": "Employeur / entreprise",
+    "acceptTerms": "J'accepte les conditions et la politique de confidentialité.",
+    "creatingAccount": "Création du compte...",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "demoAdminAccess": "Accès admin démo : admin / 000000",
+    "registerError": "Impossible de créer le compte pour le moment.",
+    "validations": {
+      "requiredUsername": "Email ou nom d'utilisateur requis.",
+      "invalidEmail": "Veuillez entrer un email valide.",
+      "requiredPassword": "Mot de passe requis.",
+      "requiredFullName": "Nom complet requis.",
+      "usernameMin": "Le nom d'utilisateur doit contenir au moins 3 caractères.",
+      "passwordMin": "Le mot de passe doit contenir au moins 8 caractères.",
+      "passwordMismatch": "Les mots de passe ne correspondent pas.",
+      "acceptTerms": "Veuillez accepter les conditions et la confidentialité."
+    }
+  },
+  "settingsPage": {
+    "title": "Paramètres du profil",
+    "subtitle": "Gérez profil, sécurité et préférences depuis un seul centre de contrôle.",
+    "tabs": {
+      "profile": "Paramètres du profil",
+      "profileDesc": "Photo, bio, liens et informations professionnelles",
+      "account": "Paramètres du compte",
+      "accountDesc": "Informations personnelles et du compte",
+      "security": "Paramètres de sécurité",
+      "securityDesc": "Mot de passe et protection de session",
+      "notifications": "Paramètres de notification",
+      "notificationsDesc": "Alertes email et in-app",
+      "preferences": "Préférences",
+      "preferencesDesc": "Thème et langue"
+    },
+    "profileStrength": "Qualité du profil : {{value}}%",
+    "loading": "Chargement de vos paramètres...",
+    "saveProfile": "Enregistrer le profil",
+    "saveAccount": "Enregistrer le compte",
+    "changePassword": "Changer le mot de passe",
+    "saveNotifications": "Enregistrer les notifications",
+    "openProfile": "Ouvrir le profil"
+  }
+}

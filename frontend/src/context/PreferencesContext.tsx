@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
-import i18n from "../i18n";
+import i18n, { rtlLanguages, supportedLanguages, type SupportedLanguage } from "../i18n";
 
 type ThemeMode = "light" | "dark";
-type LanguageCode = "en" | "zh";
+type LanguageCode = SupportedLanguage;
 
 interface PreferencesContextValue {
   theme: ThemeMode;
@@ -18,7 +18,8 @@ export function PreferencesProvider({ children }: { children: React.ReactNode })
     return readStoredValue("jobplus-theme") === "dark" ? "dark" : "light";
   });
   const [language, setLanguageState] = useState<LanguageCode>(() => {
-    return readStoredValue("jobplus-language") === "zh" ? "zh" : "en";
+    const stored = readStoredValue("jobplus-language");
+    return stored && supportedLanguages.includes(stored as SupportedLanguage) ? (stored as SupportedLanguage) : "en";
   });
 
   useEffect(() => {
@@ -29,6 +30,8 @@ export function PreferencesProvider({ children }: { children: React.ReactNode })
   useEffect(() => {
     i18n.changeLanguage(language);
     writeStoredValue("jobplus-language", language);
+    document.documentElement.setAttribute("lang", language);
+    document.documentElement.setAttribute("dir", rtlLanguages.includes(language) ? "rtl" : "ltr");
   }, [language]);
 
   const value = useMemo(

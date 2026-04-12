@@ -26,7 +26,8 @@ interface PostCategoryDto {
   createdAt?: string | null;
 }
 
-const DEMO_MODE = import.meta.env.VITE_DEMO_MODE !== "false";
+const FORCE_DEMO_MODE = import.meta.env.VITE_DEMO_MODE === "only";
+const ALLOW_DEMO_FALLBACK = import.meta.env.VITE_DEMO_MODE !== "false";
 let demoPostsStore: Post[] = demoPosts.map((item) => ({ ...item }));
 let demoNextPostId = Math.max(...demoPostsStore.map((item) => item.id), 0) + 1;
 let demoNextCommentId = 10000;
@@ -58,33 +59,41 @@ const demoCommentTexts = [
 let demoCommentsStore: Record<number, PostComment[]> = seedDemoComments();
 
 export async function listPosts(): Promise<Post[]> {
-  if (DEMO_MODE) {
+  if (FORCE_DEMO_MODE) {
     return getDemoPostsSorted();
   }
 
   try {
     const { data } = await http.get<PostDto[]>("/posts");
-    return data.map(mapPost);
+    const mapped = data.map(mapPost);
+    if (mapped.length > 0) {
+      return mapped;
+    }
+    return ALLOW_DEMO_FALLBACK ? getDemoPostsSorted() : [];
   } catch {
-    return getDemoPostsSorted();
+    return ALLOW_DEMO_FALLBACK ? getDemoPostsSorted() : [];
   }
 }
 
 export async function listTrendingPosts(): Promise<Post[]> {
-  if (DEMO_MODE) {
+  if (FORCE_DEMO_MODE) {
     return getDemoTrendingPosts();
   }
 
   try {
     const { data } = await http.get<PostDto[]>("/posts/trending");
-    return data.map(mapPost);
+    const mapped = data.map(mapPost);
+    if (mapped.length > 0) {
+      return mapped;
+    }
+    return ALLOW_DEMO_FALLBACK ? getDemoTrendingPosts() : [];
   } catch {
-    return getDemoTrendingPosts();
+    return ALLOW_DEMO_FALLBACK ? getDemoTrendingPosts() : [];
   }
 }
 
 export async function createPost(payload: { categoryId?: number; content: string; imageUrl?: string }): Promise<Post> {
-  if (DEMO_MODE) {
+  if (FORCE_DEMO_MODE) {
     const category = resolveCategoryForDemo(payload.categoryId, payload.content);
     const post: Post = {
       id: demoNextPostId++,
@@ -106,12 +115,35 @@ export async function createPost(payload: { categoryId?: number; content: string
     return { ...post };
   }
 
-  const { data } = await http.post<PostDto>("/posts", payload);
-  return mapPost(data);
+  try {
+    const { data } = await http.post<PostDto>("/posts", payload);
+    return mapPost(data);
+  } catch {
+    if (!ALLOW_DEMO_FALLBACK) throw new Error("Unable to create post right now.");
+    const category = resolveCategoryForDemo(payload.categoryId, payload.content);
+    const post: Post = {
+      id: demoNextPostId++,
+      userId: 1,
+      authorUsername: "you",
+      authorFullName: "You",
+      authorTitle: "JobPlus Member",
+      avatarUrl: "https://i.pravatar.cc/120?img=3",
+      categoryId: category.id,
+      categoryName: category.name,
+      content: payload.content.trim(),
+      imageUrl: payload.imageUrl?.trim() || undefined,
+      likeCount: 0,
+      commentCount: 0,
+      likedByCurrentUser: false,
+      createdAt: new Date().toISOString()
+    };
+    demoPostsStore = [post, ...demoPostsStore];
+    return { ...post };
+  }
 }
 
 export async function togglePostLike(postId: number): Promise<Post> {
-  if (DEMO_MODE) {
+  if (FORCE_DEMO_MODE) {
     const target = demoPostsStore.find((item) => item.id === postId);
     if (!target) {
       throw new Error("Post not found.");
@@ -122,8 +154,18 @@ export async function togglePostLike(postId: number): Promise<Post> {
     return { ...target };
   }
 
-  const { data } = await http.post<PostDto>(`/posts/${postId}/likes`);
-  return mapPost(data);
+  try {
+    const { data } = await http.post<PostDto>(`/posts/${postId}/likes`);
+    return mapPost(data);
+  } catch {
+    if (!ALLOW_DEMO_FALLBACK) throw new Error("Unable to update like right now.");
+    const target = demoPostsStore.find((item) => item.id === postId);
+    if (!target) throw new Error("Post not found.");
+    const likedByCurrentUser = !target.likedByCurrentUser;
+    target.likedByCurrentUser = likedByCurrentUser;
+    target.likeCount = likedByCurrentUser ? target.likeCount + 1 : Math.max(0, target.likeCount - 1);
+    return { ...target };
+  }
 }
 
 export async function addPostComment(postId: number, content = "Great insight!"): Promise<Post> {
@@ -132,7 +174,7 @@ export async function addPostComment(postId: number, content = "Great insight!")
 }
 
 export async function createPostComment(postId: number, content: string): Promise<{ post: Post; comment: PostComment }> {
-  if (DEMO_MODE) {
+  if (FORCE_DEMO_MODE) {
     const target = demoPostsStore.find((item) => item.id === postId);
     if (!target) {
       throw new Error("Post not found.");
@@ -184,32 +226,36 @@ export async function createPostComment(postId: number, content: string): Promis
 }
 
 export async function listPostComments(postId: number): Promise<PostComment[]> {
-  if (DEMO_MODE) {
+  if (FORCE_DEMO_MODE) {
     return (demoCommentsStore[postId] ?? []).slice();
   }
   try {
     const { data } = await http.get<PostComment[]>(`/posts/${postId}/comments`);
     return data;
   } catch {
-    return [];
+    return ALLOW_DEMO_FALLBACK ? (demoCommentsStore[postId] ?? []).slice() : [];
   }
 }
 
 export async function listPostCategories(): Promise<PostCategory[]> {
-  if (DEMO_MODE) {
+  if (FORCE_DEMO_MODE) {
     return demoCategories.map((item) => ({ ...item }));
   }
 
   try {
     const { data } = await http.get<PostCategoryDto[]>("/post-categories");
-    return data.map((item) => ({
+    const mapped = data.map((item) => ({
       id: item.id,
       name: item.name,
       description: item.description ?? "",
       createdAt: item.createdAt ?? undefined
     }));
+    if (mapped.length > 0) {
+      return mapped;
+    }
+    return ALLOW_DEMO_FALLBACK ? demoCategories.map((item) => ({ ...item })) : [];
   } catch {
-    return demoCategories.map((item) => ({ ...item }));
+    return ALLOW_DEMO_FALLBACK ? demoCategories.map((item) => ({ ...item })) : [];
   }
 }
 

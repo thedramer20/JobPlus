@@ -11,7 +11,10 @@ export const http = axios.create({
 });
 
 http.interceptors.request.use((config) => {
-  if (!config.headers["x-skip-global-loader"]) {
+  const skipLoader =
+    (typeof config.headers?.get === "function" && config.headers.get("x-skip-global-loader")) ||
+    (config.headers as Record<string, unknown> | undefined)?.["x-skip-global-loader"];
+  if (!skipLoader) {
     beginGlobalLoading();
   }
   const token = authStore.getState().token;
@@ -23,13 +26,19 @@ http.interceptors.request.use((config) => {
 
 http.interceptors.response.use(
   (response) => {
-    if (!response.config.headers["x-skip-global-loader"]) {
+    const skipLoader =
+      (typeof response.config.headers?.get === "function" && response.config.headers.get("x-skip-global-loader")) ||
+      (response.config.headers as Record<string, unknown> | undefined)?.["x-skip-global-loader"];
+    if (!skipLoader) {
       endGlobalLoading();
     }
     return response;
   },
   (error) => {
-    if (!error?.config?.headers?.["x-skip-global-loader"]) {
+    const skipLoader =
+      (typeof error?.config?.headers?.get === "function" && error.config.headers.get("x-skip-global-loader")) ||
+      (error?.config?.headers as Record<string, unknown> | undefined)?.["x-skip-global-loader"];
+    if (!skipLoader) {
       endGlobalLoading();
     }
     if (error?.response?.status === 401) {

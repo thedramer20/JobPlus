@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "./language-switcher";
-import { ThemeToggle } from "./theme-toggle";
+import { ThemeSwitcher } from "./theme-switcher";
 import { authStore } from "../../store/auth-store";
 
 export const SettingsMenu: React.FC = () => {
+  const { t } = useTranslation();
   const { user } = authStore();
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -25,35 +27,39 @@ export const SettingsMenu: React.FC = () => {
     <div className="jp-settings" ref={menuRef}>
       <button
         type="button"
-        className="jp-settings-trigger"
+        className={`jp-settings-trigger ${open ? "is-open" : ""}`}
         onClick={() => setOpen((prev) => !prev)}
         aria-haspopup="menu"
         aria-expanded={open}
-        aria-label="Open settings"
+        aria-label={t("common.settings")}
+        title={t("common.settings")}
+        data-tooltip={t("common.settings")}
       >
-        <svg viewBox="0 0 24 24" className="jp-settings-icon" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <span className="jp-settings-icon-shell" aria-hidden="true">
+        <svg viewBox="0 0 24 24" className="jp-settings-icon" fill="none" stroke="currentColor" strokeWidth="1.9">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            d="M12 3.75a1.5 1.5 0 0 1 1.465 1.18l.198.92a6.77 6.77 0 0 1 1.492.616l.84-.52a1.5 1.5 0 0 1 1.86.22l.98.98a1.5 1.5 0 0 1 .22 1.86l-.52.84c.25.47.456.97.615 1.492l.92.198A1.5 1.5 0 0 1 20.25 12a1.5 1.5 0 0 1-1.18 1.465l-.92.198a6.77 6.77 0 0 1-.616 1.492l.52.84a1.5 1.5 0 0 1-.22 1.86l-.98.98a1.5 1.5 0 0 1-1.86.22l-.84-.52a6.77 6.77 0 0 1-1.492.615l-.198.92A1.5 1.5 0 0 1 12 20.25a1.5 1.5 0 0 1-1.465-1.18l-.198-.92a6.77 6.77 0 0 1-1.492-.616l-.84.52a1.5 1.5 0 0 1-1.86-.22l-.98-.98a1.5 1.5 0 0 1-.22-1.86l.52-.84a6.77 6.77 0 0 1-.615-1.492l-.92-.198A1.5 1.5 0 0 1 3.75 12a1.5 1.5 0 0 1 1.18-1.465l.92-.198a6.77 6.77 0 0 1 .616-1.492l-.52-.84a1.5 1.5 0 0 1 .22-1.86l.98-.98a1.5 1.5 0 0 1 1.86-.22l.84.52a6.77 6.77 0 0 1 1.492-.615l.198-.92A1.5 1.5 0 0 1 12 3.75Z"
+            d="M12 3.8c.7 0 1.3.45 1.5 1.1l.24.95c.52.14 1.02.35 1.48.62l.9-.5c.62-.34 1.4-.24 1.9.26l.86.86c.5.5.6 1.28.25 1.9l-.5.9c.28.46.49.96.63 1.48l.95.24c.66.17 1.11.78 1.11 1.48s-.45 1.31-1.1 1.48l-.96.24a6.6 6.6 0 0 1-.63 1.48l.5.9c.35.62.25 1.4-.25 1.9l-.86.86c-.5.5-1.28.6-1.9.26l-.9-.5c-.46.27-.96.48-1.48.62l-.24.95c-.17.66-.78 1.1-1.48 1.1-.7 0-1.31-.44-1.48-1.1l-.24-.95a6.6 6.6 0 0 1-1.48-.62l-.9.5c-.62.34-1.4.24-1.9-.26l-.86-.86c-.5-.5-.6-1.28-.25-1.9l.5-.9a6.6 6.6 0 0 1-.63-1.48l-.95-.24a1.53 1.53 0 0 1 0-2.96l.95-.24c.14-.52.35-1.02.63-1.48l-.5-.9c-.35-.62-.25-1.4.25-1.9l.86-.86c.5-.5 1.28-.6 1.9-.26l.9.5c.46-.27.96-.48 1.48-.62l.24-.95c.17-.65.78-1.1 1.48-1.1Z"
           />
-          <circle cx="12" cy="12" r="3.2" />
+          <circle cx="12" cy="12" r="3.4" />
         </svg>
+        </span>
       </button>
       {open ? (
         <div className="jp-settings-panel" role="menu">
           <div className="jp-settings-group">
-            <span className="jp-settings-label">Control Center</span>
+            <span className="jp-settings-label">{t("dashboard.controlCenter")}</span>
             <Link to={settingsPath} className="btn btn-secondary" onClick={() => setOpen(false)}>
-              Open Full Settings
+              {t("common.settings")}
             </Link>
           </div>
           <div className="jp-settings-group">
-            <span className="jp-settings-label">Theme</span>
-            <ThemeToggle />
+            <span className="jp-settings-label">{t("common.theme")}</span>
+            <ThemeSwitcher />
           </div>
           <div className="jp-settings-group">
-            <span className="jp-settings-label">Language</span>
+            <span className="jp-settings-label">{t("common.language")}</span>
             <LanguageSwitcher />
           </div>
         </div>

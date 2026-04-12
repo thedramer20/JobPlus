@@ -19,14 +19,10 @@ export async function login(payload: LoginPayload): Promise<AuthSession> {
   }
 
   const { data } = await http.post("/auth/login", payload);
+  const user = await resolveCurrentUser(data.token, data.username, data.role);
   return {
     token: data.token,
-    user: {
-      id: 1,
-      name: data.username,
-      email: `${data.username}@jobplus.app`,
-      role: fromBackendRole(data.role)
-    }
+    user
   };
 }
 
@@ -42,14 +38,10 @@ export async function register(payload: RegisterPayload): Promise<AuthSession> {
     password: payload.password,
     role: roleToBackend(payload.role)
   });
+  const user = await resolveCurrentUser(data.token, data.username, data.role);
   return {
     token: data.token,
-    user: {
-      id: 1,
-      name: data.username,
-      email: `${data.username}@jobplus.app`,
-      role: fromBackendRole(data.role)
-    }
+    user
   };
 }
 
@@ -93,4 +85,29 @@ function buildDemoAdminSession(): AuthSession {
       role: "admin"
     }
   };
+}
+
+async function resolveCurrentUser(token: string, username: string, role: string): Promise<AuthSession["user"]> {
+  try {
+    const { data } = await http.get("/users/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "x-skip-global-loader": "true"
+      }
+    });
+
+    return {
+      id: Number(data?.id ?? 1),
+      name: data?.fullName ?? data?.username ?? username,
+      email: data?.email ?? `${username}@jobplus.app`,
+      role: fromBackendRole(data?.role ?? role)
+    };
+  } catch {
+    return {
+      id: 1,
+      name: username,
+      email: `${username}@jobplus.app`,
+      role: fromBackendRole(role)
+    };
+  }
 }

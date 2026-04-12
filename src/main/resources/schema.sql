@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS candidate_profiles (
     address VARCHAR(255),
     education CLOB,
     experience_summary CLOB,
+    avatar_url CLOB,
     linkedin_url VARCHAR(255),
     github_url VARCHAR(255),
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

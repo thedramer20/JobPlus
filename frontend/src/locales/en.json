@@ -1,0 +1,143 @@
+{
+  "common": {
+    "appName": "JobPlus",
+    "done": "Done",
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "home": "Home",
+    "jobs": "Jobs",
+    "companies": "Companies",
+    "messages": "Messages",
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "settings": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "themeLight": "Switch to light mode",
+    "themeDark": "Switch to dark mode",
+    "light": "Light",
+    "dark": "Dark",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "signOut": "Sign out",
+    "search": "Search"
+  },
+  "languages": {
+    "en": "English",
+    "ar": "Arabic",
+    "zh": "Chinese",
+    "fr": "French",
+    "es": "Spanish"
+  },
+  "lang": {
+    "english": "English",
+    "chinese": "Chinese"
+  },
+  "search": {
+    "jobs": "Search jobs, companies, or skills",
+    "location": "Location"
+  },
+  "period": {
+    "startTime": "Start Time",
+    "endTime": "End Time"
+  },
+  "topbar": {
+    "topContent": "Top Content",
+    "network": "Network",
+    "profile": "Profile"
+  },
+  "nav": {
+    "about": "About",
+    "contact": "Contact",
+    "forEmployers": "For Employers",
+    "dashboard": "Dashboard",
+    "applications": "Applications",
+    "savedJobs": "Saved Jobs",
+    "company": "Company",
+    "postJob": "Post Job",
+    "users": "Users",
+    "categories": "Categories",
+    "reports": "Reports",
+    "analytics": "Analytics"
+  },
+  "dashboard": {
+    "workspace": "JobPlus Workspace",
+    "controlCenter": "Control Center",
+    "headline": "Ship hiring workflows with clarity",
+    "subtitle": "Premium workspace for candidates, hiring teams, and operators.",
+    "home": "Home"
+  },
+  "auth": {
+    "loginTitle": "Find your dream job faster.",
+    "loginSubtitle": "Sign in to manage applications, connect with hiring teams, and track your growth with a premium workflow.",
+    "welcomeBack": "Welcome back",
+    "loginCardSubtitle": "Use your JobPlus account to continue.",
+    "emailOrUsername": "Email or username",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "invalidCredentials": "Invalid email or password.",
+    "accountNotFound": "Account not found.",
+    "loginError": "Unable to sign in right now. Please try again.",
+    "loginAction": "Log in",
+    "loggingIn": "Signing in...",
+    "continueGoogle": "Continue with Google",
+    "continueLinkedin": "Continue with LinkedIn",
+    "quickDemoAccess": "Quick demo access",
+    "candidateDemo": "Candidate demo",
+    "employerDemo": "Employer demo",
+    "adminDemo": "Admin demo",
+    "newToJobplus": "New to JobPlus?",
+    "createAccount": "Create your account",
+    "registerTitle": "Create your JobPlus account.",
+    "registerSubtitle": "Join as a candidate or employer and manage your career or hiring workflows from one professional workspace.",
+    "signUpCardTitle": "Sign up",
+    "signUpCardSubtitle": "Build your account in under a minute.",
+    "fullName": "Full name",
+    "username": "Username",
+    "email": "Email",
+    "confirmPassword": "Confirm password",
+    "role": "Role",
+    "jobSeeker": "Job seeker",
+    "employerCompany": "Employer / company",
+    "acceptTerms": "I agree to the Terms and Privacy Policy.",
+    "creatingAccount": "Creating account...",
+    "alreadyHaveAccount": "Already have an account?",
+    "demoAdminAccess": "Demo admin access: username admin, password 000000",
+    "registerError": "We could not create your account right now. Please try again.",
+    "validations": {
+      "requiredUsername": "Email or username is required.",
+      "invalidEmail": "Please enter a valid email address.",
+      "requiredPassword": "Password is required.",
+      "requiredFullName": "Full name is required.",
+      "usernameMin": "Username must be at least 3 characters.",
+      "passwordMin": "Password must be at least 8 characters.",
+      "passwordMismatch": "Passwords do not match.",
+      "acceptTerms": "Please accept Terms and Privacy Policy."
+    }
+  },
+  "settingsPage": {
+    "title": "Profile Settings",
+    "subtitle": "Manage your profile, account security, and preferences from one control center.",
+    "tabs": {
+      "profile": "Profile Settings",
+      "profileDesc": "Photo, bio, links, and professional details",
+      "account": "Account Settings",
+      "accountDesc": "Personal info and account details",
+      "security": "Security Settings",
+      "securityDesc": "Password and session protection",
+      "notifications": "Notification Settings",
+      "notificationsDesc": "Email and in-app alert preferences",
+      "preferences": "Preferences",
+      "preferencesDesc": "Theme and language controls"
+    },
+    "profileStrength": "Profile strength: {{value}}%",
+    "loading": "Loading your settings...",
+    "saveProfile": "Save Profile Settings",
+    "saveAccount": "Save Account Settings",
+    "changePassword": "Change Password",
+    "saveNotifications": "Save Notification Settings",
+    "openProfile": "Open Profile"
+  }
+}

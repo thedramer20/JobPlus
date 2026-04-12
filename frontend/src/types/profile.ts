@@ -17,6 +17,7 @@ export interface CandidateProfile {
   address: string | null;
   education: string | null;
   experienceSummary: string | null;
+  avatarUrl?: string | null;
   linkedinUrl: string | null;
   githubUrl: string | null;
   updatedAt: string | null;
