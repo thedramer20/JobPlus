@@ -11,6 +11,9 @@ public class User {
     private String phone;
     private String role;
     private String status;
+    private String googleId;
+    private String githubId;
+    private boolean enabled;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -92,5 +95,29 @@ public class User {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
+    }
+
+    public String getGithubId() {
+        return githubId;
+    }
+
+    public void setGithubId(String githubId) {
+        this.githubId = githubId;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

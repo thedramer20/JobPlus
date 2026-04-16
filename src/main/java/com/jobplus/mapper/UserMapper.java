@@ -36,6 +36,13 @@ public interface UserMapper {
     @Select("""
         SELECT id, username, full_name, email, password_hash AS password, phone, role, status, created_at, updated_at
         FROM users
+        WHERE email = #{email}
+        """)
+    User findByEmail(String email);
+
+    @Select("""
+        SELECT id, username, full_name, email, password_hash AS password, phone, role, status, created_at, updated_at
+        FROM users
         ORDER BY created_at DESC
         """)
     List<User> findAll();

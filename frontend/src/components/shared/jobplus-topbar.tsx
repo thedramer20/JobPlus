@@ -30,9 +30,7 @@ const topbarItems: TopbarItem[] = [
     path: () => "/top-content",
     icon: (
       <IconBase>
-        <path d="M6.5 16.5 10.2 12.8l3 2.9 4.3-5.2" />
-        <path d="M15.5 10.5h3v3" />
-        <path d="M4.5 19.5h15" />
+        <path d="M12 4.8 14 9l4.7.7-3.4 3.3.8 4.7L12 15.4l-4.1 2.3.8-4.7L5.3 9.7 10 9l2-4.2Z" />
       </IconBase>
     )
   },
@@ -63,7 +61,7 @@ const topbarItems: TopbarItem[] = [
   {
     key: "network",
     labelKey: "topbar.network",
-    path: (role) => resolveRolePath(role, "profile"),
+    path: (role) => resolveRolePath(role, "network"),
     icon: (
       <IconBase>
         <circle cx="8.2" cy="8.2" r="2.5" />
@@ -158,7 +156,7 @@ export function JobPlusTopbar() {
 
 function IconBase({ children }: { children: React.ReactNode }) {
   return (
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.85" strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       {children}
     </svg>
   );
@@ -177,7 +175,7 @@ function resolveProfileHref(role?: string): string {
   return "/app/profile";
 }
 
-function resolveRolePath(role: UserRole | undefined, key: "messages" | "notifications" | "profile"): string {
+function resolveRolePath(role: UserRole | undefined, key: "messages" | "notifications" | "profile" | "network"): string {
   if (!role || role === "guest") {
     if (key === "profile") {
       return "/login";
@@ -191,7 +189,7 @@ function resolveRolePath(role: UserRole | undefined, key: "messages" | "notifica
     if (key === "notifications") {
       return "/admin/notifications";
     }
-    return "/admin/profile";
+    return key === "network" ? "/admin/profile" : "/admin/profile";
   }
   if (role === "employer") {
     if (key === "messages") {
@@ -200,6 +198,9 @@ function resolveRolePath(role: UserRole | undefined, key: "messages" | "notifica
     if (key === "notifications") {
       return "/employer/notifications";
     }
+    if (key === "network") {
+      return "/employer/network";
+    }
     return "/profile/nadia.mensah";
   }
   if (key === "messages") {
@@ -207,6 +208,9 @@ function resolveRolePath(role: UserRole | undefined, key: "messages" | "notifica
   }
   if (key === "notifications") {
     return "/app/notifications";
+  }
+  if (key === "network") {
+    return "/app/network";
   }
   return "/app/profile";
 }

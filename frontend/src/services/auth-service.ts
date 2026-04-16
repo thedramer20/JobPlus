@@ -1,4 +1,5 @@
 import { http } from "../lib/http";
+import { env } from "../lib/env";
 import { roleToBackend } from "../lib/utils";
 import type { AuthSession, UserRole } from "../types/auth";
 
@@ -13,6 +14,9 @@ interface RegisterPayload extends LoginPayload {
   email?: string;
 }
 
+export type SocialProvider = "google" | "github";
+export type SocialAuthMode = "signin" | "link";
+
 export async function login(payload: LoginPayload): Promise<AuthSession> {
   if (isDemoAdminCredentials(payload.username, payload.password)) {
     return buildDemoAdminSession();
@@ -24,6 +28,42 @@ export async function login(payload: LoginPayload): Promise<AuthSession> {
     token: data.token,
     user
   };
+}
+
+export async function getSocialProviders(): Promise<Record<SocialProvider, boolean>> {
+  const { data } = await http.get<Record<string, boolean>>("/auth/social/providers", {
+    headers: { "x-skip-global-loader": "true" }
+  });
+  return {
+    google: Boolean(data.google),
+    github: Boolean(data.github)
+  };
+}
+
+export function startSocialAuth(provider: SocialProvider, mode: SocialAuthMode, linkToken?: string | null): void {
+  const params = new URLSearchParams({ mode });
+  if (mode === "link" && linkToken) {
+    params.set("linkToken", linkToken);
+  }
+  const url = `${env.apiBaseUrl}/auth/social/${provider}/start?${params.toString()}`;
+  window.location.href = url;
+}
+
+export async function buildSessionFromToken(token: string, fallback?: { username?: string; role?: string }): Promise<AuthSession> {
+  const user = await resolveCurrentUser(token, fallback?.username ?? "user", fallback?.role ?? "ROLE_CANDIDATE");
+  return { token, user };
+}
+
+export async function getLinkedSocialProviders(): Promise<Record<SocialProvider, boolean>> {
+  const { data } = await http.get<Record<string, boolean>>("/auth/social/links");
+  return {
+    google: Boolean(data.google),
+    github: Boolean(data.github)
+  };
+}
+
+export async function unlinkSocialProvider(provider: SocialProvider): Promise<void> {
+  await http.delete(`/auth/social/links/${provider}`);
 }
 
 export async function register(payload: RegisterPayload): Promise<AuthSession> {

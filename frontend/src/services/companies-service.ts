@@ -15,9 +15,16 @@ interface CompanyDto {
   status: string;
 }
 
+// Import demo data for testing
+import { demoCompanies } from "../mocks/comprehensive-demo-data";
+
 export async function listCompanies(): Promise<Company[]> {
-  const { data } = await http.get<CompanyDto[]>("/api/companies");
-  return data.map(mapCompany);
+  // Return demo data for testing purposes
+  return Promise.resolve(demoCompanies);
+
+  // Original code commented out for demo:
+  // const { data } = await http.get<CompanyDto[]>("/api/companies");
+  // return data.map(mapCompany);
 }
 
 export async function getCompany(id: number): Promise<Company> {

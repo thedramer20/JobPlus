@@ -14,6 +14,7 @@ export interface AdminKpi {
   value: number;
   deltaText: string;
   status: "up" | "down" | "neutral";
+  severity?: "normal" | "watch" | "critical";
 }
 
 export interface AdminTrendPoint {
@@ -40,6 +41,11 @@ export interface AdminUserRow {
   status: AdminEntityStatus;
   joinedDate: string;
   lastActivity: string;
+  verification: "verified" | "pending" | "unverified";
+  country: string;
+  riskLevel: "low" | "medium" | "high";
+  premium: boolean;
+  lastIp: string;
 }
 
 export interface AdminCompanyRow {
@@ -53,6 +59,9 @@ export interface AdminCompanyRow {
   verificationStatus: "verified" | "unverified" | "pending";
   status: AdminEntityStatus;
   createdDate: string;
+  trustScore: number;
+  complaintCount: number;
+  recruitersLinked: number;
 }
 
 export interface AdminJobRow {
@@ -66,6 +75,9 @@ export interface AdminJobRow {
   postedDate: string;
   applicationsCount: number;
   status: AdminEntityStatus;
+  reportCount: number;
+  qualityScore: number;
+  fraudRiskScore: number;
 }
 
 export interface AdminApplicationRow {
@@ -96,6 +108,7 @@ export interface AdminReportRow {
   reason: string;
   date: string;
   status: "pending" | "reviewing" | "resolved" | "dismissed";
+  severity: "critical" | "high" | "medium" | "low";
 }
 
 export interface AdminNotificationRow {
@@ -104,6 +117,8 @@ export interface AdminNotificationRow {
   type: "info" | "warning" | "alert" | "success";
   isRead: boolean;
   createdAt: string;
+  priority: "critical" | "high" | "medium" | "low";
+  module: "users" | "companies" | "jobs" | "moderation" | "support" | "system";
 }
 
 export interface AdminSystemSettings {
@@ -114,4 +129,50 @@ export interface AdminSystemSettings {
   notificationsEnabled: boolean;
   maintenanceMode: boolean;
   defaultRole: "candidate" | "employer";
+  featureFlags: string[];
+  moderationThreshold: number;
+  verificationSlaHours: number;
+}
+
+export interface AdminSupportTicketRow {
+  id: number;
+  subject: string;
+  requester: string;
+  requesterRole: "candidate" | "employer";
+  category: "verification" | "payment" | "technical" | "appeal" | "abuse";
+  priority: "critical" | "high" | "medium" | "low";
+  status: "open" | "in_progress" | "waiting" | "resolved";
+  assignedTo: string;
+  slaHoursLeft: number;
+  createdAt: string;
+}
+
+export interface AdminAuditLogRow {
+  id: number;
+  actor: string;
+  action: string;
+  target: string;
+  severity: "critical" | "high" | "medium" | "low";
+  previousValue: string;
+  newValue: string;
+  reason: string;
+  timestamp: string;
+}
+
+export interface AdminRolePermission {
+  id: string;
+  roleName: string;
+  description: string;
+  members: number;
+  permissions: string[];
+}
+
+export interface AdminSystemAlert {
+  id: number;
+  title: string;
+  description: string;
+  severity: "critical" | "high" | "medium" | "low";
+  module: "security" | "moderation" | "applications" | "infrastructure";
+  startedAt: string;
+  isAcknowledged: boolean;
 }

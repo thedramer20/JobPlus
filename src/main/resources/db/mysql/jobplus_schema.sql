@@ -177,6 +177,20 @@ CREATE TABLE IF NOT EXISTS notifications (
         FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+CREATE TABLE IF NOT EXISTS oauth_accounts (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id BIGINT NOT NULL,
+    provider VARCHAR(30) NOT NULL,
+    provider_user_id VARCHAR(255) NOT NULL,
+    provider_email VARCHAR(255),
+    linked_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_login_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_oauth_accounts_user
+        FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT uq_oauth_provider_identity UNIQUE (provider, provider_user_id),
+    CONSTRAINT uq_oauth_user_provider UNIQUE (user_id, provider)
+);
+
 CREATE INDEX idx_users_role ON users(role);
 CREATE INDEX idx_users_status ON users(status);
 CREATE INDEX idx_companies_status ON companies(status);
@@ -192,6 +206,7 @@ CREATE INDEX idx_applications_status ON applications(status);
 CREATE INDEX idx_application_history_application_id ON application_status_history(application_id);
 CREATE INDEX idx_resumes_user_id ON resumes(user_id);
 CREATE INDEX idx_notifications_user_id ON notifications(user_id);
+CREATE INDEX idx_oauth_accounts_user_id ON oauth_accounts(user_id);
 
 INSERT INTO job_categories (name, description)
 VALUES

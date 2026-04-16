@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { usePreferences } from "../context/PreferencesContext";
 import { authStore } from "../store/auth-store";
 import { changePassword, getCandidateProfile, getUserProfile, updateCandidateProfile, updateUserProfile } from "../services/profile-service";
+import { getLinkedSocialProviders, getSocialProviders, startSocialAuth, unlinkSocialProvider, type SocialProvider } from "../services/auth-service";
 import { supportedLanguages, type SupportedLanguage } from "../i18n";
+import type { UiPersonalityMode } from "../lib/ui-intelligence";
 
 type SettingsTab = "profile" | "account" | "security" | "notifications" | "preferences";
 
@@ -35,9 +37,10 @@ const MAX_AVATAR_FILE_SIZE = 2 * 1024 * 1024;
 
 export function SettingsPage() {
   const queryClient = useQueryClient();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation();
-  const { user } = authStore();
-  const { theme, setTheme, language, setLanguage } = usePreferences();
+  const { user, token } = authStore();
+  const { theme, setTheme, language, setLanguage, uiPersonality, setUiPersonality } = usePreferences();
   const isCandidate = user?.role === "candidate";
 
   const [activeTab, setActiveTab] = useState<SettingsTab>("profile");
@@ -45,6 +48,12 @@ export function SettingsPage() {
 
   const userQuery = useQuery({ queryKey: ["profile", "user"], queryFn: getUserProfile });
   const candidateQuery = useQuery({ queryKey: ["profile", "candidate"], queryFn: getCandidateProfile, enabled: isCandidate });
+  const socialProvidersQuery = useQuery({ queryKey: ["auth", "social-providers"], queryFn: getSocialProviders, retry: 0 });
+  const socialLinksQuery = useQuery({
+    queryKey: ["auth", "social-links"],
+    queryFn: getLinkedSocialProviders,
+    enabled: Boolean(user)
+  });
 
   const [accountForm, setAccountForm] = useState({
     fullName: "",
@@ -78,6 +87,16 @@ export function SettingsPage() {
     applicationUpdatesInApp: true,
     applicationUpdatesEmail: true
   });
+
+  useEffect(() => {
+    if (searchParams.get("linked") === "success") {
+      setFeedback({ type: "success", text: "Social account linked successfully." });
+      setSearchParams((current) => {
+        current.delete("linked");
+        return current;
+      }, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   useEffect(() => {
     if (!userQuery.data) return;
@@ -170,6 +189,15 @@ export function SettingsPage() {
     onError: (error: unknown) => setFeedback({ type: "error", text: getErrorMessage(error) ?? "Unable to change password." })
   });
 
+  const unlinkSocialMutation = useMutation({
+    mutationFn: (provider: SocialProvider) => unlinkSocialProvider(provider),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["auth", "social-links"] });
+      setFeedback({ type: "success", text: "Account disconnected successfully." });
+    },
+    onError: () => setFeedback({ type: "error", text: "Unable to disconnect account." })
+  });
+
   const loadingProfile = userQuery.isLoading || (isCandidate && candidateQuery.isLoading);
   const profileCompletion = useMemo(() => {
     const checks = [Boolean(accountForm.fullName), Boolean(profileForm.about), Boolean(profileForm.location), Boolean(avatarState.previewUrl), skills.length > 0, experience.length > 0];
@@ -226,6 +254,19 @@ export function SettingsPage() {
     if (!accountForm.fullName.trim()) return setFeedback({ type: "error", text: "Full name is required." });
     if (!isValidEmail(accountForm.email)) return setFeedback({ type: "error", text: "Please enter a valid email address." });
     accountMutation.mutate();
+  }
+
+  function connectSocial(provider: SocialProvider) {
+    const enabled = socialProvidersQuery.data?.[provider];
+    if (!enabled) {
+      setFeedback({ type: "error", text: `${provider[0].toUpperCase() + provider.slice(1)} is not configured by server.` });
+      return;
+    }
+    if (!token) {
+      setFeedback({ type: "error", text: "Sign in again to link social accounts." });
+      return;
+    }
+    startSocialAuth(provider, "link", token);
   }
 
   return (
@@ -349,6 +390,45 @@ export function SettingsPage() {
                   <div className="jp-settings-actions">
                     <button type="button" className="btn btn-primary" onClick={saveAccountSection} disabled={accountMutation.isPending}>{accountMutation.isPending ? t("common.loading") : t("settingsPage.saveAccount")}</button>
                   </div>
+
+                  <article className="surface-muted" style={{ padding: "1rem", marginTop: "1rem" }}>
+                    <div className="space-between" style={{ alignItems: "center" }}>
+                      <div>
+                        <strong>Connected Accounts</strong>
+                        <div className="helper">Link Google or GitHub for faster secure sign-in.</div>
+                      </div>
+                      <span className="pill">{socialLinksQuery.data ? Object.values(socialLinksQuery.data).filter(Boolean).length : 0} linked</span>
+                    </div>
+                    <div className="row" style={{ marginTop: "0.8rem", flexWrap: "wrap" }}>
+                      {(["google", "github"] as SocialProvider[]).map((provider) => {
+                        const linked = Boolean(socialLinksQuery.data?.[provider]);
+                        return (
+                          <div key={provider} className="row" style={{ gap: "0.5rem", alignItems: "center" }}>
+                            <span className={`tag ${linked ? "status-success" : ""}`}>{provider.toUpperCase()}</span>
+                            {linked ? (
+                              <button
+                                type="button"
+                                className="btn btn-secondary"
+                                onClick={() => unlinkSocialMutation.mutate(provider)}
+                                disabled={unlinkSocialMutation.isPending}
+                              >
+                                Disconnect
+                              </button>
+                            ) : (
+                              <button
+                                type="button"
+                                className="btn btn-secondary"
+                                onClick={() => connectSocial(provider)}
+                                disabled={!socialProvidersQuery.data?.[provider]}
+                              >
+                                Connect
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </article>
                 </section>
               ) : null}
 
@@ -384,6 +464,17 @@ export function SettingsPage() {
                   <div className="form-grid">
                     <Field label={t("common.theme")}><select className="select" value={theme} onChange={(e) => setTheme(e.target.value as "light" | "dark")}><option value="light">{t("common.light")}</option><option value="dark">{t("common.dark")}</option></select></Field>
                     <Field label={t("common.language")}><select className="select" value={language} onChange={(e) => setLanguage(e.target.value as SupportedLanguage)}>{supportedLanguages.map((code) => <option key={code} value={code}>{t(`languages.${code}`)}</option>)}</select></Field>
+                    <Field label="UI Personality" className="jp-settings-field-span">
+                      <select
+                        className="select"
+                        value={uiPersonality}
+                        onChange={(event) => setUiPersonality(event.target.value as UiPersonalityMode)}
+                      >
+                        <option value="minimal">Minimal Mode</option>
+                        <option value="professional">Professional Mode</option>
+                        <option value="dynamic">Dynamic AI Mode</option>
+                      </select>
+                    </Field>
                   </div>
                   <div className="jp-settings-actions"><Link className="btn btn-secondary" to={user?.role === "candidate" ? "/app/profile" : "/profile/nadia.mensah"}>{t("settingsPage.openProfile")}</Link></div>
                 </section>

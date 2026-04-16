@@ -19,11 +19,13 @@ const ContactPage = lazy(async () => ({ default: (await import("../pages/contact
 const TopContentPage = lazy(async () => ({ default: (await import("../pages/top-content-page")).TopContentPage }));
 const ForgotPasswordPage = lazy(async () => ({ default: (await import("../pages/forgot-password-page")).ForgotPasswordPage }));
 const ResetPasswordPage = lazy(async () => ({ default: (await import("../pages/reset-password-page")).ResetPasswordPage }));
+const AuthCallbackPage = lazy(async () => ({ default: (await import("../pages/auth-callback-page")).AuthCallbackPage }));
 const CandidateDashboardPage = lazy(async () => ({ default: (await import("../pages/candidate-dashboard-page")).CandidateDashboardPage }));
 const ApplicationsPage = lazy(async () => ({ default: (await import("../pages/applications-page")).ApplicationsPage }));
 const NotificationsPage = lazy(async () => ({ default: (await import("../pages/notifications-page")).NotificationsPage }));
 const MessagesPage = lazy(async () => ({ default: (await import("../pages/messages-page")).MessagesPage }));
 const ProfilePage = lazy(async () => ({ default: (await import("../pages/profile-page")).ProfilePage }));
+const NetworkPage = lazy(async () => ({ default: (await import("../pages/network-page")).NetworkPage }));
 const SavedJobsPage = lazy(async () => ({ default: (await import("../pages/saved-jobs-page")).SavedJobsPage }));
 const SettingsPage = lazy(async () => ({ default: (await import("../pages/settings-page")).SettingsPage }));
 const EmployerDashboardPage = lazy(async () => ({ default: (await import("../pages/employer-dashboard-page")).EmployerDashboardPage }));
@@ -43,6 +45,10 @@ const AdminNotificationsPage = lazy(async () => ({ default: (await import("../pa
 const AdminAnalyticsPage = lazy(async () => ({ default: (await import("../pages/admin/admin-analytics-page")).AdminAnalyticsPage }));
 const AdminSettingsPage = lazy(async () => ({ default: (await import("../pages/admin/admin-settings-page")).AdminSettingsPage }));
 const AdminProfilePage = lazy(async () => ({ default: (await import("../pages/admin/admin-profile-page")).AdminProfilePage }));
+const AdminSupportPage = lazy(async () => ({ default: (await import("../pages/admin/admin-support-page")).AdminSupportPage }));
+const AdminPermissionsPage = lazy(async () => ({ default: (await import("../pages/admin/admin-permissions-page")).AdminPermissionsPage }));
+const AdminAuditPage = lazy(async () => ({ default: (await import("../pages/admin/admin-audit-page")).AdminAuditPage }));
+const AdminMonitoringPage = lazy(async () => ({ default: (await import("../pages/admin/admin-monitoring-page")).AdminMonitoringPage }));
 const ForbiddenPage = lazy(async () => ({ default: (await import("../pages/forbidden-page")).ForbiddenPage }));
 const NotFoundPage = lazy(async () => ({ default: (await import("../pages/not-found-page")).NotFoundPage }));
 const CategoryDetailsPage = lazy(async () => ({ default: (await import("../pages/category-details-page")).CategoryDetailsPage }));
@@ -81,7 +87,8 @@ export const router = createBrowserRouter([
           { path: "/login", element: withSuspense(LoginPage) },
           { path: "/register", element: withSuspense(RegisterPage) },
           { path: "/forgot-password", element: withSuspense(ForgotPasswordPage) },
-          { path: "/reset-password", element: withSuspense(ResetPasswordPage) }
+          { path: "/reset-password", element: withSuspense(ResetPasswordPage) },
+          { path: "/auth/callback", element: withSuspense(AuthCallbackPage) }
         ]
       },
       {
@@ -98,6 +105,7 @@ export const router = createBrowserRouter([
                   { path: "applications", element: withSuspense(ApplicationsPage) },
                   { path: "messages", element: withSuspense(MessagesPage) },
                   { path: "notifications", element: withSuspense(NotificationsPage) },
+                  { path: "network", element: withSuspense(NetworkPage) },
                   { path: "profile", element: withSuspense(ProfilePage) },
                   { path: "saved-jobs", element: withSuspense(SavedJobsPage) },
                   { path: "settings", element: withSuspense(SettingsPage) }
@@ -119,6 +127,7 @@ export const router = createBrowserRouter([
                   { path: "jobs/:jobId/edit", element: withSuspense(EditJobPage) },
                   { path: "messages", element: withSuspense(MessagesPage) },
                   { path: "notifications", element: withSuspense(NotificationsPage) },
+                  { path: "network", element: withSuspense(NetworkPage) },
                   { path: "settings", element: withSuspense(SettingsPage) }
                 ]
               }
@@ -140,6 +149,10 @@ export const router = createBrowserRouter([
                   { path: "reports", element: withSuspense(AdminReportsPage) },
                   { path: "notifications", element: withSuspense(AdminNotificationsPage) },
                   { path: "analytics", element: withSuspense(AdminAnalyticsPage) },
+                  { path: "support", element: withSuspense(AdminSupportPage) },
+                  { path: "permissions", element: withSuspense(AdminPermissionsPage) },
+                  { path: "audit-logs", element: withSuspense(AdminAuditPage) },
+                  { path: "monitoring", element: withSuspense(AdminMonitoringPage) },
                   { path: "settings", element: withSuspense(AdminSettingsPage) },
                   { path: "profile", element: withSuspense(AdminProfilePage) }
                 ]

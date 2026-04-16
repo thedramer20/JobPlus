@@ -37,28 +37,111 @@ export class ErrorBoundary extends React.Component<React.PropsWithChildren, Erro
               border: "1px solid #dbe4ef",
               borderRadius: "24px",
               boxShadow: "0 18px 60px rgba(15, 23, 42, 0.08)",
-              padding: "2rem"
+              padding: "2rem",
+              textAlign: "center"
             }}
           >
-            <div style={{ fontSize: "0.82rem", fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: "#2563eb" }}>
-              JobPlus startup error
+            <div style={{
+              width: "80px",
+              height: "80px",
+              margin: "0 auto 1.5rem",
+              borderRadius: "50%",
+              background: "#f8fafc",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "2.5rem"
+            }}>
+              ⚠️
             </div>
-            <h1 style={{ margin: "0.6rem 0 0.9rem", fontSize: "2rem" }}>The frontend crashed during render.</h1>
-            <p style={{ margin: 0, color: "#526072" }}>
-              The app caught the failure instead of showing a blank screen. Refresh after the fix or check the browser console for the full stack.
+            <h1 style={{
+              margin: "0.6rem 0 0.9rem",
+              fontSize: "2rem",
+              fontWeight: 700,
+              color: "#0f172a"
+            }}>
+              Oops! Something went wrong
+            </h1>
+            <p style={{
+              margin: 0,
+              color: "#526072",
+              fontSize: "1.1rem",
+              lineHeight: "1.6",
+              marginBottom: "2rem"
+            }}>
+              {this.state.error.message || "An unexpected error occurred while loading this page."}
             </p>
-            <pre
-              style={{
-                marginTop: "1.25rem",
+            <div style={{
+              display: "flex",
+              gap: "1rem",
+              justifyContent: "center",
+              flexWrap: "wrap"
+            }}>
+              <button
+                onClick={() => window.location.href = "/"}
+                style={{
+                  padding: "0.85rem 1.5rem",
+                  borderRadius: "16px",
+                  background: "#2563eb",
+                  color: "#ffffff",
+                  border: "none",
+                  fontSize: "1rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  transition: "all 0.2s ease"
+                }}
+                onMouseOver={(e) => e.currentTarget.style.transform = "translateY(-2px)"}
+                onMouseOut={(e) => e.currentTarget.style.transform = "translateY(0)"}
+              >
+                Go Home
+              </button>
+              <button
+                onClick={() => window.location.reload()}
+                style={{
+                  padding: "0.85rem 1.5rem",
+                  borderRadius: "16px",
+                  background: "#ffffff",
+                  color: "#0f172a",
+                  border: "1px solid #dbe4ef",
+                  fontSize: "1rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  transition: "all 0.2s ease"
+                }}
+                onMouseOver={(e) => e.currentTarget.style.transform = "translateY(-2px)"}
+                onMouseOut={(e) => e.currentTarget.style.transform = "translateY(0)"}
+              >
+                Try Again
+              </button>
+            </div>
+            {process.env.NODE_ENV === "development" && (
+              <details style={{
+                marginTop: "2rem",
                 padding: "1rem",
-                overflowX: "auto",
                 borderRadius: "16px",
-                background: "#0f172a",
-                color: "#f8fafc"
-              }}
-            >
-              {this.state.error.message}
-            </pre>
+                background: "#f8fafc",
+                textAlign: "left",
+                fontSize: "0.9rem",
+                color: "#526072"
+              }}>
+                <summary style={{
+                  cursor: "pointer",
+                  fontWeight: 600,
+                  marginBottom: "0.5rem",
+                  color: "#0f172a"
+                }}>
+                  Developer Details
+                </summary>
+                <pre style={{
+                  margin: 0,
+                  whiteSpace: "pre-wrap",
+                  wordBreak: "break-word",
+                  fontFamily: "monospace"
+                }}>
+                  {this.state.error.stack}
+                </pre>
+              </details>
+            )}
           </div>
         </div>
       );

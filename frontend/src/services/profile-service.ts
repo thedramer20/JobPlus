@@ -1,5 +1,10 @@
 import { http } from "../lib/http";
 import type { CandidateProfile, Resume, SavedJob, UserProfile } from "../types/profile";
+import { demoSavedJobs, demoJobs } from "../mocks/comprehensive-demo-data";
+
+// Demo saved jobs store
+let demoSavedJobsStore: SavedJob[] = [...demoSavedJobs];
+let demoNextSavedJobId = 4;
 
 export async function getUserProfile(): Promise<UserProfile> {
   const { data } = await http.get<UserProfile>("/users/me");
@@ -51,15 +56,51 @@ export async function deleteResume(id: number): Promise<void> {
 }
 
 export async function listSavedJobs(): Promise<SavedJob[]> {
-  const { data } = await http.get<SavedJob[]>("/saved-jobs/me");
-  return data;
+  // Return demo saved jobs for testing
+  return Promise.resolve([...demoSavedJobsStore]);
+
+  // Original code commented out for demo:
+  // const { data } = await http.get<SavedJob[]>("/saved-jobs/me");
+  // return data;
 }
 
 export async function saveJob(jobId: number): Promise<SavedJob> {
-  const { data } = await http.post<SavedJob>("/saved-jobs", { jobId });
-  return data;
+  // Check if job is already saved
+  const existing = demoSavedJobsStore.find(item => item.jobId === jobId);
+  if (existing) {
+    return existing;
+  }
+
+  // Find job details from demo data
+  const job = demoJobs.find(j => j.id === jobId);
+  if (!job) {
+    throw new Error("Job not found");
+  }
+
+  // Create new saved job entry with actual job details
+  const newSavedJob: SavedJob = {
+    id: demoNextSavedJobId++,
+    jobId,
+    jobTitle: job.title,
+    companyName: job.company,
+    location: job.location,
+    jobType: job.type,
+    status: job.status,
+    savedAt: new Date().toISOString()
+  };
+
+  demoSavedJobsStore = [newSavedJob, ...demoSavedJobsStore];
+  return newSavedJob;
+
+  // Original code commented out for demo:
+  // const { data } = await http.post<SavedJob>("/saved-jobs", { jobId });
+  // return data;
 }
 
 export async function removeSavedJob(jobId: number): Promise<void> {
-  await http.delete(`/saved-jobs/${jobId}`);
+  // Remove from demo store
+  demoSavedJobsStore = demoSavedJobsStore.filter(item => item.jobId !== jobId);
+
+  // Original code commented out for demo:
+  // await http.delete(`/saved-jobs/${jobId}`);
 }

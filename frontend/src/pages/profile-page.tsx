@@ -48,6 +48,8 @@ export function ProfilePage() {
   const [connectState, setConnectState] = useState<ConnectState>("connect");
   const [followed, setFollowed] = useState(false);
   const [messageDraft, setMessageDraft] = useState("");
+  const [offerPower, setOfferPower] = useState(81);
+  const [snapshotOpen, setSnapshotOpen] = useState(true);
   const [contactOpen, setContactOpen] = useState(false);
   const [profileEditOpen, setProfileEditOpen] = useState(false);
   const [aboutEditOpen, setAboutEditOpen] = useState(false);
@@ -91,6 +93,26 @@ export function ProfilePage() {
   }, [candidateQuery.data?.address, candidateQuery.data?.avatarUrl, candidateQuery.data?.experienceSummary, overrides, publicProfile, requestedUser, user?.company, user?.name, user?.title, userQuery.data?.fullName, userQuery.data?.username, viewingOwn]);
 
   const aboutText = aboutOverride ?? candidateQuery.data?.experienceSummary ?? "Passionate developer focused on product quality, hiring workflows, and clean architecture.";
+  const profileConversion = useMemo(() => {
+    const completenessSignals = [
+      Boolean(identity.fullName),
+      Boolean(identity.title),
+      Boolean(aboutText && aboutText.length > 60),
+      skillItems.length > 0,
+      expItems.length > 0,
+      eduItems.length > 0
+    ];
+    const completeness = Math.round((completenessSignals.filter(Boolean).length / completenessSignals.length) * 100);
+    const engagement = Math.min(100, 40 + skillItems.reduce((sum, item) => sum + item.endorsements, 0) / 6);
+    const recruiterResponse = connectState === "connected" ? 76 : connectState === "pending" ? 58 : 46;
+    const score = Math.round(completeness * 0.4 + engagement * 0.3 + recruiterResponse * 0.3);
+    const fixes = [
+      !aboutText || aboutText.length < 80 ? "Expand your About section with measurable impact." : null,
+      skillItems.length < 5 ? "Add at least 2 role-critical skills for stronger matching." : null,
+      expItems.length < 2 ? "Add one more recent experience entry to improve recruiter confidence." : null
+    ].filter(Boolean) as string[];
+    return { score, completeness, engagement: Math.round(engagement), recruiterResponse, fixes };
+  }, [identity.fullName, identity.title, aboutText, skillItems, expItems, eduItems, connectState]);
   const loading = viewingOwn && (userQuery.isLoading || candidateQuery.isLoading || companyQuery.isLoading || employerJobsQuery.isLoading);
 
   const profileMutation = useMutation({
@@ -196,7 +218,58 @@ export function ProfilePage() {
             </div>
           </article>
 
+          <article className="surface jp-profile-card">
+            <div className="space-between" style={{ alignItems: "center" }}>
+              <h2 style={{ margin: 0 }}>Profile Conversion System</h2>
+              <span className="pill">Score {profileConversion.score}%</span>
+            </div>
+            <div className="jp-conversion-bars">
+              <div className="jp-conversion-row"><span>Completeness</span><strong>{profileConversion.completeness}%</strong></div>
+              <div className="jp-conversion-row"><span>Engagement strength</span><strong>{profileConversion.engagement}%</strong></div>
+              <div className="jp-conversion-row"><span>Recruiter response signal</span><strong>{profileConversion.recruiterResponse}%</strong></div>
+            </div>
+            {profileConversion.fixes.length ? (
+              <ul className="jp-quality-list" style={{ marginTop: "0.6rem" }}>
+                {profileConversion.fixes.map((fix) => (
+                  <li key={fix}>{fix}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="helper" style={{ marginTop: "0.55rem" }}>
+                Your profile is recruiter-ready. Keep momentum with targeted outreach this week.
+              </p>
+            )}
+          </article>
+
           <article id="about-section" className="surface jp-profile-card"><div className="space-between"><h2 style={{ margin: 0 }}>About</h2>{viewingOwn ? <button className="btn btn-secondary" onClick={openAboutEditor}>Edit</button> : null}</div><p className="jp-profile-text">{aboutText}</p></article>
+
+          <article className="surface jp-profile-card">
+            <div className="space-between">
+              <strong>Role Reality Snapshot</strong>
+              <button className="btn btn-ghost" type="button" onClick={() => setSnapshotOpen((open) => !open)}>
+                {snapshotOpen ? "Hide" : "Show"}
+              </button>
+            </div>
+            {snapshotOpen ? (
+              <div className="stack" style={{ gap: "0.8rem", marginTop: "1rem" }}>
+                <div className="space-between">
+                  <span className="helper">Job-match signal</span>
+                  <strong>88%</strong>
+                </div>
+                <div className="space-between">
+                  <span className="helper">Growth leverage</span>
+                  <strong>79%</strong>
+                </div>
+                <div className="space-between">
+                  <span className="helper">Offer momentum</span>
+                  <strong>{offerPower}%</strong>
+                </div>
+                <div className="jp-progress-bar" style={{ marginTop: "0.5rem" }}>
+                  <div className="jp-progress-fill" style={{ width: `${offerPower}%` }} />
+                </div>
+              </div>
+            ) : null}
+          </article>
 
           {viewingOwn && user?.role === "employer" && companyQuery.data ? (
             <article className="surface jp-profile-card">

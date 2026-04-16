@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { JobDetailsSkeleton } from "../components/shared/content-skeletons";
 import { EmptyState } from "../components/shared/empty-state";
 import { applyToJob } from "../services/applications-service";
@@ -21,6 +21,8 @@ export function ApplyPage() {
     mutationFn: applyToJob,
     onSuccess: () => navigate("/app/applications")
   });
+  const qualityGate = useMemo(() => evaluateApplicationQuality({ note, coverLetter, resumeId, jobTitle: job?.title ?? "" }), [note, coverLetter, resumeId, job?.title]);
+  const readinessChecklist = useMemo(() => buildReadinessChecklist(coverLetter, job?.requirements ?? []), [coverLetter, job?.requirements]);
 
   if (jobLoading) {
     return (
@@ -55,6 +57,30 @@ export function ApplyPage() {
             <span className="is-active">2. Add profile details</span>
             <span>3. Submit</span>
           </div>
+
+          <section className="surface jp-application-lock">
+            <div className="space-between" style={{ alignItems: "center" }}>
+              <strong>Application Quality Lock</strong>
+              <span className={`tag ${qualityGate.ready ? "" : "status-warning"}`}>
+                {qualityGate.ready ? "Ready to submit" : "Improve before submit"}
+              </span>
+            </div>
+            <p className="helper" style={{ margin: "0.45rem 0 0.65rem" }}>
+              {qualityGate.message}
+            </p>
+            {!qualityGate.ready ? (
+              <ul className="jp-quality-list">
+                {qualityGate.fixes.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            ) : null}
+            <div className="jp-interview-sandbox">
+              <strong>Interview Readiness Sandbox</strong>
+              <div className="helper">Likely recruiter focus: {readinessChecklist.focus}</div>
+              <div className="helper">Confidence: {readinessChecklist.confidence}%</div>
+            </div>
+          </section>
 
           <div className="form-grid" style={{ marginTop: "1rem" }}>
             <div className="field">
@@ -100,7 +126,7 @@ export function ApplyPage() {
             <div className="helper">Your application will be tracked in dashboard with status updates.</div>
             <button
               className="btn btn-primary"
-              disabled={!consent || mutation.isPending}
+              disabled={!consent || mutation.isPending || !qualityGate.ready}
               onClick={() =>
                 mutation.mutate({
                   jobId,
@@ -128,4 +154,36 @@ export function ApplyPage() {
       </div>
     </section>
   );
+}
+
+function evaluateApplicationQuality(input: { note: string; coverLetter: string; resumeId: string; jobTitle: string }) {
+  const fixes: string[] = [];
+  const cover = input.coverLetter.trim();
+  const note = input.note.trim();
+
+  if (!note) fixes.push("Add a focused application note with your strongest role-specific value.");
+  if (cover.length < 180) fixes.push("Expand your cover letter to show concrete impact, not only motivation.");
+  if (!input.resumeId) fixes.push("Attach a resume for higher recruiter confidence.");
+  if (input.jobTitle && !cover.toLowerCase().includes(input.jobTitle.split(" ")[0].toLowerCase())) {
+    fixes.push("Reference the target role directly in your cover letter for stronger relevance.");
+  }
+
+  return {
+    ready: fixes.length === 0,
+    fixes,
+    message:
+      fixes.length === 0
+        ? "Your application passes quality checks. This should present as recruiter-ready."
+        : `This application has ${fixes.length} quality gaps.`
+  };
+}
+
+function buildReadinessChecklist(coverLetter: string, requirements: string[]) {
+  const cover = coverLetter.toLowerCase();
+  const hits = requirements.filter((req) => cover.includes(req.toLowerCase().split(" ")[0])).length;
+  const confidence = Math.min(96, Math.round((hits / Math.max(1, requirements.length)) * 100 + 22));
+  return {
+    focus: requirements.slice(0, 2).join(" + ") || "Role impact + communication clarity",
+    confidence
+  };
 }

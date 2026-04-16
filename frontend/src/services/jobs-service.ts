@@ -38,10 +38,17 @@ interface JobPayload {
   applicationDeadline: string | null;
 }
 
+// Import comprehensive demo data for testing
+import { demoJobs } from "../mocks/comprehensive-demo-data";
+
 export async function listJobs(filters?: Partial<JobFilters>): Promise<Job[]> {
-  const params = buildJobParams(filters);
-  const { data } = await http.get<JobDto[]>(params ? `/jobs?${params.toString()}` : "/jobs");
-  return data.map(mapJob);
+  // Return demo data for testing purposes
+  return Promise.resolve(demoJobs);
+
+  // Original code commented out for demo:
+  // const params = buildJobParams(filters);
+  // const { data } = await http.get<JobDto[]>(params ? `/jobs?${params.toString()}` : "/jobs");
+  // return data.map(mapJob);
 }
 
 export async function getJob(id: number): Promise<Job> {

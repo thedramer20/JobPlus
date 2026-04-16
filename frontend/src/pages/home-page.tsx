@@ -6,10 +6,12 @@ import { JobCard } from "../components/shared/job-card";
 import { SearchBar } from "../components/shared/search-bar";
 import { SkeletonList } from "../components/shared/skeleton-list";
 import { StatCard } from "../components/shared/stat-card";
+import { AdaptiveInsightsPanel } from "../components/shared/adaptive-insights-panel";
 import { listCompanies } from "../services/companies-service";
 import { listJobs } from "../services/jobs-service";
 import { createPost, createPostComment, listPostCategories, listPostComments, listPosts, listTrendingPosts, togglePostLike } from "../services/posts-service";
 import { authStore } from "../store/auth-store";
+import { recordIntentInteraction } from "../lib/ui-intelligence";
 import type { PostComment } from "../types/post";
 
 // Topics will be dynamically generated from categories
@@ -23,6 +25,10 @@ export function HomePage() {
   const [activeCommentPostId, setActiveCommentPostId] = useState<number | null>(null);
   const [commentDraft, setCommentDraft] = useState("");
   const [commentsByPost, setCommentsByPost] = useState<Record<number, PostComment[]>>({});
+  const [interviewSandboxOpen, setInterviewSandboxOpen] = useState(false);
+  const [autopilotEnabled, setAutopilotEnabled] = useState(true);
+  const [rescueStatus, setRescueStatus] = useState("critical");
+  const [careerFocus, setCareerFocus] = useState(74);
 
   // Optimize queries with better caching and stale time
   const { data: jobs = [], isLoading: jobsLoading } = useQuery({ 
@@ -151,6 +157,17 @@ export function HomePage() {
     }
     return source.filter((post) => selectedTopics.includes(post.categoryName)).slice(0, 4);
   }, [posts, selectedTopics, trendingPosts, categories.length]);
+  const dominanceInsights = useMemo(() => {
+    const bestAction = jobs[0];
+    const missed = jobs.filter((job) => (job.salaryMax ?? 0) >= 120000).length;
+    const weeklyProgress = Math.min(100, 36 + posts.length * 4 + selectedTopics.length * 5);
+    return {
+      bestAction: bestAction ? `Apply to ${bestAction.title} at ${bestAction.company}` : "Complete one high-quality application today",
+      missed,
+      weeklyProgress,
+      rescueMode: weeklyProgress < 55
+    };
+  }, [jobs, posts.length, selectedTopics.length]);
 
   const createPostMutation = useMutation({
     mutationFn: () =>
@@ -235,13 +252,14 @@ export function HomePage() {
               <a className="btn btn-primary" href="/register">
                 Create candidate account
               </a>
-              <a className="btn btn-secondary" href="/register">
+              <a className="btn btn-secondary" href="/register" onClick={() => recordIntentInteraction("network", 1)}>
                 Start hiring
               </a>
             </div>
           </div>
 
           <div className="hero-aside stack">
+            <AdaptiveInsightsPanel />
             <div className="subtle-card stack">
               <div className="eyebrow">Marketplace snapshot</div>
               <div className="grid grid-2">
@@ -258,6 +276,51 @@ export function HomePage() {
               </div>
             </div>
 
+            <div className="surface jp-home-sandbox" style={{ padding: "1.3rem" }}>
+              <div className="space-between">
+                <strong>Interview Readiness Sandbox</strong>
+                <span className="pill">Practice</span>
+              </div>
+              <p className="helper">Preview your next role with real scenario markers and readiness signals.</p>
+              <div className="row" style={{ gap: "0.65rem", marginTop: "1rem", flexWrap: "wrap" }}>
+                <button className="btn btn-primary" type="button" onClick={() => setInterviewSandboxOpen(true)}>
+                  Launch sandbox
+                </button>
+                <button className="btn btn-secondary" type="button">
+                  View core interview triggers
+                </button>
+              </div>
+            </div>
+
+            <div className="surface jp-home-autopilot" style={{ padding: "1.3rem" }}>
+              <div className="space-between">
+                <strong>Silent Autopilot</strong>
+                <button
+                  type="button"
+                  className={autopilotEnabled ? "btn btn-primary" : "btn btn-secondary"}
+                  onClick={() => setAutopilotEnabled((active) => !active)}
+                >
+                  {autopilotEnabled ? "Enabled" : "Enable"}
+                </button>
+              </div>
+              <p className="helper">Keep your career workflow aligned without extra clicks, with subtle progress nudges.</p>
+            </div>
+
+            <div className="surface jp-home-rescue" style={{ padding: "1.3rem" }}>
+              <div className="space-between">
+                <strong>Momentum Rescue Mode</strong>
+                <span className="pill">{rescueStatus === "critical" ? "Critical" : "Stable"}</span>
+              </div>
+              <p className="helper">Detect career gaps, highlight the highest-impact improvements, and keep your job search on track.</p>
+              <div className="jp-progress-bar" style={{ marginTop: "1rem" }}>
+                <div className="jp-progress-fill" style={{ width: `${careerFocus}%` }} />
+              </div>
+              <div className="row" style={{ justifyContent: "space-between", marginTop: "0.75rem" }}>
+                <span className="helper">Career focus level</span>
+                <strong>{careerFocus}%</strong>
+              </div>
+            </div>
+
             <div className="surface" style={{ padding: "1.3rem" }}>
               <strong>What users get</strong>
               <div className="stack" style={{ marginTop: "1rem" }}>
@@ -270,6 +333,35 @@ export function HomePage() {
         </div>
       </section>
 
+      {interviewSandboxOpen ? (
+        <section className="section-tight">
+          <div className="container">
+            <div className="surface jp-home-sandbox-panel" style={{ padding: "1.5rem" }}>
+              <div className="space-between">
+                <strong>Interview Readiness Sandbox</strong>
+                <button className="btn btn-secondary" type="button" onClick={() => setInterviewSandboxOpen(false)}>
+                  Close
+                </button>
+              </div>
+              <div className="grid grid-3" style={{ gap: "1rem", marginTop: "1rem" }}>
+                <div className="surface jp-sandbox-card">
+                  <span className="helper">Scenario probe</span>
+                  <strong>Technical deep dive</strong>
+                </div>
+                <div className="surface jp-sandbox-card">
+                  <span className="helper">Behavior check</span>
+                  <strong>STAR story tracking</strong>
+                </div>
+                <div className="surface jp-sandbox-card">
+                  <span className="helper">Confidence index</span>
+                  <strong>80%</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       <section className="section-tight">
         <div className="container">
           <div className="grid grid-4">
@@ -278,6 +370,22 @@ export function HomePage() {
             <StatCard label="Admin ready" value="Safer" meta="Moderation, management, and data oversight support" />
             <StatCard label="Production path" value="Scalable" meta="React frontend with Spring Boot backend integration" />
           </div>
+          <article className="surface jp-dominance-panel">
+            <div className="space-between" style={{ alignItems: "center" }}>
+              <div>
+                <div className="eyebrow">Outcome Command</div>
+                <h3 style={{ margin: "0.3rem 0 0" }}>Today&apos;s Best Action</h3>
+              </div>
+              <span className="pill">{dominanceInsights.weeklyProgress}% weekly momentum</span>
+            </div>
+            <p className="helper" style={{ margin: "0.45rem 0 0.5rem" }}>{dominanceInsights.bestAction}</p>
+            <div className="row" style={{ gap: "0.5rem", flexWrap: "wrap" }}>
+              <span className="tag">Missed opportunities: {dominanceInsights.missed}</span>
+              <span className={`tag ${dominanceInsights.rescueMode ? "status-warning" : ""}`}>
+                {dominanceInsights.rescueMode ? "Momentum Rescue Mode: ON" : "Momentum Stable"}
+              </span>
+            </div>
+          </article>
         </div>
       </section>
 
@@ -382,7 +490,10 @@ export function HomePage() {
                       <button
                         type="button"
                         className={`jp-like-button ${post.likedByCurrentUser ? "is-active" : ""}`}
-                        onClick={() => likePostMutation.mutate(post.id)}
+                        onClick={() => {
+                          recordIntentInteraction("network", 1);
+                          likePostMutation.mutate(post.id);
+                        }}
                         disabled={!user || likePostMutation.isPending}
                       >
                         <svg viewBox="0 0 24 24" width="16" height="16" fill={post.likedByCurrentUser ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.9">
@@ -393,7 +504,10 @@ export function HomePage() {
                       <button
                         type="button"
                         className="jp-like-button"
-                        onClick={() => setActiveCommentPostId((current) => (current === post.id ? null : post.id))}
+                        onClick={() => {
+                          recordIntentInteraction("messages", 1);
+                          setActiveCommentPostId((current) => (current === post.id ? null : post.id));
+                        }}
                         disabled={!user}
                       >
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.9">

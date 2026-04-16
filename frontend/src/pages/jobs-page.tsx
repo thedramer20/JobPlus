@@ -1,5 +1,5 @@
-import { useMemo, useState, type Dispatch, type SetStateAction } from "react";
-import { NavLink } from "react-router-dom";
+import { useDeferredValue, useMemo, useState, type Dispatch, type SetStateAction } from "react";
+import { Link, NavLink } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { EmptyState } from "../components/shared/empty-state";
@@ -12,12 +12,23 @@ import { SortDropdown, type SortOption } from "../components/shared/sort-dropdow
 import { listJobs } from "../services/jobs-service";
 import { authStore } from "../store/auth-store";
 import { defaultJobFilters, type Job, type JobFilterConfig, type JobFilterOption, type JobFilters } from "../types/job";
+import { recordIntentInteraction } from "../lib/ui-intelligence";
 
 export function JobsPage() {
   const { t } = useTranslation();
   const [filters, setFilters] = useState<JobFilters>(defaultJobFilters);
   const [sortBy, setSortBy] = useState<string>("newest");
+  const [careerWeights, setCareerWeights] = useState({
+    salary: 65,
+    growth: 72,
+    stability: 58,
+    brand: 44,
+    workLife: 62
+  });
   const { user } = authStore();
+  const deferredCareerWeights = useDeferredValue(careerWeights);
+  const [tradeoffValue, setTradeoffValue] = useState(58);
+  const [qualityLocked, setQualityLocked] = useState(false);
   const filterConfigs: JobFilterConfig[] = useMemo(
     () => [
       { key: "postedWithin", label: t("jobsPage.filters.anyTime"), selectionMode: "single" },
@@ -52,6 +63,7 @@ export function JobsPage() {
   const sortOptions: SortOption[] = useMemo(
     () => [
       { value: "newest", label: t("jobsPage.sort.newest"), helper: t("jobsPage.sort.newestHint") },
+      { value: "strategy", label: "Smart strategy", helper: "Personalized by your current tradeoff priorities" },
       { value: "salary-high", label: t("jobsPage.sort.salaryHigh"), helper: t("jobsPage.sort.salaryHighHint") },
       { value: "salary-low", label: t("jobsPage.sort.salaryLow"), helper: t("jobsPage.sort.salaryLowHint") },
       { value: "company", label: t("jobsPage.sort.company"), helper: t("jobsPage.sort.companyHint") }
@@ -77,26 +89,20 @@ export function JobsPage() {
 
   const filterOptions = useMemo(() => buildFilterOptions(allJobs, postedWithinLabels, salaryLabels), [allJobs, postedWithinLabels, salaryLabels]);
   const chips = useMemo(() => buildFilterChips(filters, setFilters, postedWithinLabels, salaryLabels), [filters, postedWithinLabels, salaryLabels]);
-  const sortedJobs = useMemo(() => sortJobs(jobs, sortBy), [jobs, sortBy]);
+  const sortedJobs = useMemo(() => sortJobs(jobs, sortBy, deferredCareerWeights), [jobs, sortBy, deferredCareerWeights]);
+  const strategyHighlights = useMemo(() => sortedJobs.slice(0, 3).map((job) => ({ job, analysis: buildRoleRealitySnapshot(job, deferredCareerWeights) })), [sortedJobs, deferredCareerWeights]);
 
   return (
     <section className="section-tight">
       <div className="container stack" style={{ gap: "1rem" }}>
         <div className="jp-jobs-toolbar-shell">
           <div className="jp-jobs-toolbar-top">
-            <NavLink to="/" className="jp-jobs-toolbar-brand headline">
-              {t("common.appName").toUpperCase()}
-            </NavLink>
+            <Link to="/" className="jp-jobs-toolbar-brand">
+              JOBPLUS
+            </Link>
             <JobMarketSearch
               query={filters.query}
-              location={filters.locations[0] ?? ""}
-              onApply={({ query, location }) => {
-                setFilters((current) => ({
-                  ...current,
-                  query,
-                  locations: location ? [location] : []
-                }));
-              }}
+              onApply={(query) => setFilters({ ...filters, query })}
             />
             <NavLink to={resolveProfileHref(user?.role)} className="jp-toolbar-avatar" aria-label={t("jobsPage.openAccount")}>
               <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
@@ -128,13 +134,46 @@ export function JobsPage() {
 
         <SelectedFilterChips chips={chips} onClearAll={() => setFilters(defaultJobFilters)} />
 
+        <section className="section-tight">
+          <div className="container stack" style={{ gap: "1.5rem" }}>
+            <div className="space-between" style={{ alignItems: "center" }}>
+              <div>
+                <div className="eyebrow">Job Marketplace</div>
+                <h2 className="headline">Find Your Next Opportunity</h2>
+              </div>
+              <NavLink to={resolveProfileHref(user?.role)} className="jp-toolbar-avatar" aria-label="Your profile">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M20 21C20 17.6863 16.4183 15 12 15C7.58172 15 4 17.6863 4 21M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </NavLink>
+            </div>
+          </div>
+        </section>
+
         <div className="space-between">
           <div className="helper">{isLoading ? t("jobsPage.loadingJobs") : t("jobsPage.rolesFound", { count: sortedJobs.length })}</div>
           <div className="jp-jobs-toolbar">
             <span className="helper">{isFetching && !isLoading ? t("jobsPage.applyingFilters") : t("jobsPage.updatedNow")}</span>
-            <SortDropdown value={sortBy} options={sortOptions} onChange={setSortBy} />
+            <SortDropdown
+              value={sortBy}
+              options={sortOptions}
+              onChange={(value) => {
+                recordIntentInteraction("jobs", 1);
+                setSortBy(value);
+              }}
+            />
             {user?.role === "candidate" ? (
-              <NavLink className="btn btn-secondary" to="/app/saved-jobs">
+              <NavLink
+                className="btn btn-secondary"
+                to="/app/saved-jobs"
+                onClick={() => recordIntentInteraction("jobs", 1)}
+              >
                 {t("jobsPage.viewSavedJobs")}
               </NavLink>
             ) : null}
@@ -235,9 +274,15 @@ function resolveProfileHref(role?: string) {
   return "/login";
 }
 
-function sortJobs(jobs: Job[], sortBy: string): Job[] {
+function sortJobs(
+  jobs: Job[],
+  sortBy: string,
+  careerWeights: { salary: number; growth: number; stability: number; brand: number; workLife: number }
+): Job[] {
   const copy = [...jobs];
   switch (sortBy) {
+    case "strategy":
+      return copy.sort((left, right) => scoreJobForStrategy(right, careerWeights) - scoreJobForStrategy(left, careerWeights));
     case "salary-high":
       return copy.sort((left, right) => extractSalaryRank(right) - extractSalaryRank(left));
     case "salary-low":
@@ -252,4 +297,50 @@ function sortJobs(jobs: Job[], sortBy: string): Job[] {
 
 function extractSalaryRank(job: Job): number {
   return job.salaryMax ?? job.salaryMin ?? 0;
+}
+
+function scoreJobForStrategy(
+  job: Job,
+  weights: { salary: number; growth: number; stability: number; brand: number; workLife: number }
+): number {
+  const salary = Math.min(100, Math.round((extractSalaryRank(job) / 180000) * 100));
+  const growth = job.level.toLowerCase().includes("senior") || job.level.toLowerCase().includes("director") ? 80 : 64;
+  const stability = job.type.toLowerCase().includes("full") ? 78 : job.type.toLowerCase().includes("contract") ? 48 : 58;
+  const brand = Math.min(100, 45 + Math.min(35, job.company.length));
+  const workLife = job.workMode.toLowerCase().includes("remote") ? 86 : job.workMode.toLowerCase().includes("hybrid") ? 72 : 56;
+
+  return Math.round(
+    (salary * weights.salary +
+      growth * weights.growth +
+      stability * weights.stability +
+      brand * weights.brand +
+      workLife * weights.workLife) /
+      (weights.salary + weights.growth + weights.stability + weights.brand + weights.workLife)
+  );
+}
+
+function buildRoleRealitySnapshot(
+  job: Job,
+  weights: { salary: number; growth: number; stability: number; brand: number; workLife: number }
+) {
+  const score = scoreJobForStrategy(job, weights);
+  if (score >= 78) {
+    return {
+      score,
+      strategy: "Apply now",
+      summary: "High strategic alignment. This role matches your current priorities and has strong near-term upside."
+    };
+  }
+  if (score >= 60) {
+    return {
+      score,
+      strategy: "Apply with tuning",
+      summary: "Good opportunity, but tune your profile headline and top skills first for stronger recruiter conversion."
+    };
+  }
+  return {
+    score,
+    strategy: "Improve first",
+    summary: "This role has lower strategic fit right now. Improve profile clarity or prioritize better aligned roles first."
+  };
 }

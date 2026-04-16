@@ -53,12 +53,18 @@ export function CompanyProfilePage() {
                 <h1 className="headline" style={{ fontSize: "2.6rem", margin: 0 }}>
                   {company.name}
                 </h1>
-                <div className="helper">{company.location} • {company.size} • {company.website || "No website provided"}</div>
+                <div className="helper">{company.location} • {company.size} • {(company as any).founded ? `Founded ${(company as any).founded}` : ''}</div>
               </div>
             </div>
-            <p className="helper" style={{ marginTop: "1rem", maxWidth: "75ch" }}>
+            <p className="helper" style={{ marginTop: "1rem", maxWidth: "75ch", lineHeight: "1.7" }}>
               {company.description}
             </p>
+            {(company as any).mission && (
+              <div style={{ marginTop: "1.25rem", padding: "1rem", background: "var(--surface-subtle)", borderRadius: "var(--radius-md)" }}>
+                <strong style={{ display: "block", marginBottom: "0.5rem" }}>Our Mission</strong>
+                <p className="helper" style={{ margin: 0 }}>{(company as any).mission}</p>
+              </div>
+            )}
           </div>
 
           <div className="grid grid-3">
@@ -98,7 +104,59 @@ export function CompanyProfilePage() {
             <div className="space-between"><span className="helper">Industry</span><strong>{company.industry}</strong></div>
             <div className="space-between"><span className="helper">Location</span><strong>{company.location}</strong></div>
             <div className="space-between"><span className="helper">Size</span><strong>{company.size}</strong></div>
+            {(company as any).founded && (
+              <div className="space-between"><span className="helper">Founded</span><strong>{(company as any).founded}</strong></div>
+            )}
+            {(company as any).employeeCount && (
+              <div className="space-between"><span className="helper">Employees</span><strong>{(company as any).employeeCount}</strong></div>
+            )}
             <div className="space-between"><span className="helper">Website</span><strong>{company.website || "-"}</strong></div>
+            <div className="jp-detail-divider" />
+            {(company as any).culture && (
+              <div>
+                <strong style={{ display: "block", marginBottom: "0.5rem" }}>Our Culture</strong>
+                <p className="helper" style={{ fontSize: "0.95rem", lineHeight: "1.6" }}>{(company as any).culture}</p>
+              </div>
+            )}
+            {(company as any).benefits && (company as any).benefits.length > 0 && (
+              <div>
+                <strong style={{ display: "block", marginBottom: "0.5rem" }}>Benefits</strong>
+                <ul className="jp-detail-list">
+                  {(company as any).benefits.map((benefit: string, idx: number) => (
+                    <li key={idx}>{benefit}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {(company as any).growthNotes && (
+              <div>
+                <strong style={{ display: "block", marginBottom: "0.5rem" }}>Growth</strong>
+                <p className="helper" style={{ fontSize: "0.95rem", lineHeight: "1.6" }}>{(company as any).growthNotes}</p>
+              </div>
+            )}
+            <div className="jp-detail-divider" />
+            {(company as any).socialLinks && (
+              <div>
+                <strong style={{ display: "block", marginBottom: "0.5rem" }}>Connect</strong>
+                <div className="row" style={{ gap: "0.5rem", flexWrap: "wrap" }}>
+                  {(company as any).socialLinks.linkedin && (
+                    <a className="btn btn-ghost" href={(company as any).socialLinks.linkedin} target="_blank" rel="noreferrer">
+                      LinkedIn
+                    </a>
+                  )}
+                  {(company as any).socialLinks.twitter && (
+                    <a className="btn btn-ghost" href={(company as any).socialLinks.twitter} target="_blank" rel="noreferrer">
+                      Twitter
+                    </a>
+                  )}
+                  {(company as any).socialLinks.github && (
+                    <a className="btn btn-ghost" href={(company as any).socialLinks.github} target="_blank" rel="noreferrer">
+                      GitHub
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
             <div className="jp-detail-divider" />
             <a className="btn btn-primary" href={company.website || "#"} target="_blank" rel="noreferrer">
               Visit Website
