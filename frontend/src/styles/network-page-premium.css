@@ -709,33 +709,3 @@
     margin-top: 12px;
   }
 }
-
-@media (max-width: 768px) {
-  .jp-network-header {
-    padding: 32px 0;
-  }
-
-  .jp-network-title h1 {
-    font-size: 1.75rem;
-  }
-
-  .jp-network-insights {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
-  .jp-insight-divider {
-    width: 100%;
-    height: 1px;
-  }
-
-  .jp-pipeline-tabs {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .jp-recruiter-actions {
-    flex-wrap: wrap;
-  }
-}
