@@ -7,13 +7,13 @@ import { MarketingLayout } from "../layouts/marketing-layout";
 import { AuthLayout } from "../layouts/auth-layout";
 import { ProtectedRoute, RoleRoute } from "../components/route-guards";
 
-const HomePage = lazy(async () => ({ default: (await import("../pages/home-page")).HomePage }));
+const HomePage = lazy(async () => ({ default: (await import("../pages/home-page-new")).HomePage }));
 const LoginPage = lazy(async () => ({ default: (await import("../pages/login-page")).LoginPage }));
 const RegisterPage = lazy(async () => ({ default: (await import("../pages/register-page")).RegisterPage }));
-const JobsPage = lazy(async () => ({ default: (await import("../pages/jobs-page")).JobsPage }));
+const JobsPage = lazy(async () => ({ default: (await import("../pages/jobs-page-v2")).JobsPage }));
 const JobDetailsPage = lazy(async () => ({ default: (await import("../pages/job-details-page")).JobDetailsPage }));
 const ApplyPage = lazy(async () => ({ default: (await import("../pages/apply-page")).ApplyPage }));
-const CompaniesPage = lazy(async () => ({ default: (await import("../pages/companies-page")).CompaniesPage }));
+const CompaniesPage = lazy(async () => ({ default: (await import("../pages/companies-page-new")).CompaniesPage }));
 const AboutPage = lazy(async () => ({ default: (await import("../pages/about-page")).AboutPage }));
 const ContactPage = lazy(async () => ({ default: (await import("../pages/contact-page")).ContactPage }));
 const TopContentPage = lazy(async () => ({ default: (await import("../pages/top-content-page")).TopContentPage }));
@@ -25,7 +25,7 @@ const ApplicationsPage = lazy(async () => ({ default: (await import("../pages/ap
 const NotificationsPage = lazy(async () => ({ default: (await import("../pages/notifications-page")).NotificationsPage }));
 const MessagesPage = lazy(async () => ({ default: (await import("../pages/messages-page")).MessagesPage }));
 const ProfilePage = lazy(async () => ({ default: (await import("../pages/profile-page")).ProfilePage }));
-const NetworkPage = lazy(async () => ({ default: (await import("../pages/network-page")).NetworkPage }));
+const NetworkPage = lazy(async () => ({ default: (await import("../pages/network-page-premium")).NetworkPage }));
 const SavedJobsPage = lazy(async () => ({ default: (await import("../pages/saved-jobs-page")).SavedJobsPage }));
 const SettingsPage = lazy(async () => ({ default: (await import("../pages/settings-page")).SettingsPage }));
 const EmployerDashboardPage = lazy(async () => ({ default: (await import("../pages/employer-dashboard-page")).EmployerDashboardPage }));

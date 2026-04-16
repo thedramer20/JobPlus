@@ -1,0 +1,708 @@
+
+/* ==========================================
+   JobPlus Homepage Styles - Clean & Premium
+   ========================================== */
+
+/* HERO SECTION */
+.jp-hero-section {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.jp-hero-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+  width: 100%;
+}
+
+.jp-hero-content {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  gap: 64px;
+  align-items: center;
+  padding: 80px 0;
+}
+
+.jp-hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.jp-hero-headline {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1a1a1a;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.jp-hero-subtext {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: #6b7280;
+  margin: 0;
+  max-width: 560px;
+}
+
+/* Search Bar */
+.jp-hero-search {
+  margin-top: 8px;
+}
+
+.jp-search-wrapper {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+  height: 64px;
+  padding: 0 8px;
+  transition: all 220ms ease-in-out;
+}
+
+.jp-search-wrapper:hover {
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.jp-search-icon {
+  width: 24px;
+  height: 24px;
+  color: #9ca3af;
+  margin: 0 16px;
+}
+
+.jp-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: #1a1a1a;
+  background: transparent;
+  height: 100%;
+  padding: 0 16px;
+}
+
+.jp-search-input::placeholder {
+  color: #9ca3af;
+}
+
+.jp-search-button {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 0 32px;
+  height: 48px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 220ms ease-in-out;
+}
+
+.jp-search-button:hover {
+  background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+/* CTA Buttons */
+.jp-hero-cta {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.jp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 32px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 220ms ease-in-out;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.jp-btn-primary {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  color: #ffffff;
+}
+
+.jp-btn-primary:hover {
+  background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.jp-btn-secondary {
+  background: #ffffff;
+  color: #4F46E5;
+  border-color: #4F46E5;
+}
+
+.jp-btn-secondary:hover {
+  background: #f9fafb;
+  border-color: #4338ca;
+  color: #4338ca;
+}
+
+/* Smart Floating Cards */
+.jp-hero-visual {
+  position: relative;
+  height: 500px;
+}
+
+.jp-float-card {
+  position: absolute;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: all 220ms ease-in-out;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: floatUp 0.6s ease-out forwards;
+}
+
+.jp-float-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.jp-float-card-1 {
+  top: 0;
+  right: 0;
+  width: 320px;
+  animation-delay: 0.2s;
+}
+
+.jp-float-card-2 {
+  top: 180px;
+  right: 80px;
+  width: 320px;
+  animation-delay: 0.4s;
+}
+
+.jp-float-card-3 {
+  top: 360px;
+  right: 0;
+  width: 320px;
+  animation-delay: 0.6s;
+}
+
+.jp-float-card:hover {
+  transform: scale(1.02) translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.jp-float-card-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.jp-match-badge {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.jp-float-card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+}
+
+.jp-float-card-company {
+  font-size: 0.9375rem;
+  color: #6b7280;
+  margin: 0 0 16px 0;
+}
+
+.jp-float-card-footer {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.jp-salary {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #4F46E5;
+}
+
+.jp-match-reason {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 220ms ease-in-out;
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin-top: 0;
+}
+
+.jp-float-card:hover .jp-match-reason {
+  max-height: 100px;
+  margin-top: 12px;
+}
+
+@keyframes floatUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* SMART STATS STRIP */
+.jp-stats-strip {
+  background: #ffffff;
+  padding: 48px 0;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.jp-stats-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.jp-stats-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.jp-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.jp-stat-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.jp-stat-label {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+.jp-stat-roles {
+  font-size: 1rem;
+  color: #4F46E5;
+  font-weight: 600;
+}
+
+/* HOW IT WORKS */
+.jp-how-it-works {
+  padding: 96px 0;
+  background: #ffffff;
+}
+
+.jp-section-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.jp-section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-align: center;
+  margin: 0 0 64px 0;
+  letter-spacing: -0.02em;
+}
+
+.jp-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+}
+
+.jp-step-card {
+  text-align: center;
+  padding: 32px;
+  border-radius: 16px;
+  transition: all 220ms ease-in-out;
+}
+
+.jp-step-card:hover {
+  transform: translateY(-4px);
+}
+
+.jp-step-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  color: #ffffff;
+}
+
+.jp-step-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.jp-step-card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 12px 0;
+}
+
+.jp-step-card p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* FEATURES SECTION */
+.jp-features {
+  padding: 96px 0;
+  background: #f8f9fa;
+}
+
+.jp-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.jp-feature-item {
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 16px;
+  transition: all 220ms ease-in-out;
+}
+
+.jp-feature-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+}
+
+.jp-feature-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.jp-feature-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.jp-feature-item h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+}
+
+.jp-feature-item p {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* FEATURED COMPANIES */
+.jp-companies {
+  padding: 96px 0;
+  background: #ffffff;
+}
+
+.jp-companies-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 24px;
+}
+
+.jp-company-item {
+  position: relative;
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  transition: all 220ms ease-in-out;
+  overflow: hidden;
+}
+
+.jp-company-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+}
+
+.jp-company-logo {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.jp-company-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.jp-company-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(79, 70, 229, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 220ms ease-in-out;
+}
+
+.jp-company-item:hover .jp-company-overlay {
+  opacity: 1;
+}
+
+.jp-company-overlay span {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* FEATURED JOBS */
+.jp-jobs {
+  padding: 96px 0;
+  background: #f8f9fa;
+}
+
+.jp-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 48px;
+}
+
+.jp-link {
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 220ms ease-in-out;
+}
+
+.jp-link-primary {
+  color: #4F46E5;
+}
+
+.jp-link-primary:hover {
+  color: #4338ca;
+}
+
+.jp-jobs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.jp-job-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 220ms ease-in-out;
+}
+
+.jp-job-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+}
+
+.jp-job-card h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+}
+
+.jp-job-card-company {
+  font-size: 0.9375rem;
+  color: #6b7280;
+  margin: 0 0 16px 0;
+}
+
+.jp-job-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.jp-job-location {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.jp-job-salary {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #4F46E5;
+}
+
+.jp-job-match {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* FINAL CTA */
+.jp-cta {
+  padding: 96px 0;
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  text-align: center;
+}
+
+.jp-cta h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 32px 0;
+  letter-spacing: -0.02em;
+}
+
+.jp-cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.jp-cta .jp-btn {
+  min-width: 160px;
+}
+
+.jp-cta .jp-btn-primary {
+  background: #ffffff;
+  color: #4F46E5;
+}
+
+.jp-cta .jp-btn-primary:hover {
+  background: #f9fafb;
+  color: #4338ca;
+}
+
+.jp-cta .jp-btn-secondary {
+  background: transparent;
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+.jp-cta .jp-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .jp-hero-content {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    text-align: center;
+  }
+
+  .jp-hero-text {
+    align-items: center;
+  }
+
+  .jp-hero-visual {
+    display: none;
+  }
+
+  .jp-steps-grid,
+  .jp-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .jp-companies-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .jp-hero-headline {
+    font-size: 2rem;
+  }
+
+  .jp-hero-cta {
+    flex-direction: column;
+  }
+
+  .jp-stats-row {
+    gap: 24px;
+  }
+
+  .jp-steps-grid,
+  .jp-features-grid,
+  .jp-jobs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .jp-companies-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .jp-section-header {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .jp-cta-buttons {
+    flex-direction: column;
+  }
+}

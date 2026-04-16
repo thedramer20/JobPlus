@@ -1,3 +1,4 @@
+import { type ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { authStore } from "../../store/auth-store";
@@ -109,8 +110,10 @@ export function JobPlusTopbar() {
     <header className="jp-topbar-shell surface-muted">
       <div className="container jp-topbar-grid">
         <NavLink to="/" className="headline jp-topbar-brand">
-          <span className="jp-topbar-brand-mark" aria-hidden="true" />
-          <span>{t("common.appName")}</span>
+          <span className="jp-topbar-brand-mark" aria-hidden="true">
+            <LogoLockupMark />
+          </span>
+          <span className="jp-topbar-brand-wordmark">{t("common.appName")}</span>
         </NavLink>
 
         <nav aria-label="Primary" className="jp-topbar-nav">
@@ -154,10 +157,27 @@ export function JobPlusTopbar() {
   );
 }
 
-function IconBase({ children }: { children: React.ReactNode }) {
+function IconBase({ children }: { children: ReactNode }) {
   return (
     <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       {children}
+    </svg>
+  );
+}
+
+function LogoLockupMark() {
+  return (
+    <svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="jobplus-logo-grad" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0%" stopColor="#4F46E5" />
+          <stop offset="100%" stopColor="#7C3AED" />
+        </linearGradient>
+      </defs>
+      <rect x="1" y="1" width="30" height="30" rx="10" fill="url(#jobplus-logo-grad)" />
+      <path d="M11 10h6" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" />
+      <path d="M14 7v6" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" />
+      <path d="M16 10v6a3 3 0 0 1-3 3h-1" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

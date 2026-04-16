@@ -43,24 +43,38 @@
 }
 
 /* ============================================
-   RESPONSIVE FONT SIZES
+   RESPONSIVE FONT SIZES - Updated for JobPlus Design System
    ============================================ */
 
-/* Base font sizes that scale with viewport */
+/* Base font family */
 :root {
-  --font-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
-  --font-size-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
-  --font-size-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
-  --font-size-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
-  --font-size-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
-  --font-size-2xl: clamp(1.5rem, 1.25rem + 1.25vw, 2rem);
-  --font-size-3xl: clamp(1.875rem, 1.5rem + 1.875vw, 2.5rem);
+  font-family: var(--jp-font-family, "Satoshi", Inter, system-ui, sans-serif);
+  font-size: 16px;
+  --font-size-xs: 13px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 28px;
+  --font-size-3xl: 40px;
 }
 
-/* Responsive line heights */
+/* Fixed font sizes aligned with design tokens */
+:root {
+  --font-size-xs: var(--font-size-xs);
+  --font-size-sm: var(--font-size-sm);
+  --font-size-base: var(--font-size-base);
+  --font-size-lg: var(--font-size-lg);
+  --font-size-xl: var(--font-size-xl);
+  --font-size-2xl: var(--font-size-2xl);
+  --font-size-3xl: var(--font-size-3xl);
+  --font-size-4xl: 40px;
+}
+
+/* Responsive line heights aligned with tokens */
 :root {
   --line-height-tight: 1.25;
-  --line-height-normal: 1.5;
+  --line-height-normal: 1.6;
   --line-height-relaxed: 1.75;
 }
 

@@ -1,0 +1,701 @@
+
+/* ==========================================
+   JobPlus Companies Page - Premium Discovery
+   ========================================== */
+
+.jp-companies-root {
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+/* HERO SECTION */
+.jp-companies-hero {
+  padding: 80px 0 48px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.jp-companies-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.jp-companies-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.jp-companies-title {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.jp-companies-subtitle {
+  font-size: 1.125rem;
+  color: #6b7280;
+  margin: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* SEARCH BAR */
+.jp-companies-search {
+  max-width: 800px;
+  margin: 0 auto 40px;
+}
+
+.jp-search-wrapper {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+  height: 64px;
+  padding: 0 8px;
+  transition: all 220ms ease-in-out;
+}
+
+.jp-search-wrapper:hover {
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.jp-search-icon {
+  width: 24px;
+  height: 24px;
+  color: #9ca3af;
+  margin: 0 16px;
+}
+
+.jp-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: #1a1a1a;
+  background: transparent;
+  height: 100%;
+  padding: 0 16px;
+}
+
+.jp-search-input::placeholder {
+  color: #9ca3af;
+}
+
+.jp-search-button {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 0 32px;
+  height: 48px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 220ms ease-in-out;
+}
+
+.jp-search-button:hover {
+  background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+/* FILTER CHIPS */
+.jp-companies-filters {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+}
+
+.jp-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.jp-filter-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.jp-filter-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.jp-filter-chip {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 220ms ease-in-out;
+}
+
+.jp-filter-chip:hover {
+  border-color: #4F46E5;
+  color: #4F46E5;
+  background: #f9fafb;
+}
+
+.jp-filter-chip.is-active {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+/* FEATURED COMPANIES */
+.jp-featured-companies {
+  padding: 64px 0;
+  background: #ffffff;
+}
+
+.jp-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.jp-section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.jp-link {
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 220ms ease-in-out;
+}
+
+.jp-link-primary {
+  color: #4F46E5;
+}
+
+.jp-link-primary:hover {
+  color: #4338ca;
+}
+
+.jp-featured-scroll {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  padding: 8px 4px 24px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.jp-featured-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.jp-featured-card {
+  flex: 0 0 380px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 220ms ease-in-out;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.jp-featured-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  border-color: #4F46E5;
+}
+
+.jp-featured-logo {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.jp-featured-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.jp-featured-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.jp-featured-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.jp-featured-tagline {
+  font-size: 0.9375rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.jp-featured-meta {
+  display: flex;
+  gap: 16px;
+}
+
+.jp-featured-industry,
+.jp-featured-location {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.jp-featured-status {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding-top: 8px;
+}
+
+.jp-status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.jp-status-hiring {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+}
+
+.jp-open-jobs {
+  font-size: 0.875rem;
+  color: #4F46E5;
+  font-weight: 600;
+}
+
+/* COMPANY INSIGHTS */
+.jp-companies-insights {
+  padding: 64px 0;
+  background: #f8f9fa;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.jp-insights-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.jp-insight-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.jp-insight-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.jp-insight-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+.jp-insight-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.jp-insight-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.jp-insight-companies {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.jp-insight-company {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 220ms ease-in-out;
+}
+
+.jp-insight-company:hover {
+  background: #f9fafb;
+  transform: translateX(4px);
+}
+
+.jp-insight-company-logo {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.jp-insight-company-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+/* MAIN GRID */
+.jp-companies-main {
+  padding: 64px 0;
+  background: #ffffff;
+}
+
+.jp-sort-options {
+  display: flex;
+  gap: 8px;
+}
+
+.jp-sort-option {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 220ms ease-in-out;
+}
+
+.jp-sort-option:hover {
+  border-color: #4F46E5;
+  color: #4F46E5;
+  background: #f9fafb;
+}
+
+.jp-sort-option.is-active {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.jp-companies-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.jp-company-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 220ms ease-in-out;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+.jp-company-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  border-color: #4F46E5;
+}
+
+.jp-company-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.jp-company-logo-wrapper {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.jp-company-logo-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.jp-company-logo-placeholder {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.jp-company-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.jp-rating-value {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.jp-rating-star {
+  width: 16px;
+  height: 16px;
+  color: #fbbf24;
+}
+
+.jp-company-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.jp-company-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.jp-company-description {
+  font-size: 0.9375rem;
+  color: #6b7280;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.jp-company-meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.jp-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.jp-meta-item svg {
+  width: 16px;
+  height: 16px;
+}
+
+.jp-company-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.jp-tag {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.jp-tag-remote {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.jp-tag-startup {
+  background: #fce7f3;
+  color: #9d174d;
+}
+
+.jp-tag-hiring {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.jp-company-match {
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(79, 70, 229, 0.1);
+}
+
+.jp-match-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.jp-match-icon {
+  width: 16px;
+  height: 16px;
+  color: #4F46E5;
+}
+
+.jp-match-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4F46E5;
+}
+
+.jp-match-reason {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.jp-company-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.jp-open-jobs-count {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.jp-open-jobs-count svg {
+  width: 16px;
+  height: 16px;
+}
+
+.jp-view-jobs {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #4F46E5;
+}
+
+.jp-loading,
+.jp-error,
+.jp-empty {
+  text-align: center;
+  padding: 48px;
+  color: #6b7280;
+  font-size: 1.125rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .jp-companies-grid,
+  .jp-insights-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .jp-featured-scroll {
+    gap: 16px;
+  }
+
+  .jp-featured-card {
+    flex: 0 0 320px;
+  }
+}
+
+@media (max-width: 768px) {
+  .jp-companies-title {
+    font-size: 2rem;
+  }
+
+  .jp-companies-filters {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .jp-filter-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .jp-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .jp-companies-grid,
+  .jp-insights-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .jp-featured-card {
+    flex: 0 0 280px;
+  }
+
+  .jp-sort-options {
+    flex-wrap: wrap;
+  }
+}

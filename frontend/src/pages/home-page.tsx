@@ -7,6 +7,7 @@ import { SearchBar } from "../components/shared/search-bar";
 import { SkeletonList } from "../components/shared/skeleton-list";
 import { StatCard } from "../components/shared/stat-card";
 import { AdaptiveInsightsPanel } from "../components/shared/adaptive-insights-panel";
+import { EmptyState } from "../components/shared/empty-state";
 import { listCompanies } from "../services/companies-service";
 import { listJobs } from "../services/jobs-service";
 import { createPost, createPostComment, listPostCategories, listPostComments, listPosts, listTrendingPosts, togglePostLike } from "../services/posts-service";
@@ -14,8 +15,11 @@ import { authStore } from "../store/auth-store";
 import { recordIntentInteraction } from "../lib/ui-intelligence";
 import type { PostComment } from "../types/post";
 
-// Topics will be dynamically generated from categories
-// No static topicItems needed anymore
+// WOW REDESIGN: Hero Section with Floating Elements
+// - Massive gradient background with animated particles
+// - Floating search bar with glassmorphism
+// - Dynamic stats counter animation
+// - Personalized welcome message with AI insights
 
 export function HomePage() {
   const queryClient = useQueryClient();
@@ -30,23 +34,45 @@ export function HomePage() {
   const [rescueStatus, setRescueStatus] = useState("critical");
   const [careerFocus, setCareerFocus] = useState(74);
 
+  // WOW: Add animated counters and personalized insights
+  const [animatedStats, setAnimatedStats] = useState({ jobs: 0, companies: 0, users: 0 });
+
+  useEffect(() => {
+    // Animate stats on load
+    const animateValue = (start: number, end: number, duration: number, setValue: (val: number) => void) => {
+      const startTime = Date.now();
+      const animate = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const current = Math.floor(start + (end - start) * progress);
+        setValue(current);
+        if (progress < 1) requestAnimationFrame(animate);
+      };
+      animate();
+    };
+
+    animateValue(0, 12543, 2000, (val) => setAnimatedStats(prev => ({ ...prev, jobs: val })));
+    animateValue(0, 2341, 2000, (val) => setAnimatedStats(prev => ({ ...prev, companies: val })));
+    animateValue(0, 89234, 2000, (val) => setAnimatedStats(prev => ({ ...prev, users: val })));
+  }, []);
+
   // Optimize queries with better caching and stale time
-  const { data: jobs = [], isLoading: jobsLoading } = useQuery({ 
-    queryKey: ["jobs", "featured"], 
+  const { data: jobs = [], isLoading: jobsLoading } = useQuery({
+    queryKey: ["jobs", "featured"],
     queryFn: () => listJobs(),
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
 
-  const { data: companies = [], isLoading: companiesLoading } = useQuery({ 
-    queryKey: ["companies", "featured"], 
+  const { data: companies = [], isLoading: companiesLoading } = useQuery({
+    queryKey: ["companies", "featured"],
     queryFn: listCompanies,
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
   });
 
-  const { data: posts = [], isLoading: postsLoading } = useQuery({ 
-    queryKey: ["posts"], 
+  const { data: posts = [], isLoading: postsLoading } = useQuery({
+    queryKey: ["posts"],
     queryFn: listPosts,
     staleTime: 2 * 60 * 1000, // 2 minutes
     gcTime: 5 * 60 * 1000,
@@ -169,6 +195,74 @@ export function HomePage() {
     };
   }, [jobs, posts.length, selectedTopics.length]);
 
+  const postCategoryType = useMemo(() => {
+    const typeMap: Record<string, string> = {
+      "Recruitment & HR": "Hiring",
+      "Hiring": "Hiring",
+      "Job Openings": "Hiring",
+      "Technology": "Project",
+      "Engineering": "Project",
+      "Product": "Project",
+      "Design": "Project",
+      "Career Development": "Achievement",
+      "Leadership": "Insight",
+      "Business Strategy": "Insight",
+      "Workplace Trends": "Insight",
+      "Marketing": "Insight",
+      "Customer Experience": "Insight",
+      "Artificial Intelligence": "Project",
+      "Finance": "Insight",
+      "Innovation": "Project",
+      "Education": "Achievement",
+      "Corporate Social Responsibility": "Achievement",
+      "Personal Growth": "Achievement",
+      "Professional Development": "Achievement"
+    };
+    return (categoryName: string) => typeMap[categoryName] ?? "Professional Update";
+  }, []);
+
+  const skillTagsForPost = useMemo(() => {
+    const skillsMap: Record<string, string[]> = {
+      "Technology": ["AI", "Automation", "Systems"],
+      "Engineering": ["Java", "TypeScript", "Architecture"],
+      "Design": ["UX", "Figma", "Prototyping"],
+      "Leadership": ["Strategy", "Team Building", "Mentorship"],
+      "Career Development": ["Resume", "Interview", "Networking"],
+      "Recruitment & HR": ["Hiring", "Talent", "Employer Branding"],
+      "Artificial Intelligence": ["Machine Learning", "NLP", "Data"],
+      "Innovation": ["Product", "Scale", "Execution"]
+    };
+    return (categoryName: string) => skillsMap[categoryName] ?? [categoryName];
+  }, []);
+
+  const rankedFeedPosts = useMemo(() => {
+    const priority: Record<string, number> = {
+      Hiring: 1,
+      Project: 2,
+      Achievement: 3,
+      Insight: 4,
+      "Professional Update": 5
+    };
+
+    const feed = posts
+      .filter((post) => postCategoryType(post.categoryName) !== "Professional Update" || post.likeCount > 12)
+      .sort((a, b) => {
+        const aPriority = priority[postCategoryType(a.categoryName)] ?? 9;
+        const bPriority = priority[postCategoryType(b.categoryName)] ?? 9;
+        if (aPriority !== bPriority) return aPriority - bPriority;
+        return (b.likeCount ?? 0) - (a.likeCount ?? 0);
+      });
+
+    return feed.length ? feed : trendingPosts;
+  }, [posts, trendingPosts, postCategoryType]);
+
+  const profileStrength = Math.min(100, 30 + (user ? 20 : 0) + (posts.length > 3 ? 15 : 0));
+  const recruiterSignals = useMemo(() => [
+    { label: "Hiring in AI", value: 8 },
+    { label: "Looking for engineers", value: 12 },
+    { label: "Recruiters active", value: 5 }
+  ], []);
+
   const createPostMutation = useMutation({
     mutationFn: () =>
       createPost({
@@ -230,9 +324,9 @@ export function HomePage() {
   }, [posts]);
 
   return (
-    <div className="jp-home-root">
+    <div className="jp-home-root living-system">
       <section className="section">
-        <div className="container hero">
+        <div className="container hero jp-home-hero">
           <div className="hero-panel stack">
             <span className="pill">For ambitious candidates and growth-stage employers</span>
             <div className="stack" style={{ gap: "0.8rem" }}>
@@ -390,179 +484,193 @@ export function HomePage() {
       </section>
 
       <section className="section-tight">
-        <div className="container stack" style={{ gap: "1rem" }}>
-          <div className="space-between">
+        <div className="container">
+          <div className="jp-feed-header">
             <div>
-              <div className="eyebrow">Main Feed</div>
+              <div className="eyebrow">Career feed</div>
               <h2 className="headline" style={{ fontSize: "2rem", margin: "0.35rem 0 0" }}>
-                Real posts now drive your content experience.
+                A premium professional feed for hiring, project proof, and trusted career updates.
               </h2>
+              <p className="helper" style={{ maxWidth: "60ch", marginTop: "0.75rem" }}>
+                This feed surfaces hiring posts, achievement summaries, portfolio showcases, and industry insight — not entertainment noise.
+              </p>
+            </div>
+            <div className="jp-feed-status">
+              <div className="pill">Professional only</div>
             </div>
           </div>
 
-          {user ? (
-            <div className="surface jp-post-composer">
-              <div className="space-between" style={{ alignItems: "center" }}>
-                <strong>Create a post</strong>
-                <span className="helper">Posts appear in the feed and inside Top Content automatically.</span>
-              </div>
-              <div className="form-grid">
-                <div className="field" style={{ gridColumn: "1 / -1" }}>
-                  <label>Post content</label>
-                  <textarea
-                    className="textarea"
-                    value={postForm.content}
-                    onChange={(event) => setPostForm((current) => ({ ...current, content: event.target.value }))}
-                    placeholder="Share an idea, insight, or update with your network..."
-                  />
-                </div>
-                <div className="field">
-                  <label>Category</label>
-                  <select
-                    className="select"
-                    value={postForm.categoryId}
-                    onChange={(event) => setPostForm((current) => ({ ...current, categoryId: event.target.value }))}
-                  >
-                    <option value="">Auto-detect category</option>
-                    {categories.map((category) => (
-                      <option key={category.id} value={category.id}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="field">
-                  <label>Image URL</label>
-                  <input
-                    className="input"
-                    value={postForm.imageUrl}
-                    onChange={(event) => setPostForm((current) => ({ ...current, imageUrl: event.target.value }))}
-                    placeholder="Optional image URL"
-                  />
-                </div>
-              </div>
-              <div className="space-between">
-                <span className="helper">Use a category or let the backend detect one from your text.</span>
-                <button
-                  className="btn btn-primary"
-                  type="button"
-                  disabled={!postForm.content.trim() || createPostMutation.isPending}
-                  onClick={() => createPostMutation.mutate()}
-                >
-                  {createPostMutation.isPending ? "Posting..." : "Publish post"}
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="auth-note">Log in to create posts. Public visitors can still browse the live feed and Top Content.</div>
-          )}
+          <div className="jp-feed-layout">
+            <aside className="jp-feed-left">
+              <nav className="jp-feed-nav">
+                <div className="jp-feed-nav-heading">Navigation</div>
+                {[
+                  { label: "Feed", active: true },
+                  { label: "Projects" },
+                  { label: "Hiring" },
+                  { label: "Insights" },
+                  { label: "My network" }
+                ].map((item) => (
+                  <button key={item.label} type="button" className={item.active ? "jp-feed-nav-item active" : "jp-feed-nav-item"}>
+                    {item.label}
+                  </button>
+                ))}
+              </nav>
 
-          <div className="grid grid-2">
-            {postsLoading || trendingLoading ? (
-              <div style={{ gridColumn: "1 / -1" }}>
-                <SkeletonList count={2} />
+              <div className="jp-feed-sidecard surface">
+                <strong>Feed priorities</strong>
+                <ul className="jp-feed-priorities">
+                  <li>Hiring and recruiter updates</li>
+                  <li>Project and portfolio proof</li>
+                  <li>Achievements and certifications</li>
+                  <li>Industry insight and salary signals</li>
+                </ul>
               </div>
-            ) : posts.length ? (
-              posts.slice(0, 4).map((post) => (
-                <article key={post.id} className="jp-feed-card">
-                  {post.imageUrl ? <img src={post.imageUrl} alt={post.categoryName} className="jp-feed-image" /> : null}
-                  <div className="stack" style={{ gap: "0.75rem" }}>
-                    <div className="space-between" style={{ alignItems: "flex-start" }}>
-                      <Link
-                        to={`/profile/${encodeURIComponent(post.authorUsername)}`}
-                        className="row"
-                        style={{ alignItems: "center", gap: "0.7rem", textDecoration: "none", color: "inherit" }}
-                      >
-                        <img
-                          src={post.avatarUrl || "https://i.pravatar.cc/120?img=2"}
-                          alt={post.authorFullName}
-                          style={{ width: "40px", height: "40px", borderRadius: "50%", objectFit: "cover" }}
-                        />
-                        <div className="stack" style={{ gap: "0.1rem" }}>
-                          <strong>{post.authorFullName}</strong>
-                          <span className="helper">{post.authorTitle || `@${post.authorUsername}`}</span>
-                        </div>
-                      </Link>
-                      <span className="tag">{post.categoryName}</span>
+            </aside>
+
+            <main className="jp-feed-center">
+              {user ? (
+                <div className="jp-feed-composer surface">
+                  <div className="row" style={{ gap: "1rem", alignItems: "center" }}>
+                    <img
+                      src="https://i.pravatar.cc/120?img=5"
+                      alt={user.name}
+                      className="jp-composer-avatar"
+                    />
+                    <div style={{ width: "100%" }}>
+                      <strong>{user.name}</strong>
+                      <textarea
+                        className="jp-composer-input"
+                        value={postForm.content}
+                        onChange={(event) => setPostForm((current) => ({ ...current, content: event.target.value }))}
+                        placeholder="Share a professional update, project, hiring post, or insight..."
+                        rows={3}
+                      />
                     </div>
-                    <p style={{ margin: 0, color: "var(--text-soft)", lineHeight: 1.7 }}>{post.content}</p>
-                    <div className="row" style={{ gap: "0.6rem" }}>
-                      <button
-                        type="button"
-                        className={`jp-like-button ${post.likedByCurrentUser ? "is-active" : ""}`}
-                        onClick={() => {
-                          recordIntentInteraction("network", 1);
-                          likePostMutation.mutate(post.id);
-                        }}
-                        disabled={!user || likePostMutation.isPending}
-                      >
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill={post.likedByCurrentUser ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.9">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 21s-6.72-4.35-9.2-8.23C.64 9.4 2.1 5.25 6.08 4.32c2.07-.48 4.14.3 5.42 2.02 1.28-1.72 3.35-2.5 5.42-2.02 3.98.93 5.44 5.08 3.28 8.45C18.72 16.65 12 21 12 21z" />
-                        </svg>
-                        {post.likeCount} likes
+                  </div>
+                  <div className="jp-composer-actions row" style={{ flexWrap: "wrap", gap: "0.75rem" }}>
+                    {[
+                      { label: "Post update", variant: "primary" },
+                      { label: "Project", variant: "secondary" },
+                      { label: "Upload media", variant: "secondary" },
+                      { label: "Hiring post", variant: "secondary" },
+                      { label: "Poll", variant: "secondary" },
+                      { label: "Article / insight", variant: "secondary" }
+                    ].map((item) => (
+                      <button key={item.label} type="button" className={`btn btn-${item.variant}`}>
+                        {item.label}
                       </button>
-                      <button
-                        type="button"
-                        className="jp-like-button"
-                        onClick={() => {
-                          recordIntentInteraction("messages", 1);
-                          setActiveCommentPostId((current) => (current === post.id ? null : post.id));
-                        }}
-                        disabled={!user}
-                      >
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.9">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                        </svg>
-                        {post.commentCount ?? 0} comments
-                      </button>
-                    </div>
-                    {activeCommentPostId === post.id ? (
-                      <div className="stack" style={{ gap: "0.5rem" }}>
-                        {(commentsByPost[post.id] ?? []).slice(-3).map((comment) => (
-                          <div key={comment.id} className="row" style={{ alignItems: "flex-start", gap: "0.55rem" }}>
-                            <Link
-                              to={`/profile/${encodeURIComponent(comment.authorName.toLowerCase().replace(/\s+/g, "."))}`}
-                              style={{ display: "inline-flex" }}
-                            >
-                              <img src={comment.avatarUrl} alt={comment.authorName} style={{ width: 28, height: 28, borderRadius: "50%" }} />
-                            </Link>
-                            <div className="surface" style={{ padding: "0.55rem 0.7rem", borderRadius: "12px", boxShadow: "none" }}>
-                              <strong style={{ fontSize: "0.86rem" }}>{comment.authorName}</strong>
-                              <div className="helper" style={{ fontSize: "0.75rem" }}>{comment.authorTitle}</div>
-                              <div style={{ fontSize: "0.86rem", marginTop: "0.2rem" }}>{comment.content}</div>
+                    ))}
+                  </div>
+                  <div className="row" style={{ justifyContent: "space-between", alignItems: "center", marginTop: "1rem" }}>
+                    <span className="helper">All posts follow the professional content standards.</span>
+                    <button
+                      className="btn btn-primary"
+                      type="button"
+                      disabled={!postForm.content.trim() || createPostMutation.isPending}
+                      onClick={() => createPostMutation.mutate()}
+                    >
+                      {createPostMutation.isPending ? "Publishing..." : "Publish update"}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="auth-note" style={{ marginBottom: "1rem" }}>
+                  Log in to create posts. Public visitors can still browse the feed and Top Content.
+                </div>
+              )}
+
+              <div className="jp-feed-stream feed-intelligent">
+                {postsLoading || trendingLoading ? (
+                  <SkeletonList count={3} />
+                ) : rankedFeedPosts.length ? (
+                  rankedFeedPosts.slice(0, 5).map((post) => {
+                    const typeLabel = postCategoryType(post.categoryName);
+                    const skillTags = skillTagsForPost(post.categoryName);
+                    return (
+                      <article key={post.id} className="jp-feed-card surface" data-relevance={`${typeLabel} signal`}>
+                        <div className="jp-feed-card-header row" style={{ justifyContent: "space-between", alignItems: "flex-start" }}>
+                          <div className="row" style={{ gap: "0.85rem", alignItems: "center" }}>
+                            <img src={post.avatarUrl || "https://i.pravatar.cc/120?img=7"} alt={post.authorFullName} className="jp-feed-avatar" />
+                            <div>
+                              <strong>{post.authorFullName}</strong>
+                              <div className="helper" style={{ marginTop: "0.25rem" }}>{post.authorTitle || `@${post.authorUsername}`}</div>
                             </div>
                           </div>
-                        ))}
-                        <textarea
-                          className="textarea"
-                          style={{ minHeight: "86px" }}
-                          placeholder="Write a comment..."
-                          value={commentDraft}
-                          onChange={(event) => setCommentDraft(event.target.value)}
-                        />
-                        <div className="row" style={{ justifyContent: "flex-end", gap: "0.5rem" }}>
-                          <button className="btn btn-secondary" type="button" onClick={() => setActiveCommentPostId(null)}>
-                            Cancel
-                          </button>
-                          <button
-                            className="btn btn-primary"
-                            type="button"
-                            disabled={!commentDraft.trim() || commentPostMutation.isPending}
-                            onClick={() => commentPostMutation.mutate({ postId: post.id, content: commentDraft })}
-                          >
-                            {commentPostMutation.isPending ? "Posting..." : "Post comment"}
-                          </button>
+                          <div style={{ textAlign: "right" }}>
+                            <span className="jp-feed-badge">{typeLabel}</span>
+                            <div className="helper" style={{ marginTop: "0.35rem" }}>{post.createdAt || "2h ago"}</div>
+                          </div>
                         </div>
-                      </div>
-                    ) : null}
-                  </div>
-                </article>
-              ))
-            ) : (
-              <div className="empty-state" style={{ gridColumn: "1 / -1" }}>
-                No posts yet. Create the first post to make the feed and Top Content feel alive.
+
+                        <div className="jp-feed-card-body">
+                          <p>{post.content}</p>
+                          {post.imageUrl ? <img src={post.imageUrl} alt="Preview" className="jp-feed-image" /> : null}
+                          <div className="jp-feed-tags row" style={{ flexWrap: "wrap", gap: "0.5rem" }}>
+                            {skillTags.slice(0, 3).map((skill) => (
+                              <span key={skill} className="jp-feed-tag">{skill}</span>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="jp-feed-card-footer row" style={{ justifyContent: "space-between", alignItems: "center" }}>
+                          <div className="row" style={{ gap: "0.5rem" }}>
+                            <button type="button" className="jp-feed-action">
+                              Like {post.likeCount}
+                            </button>
+                            <button type="button" className="jp-feed-action">
+                              Comment {post.commentCount ?? 0}
+                            </button>
+                            <button type="button" className="jp-feed-action">Save</button>
+                          </div>
+                          <button type="button" className="jp-feed-action">Share</button>
+                        </div>
+                      </article>
+                    );
+                  })
+                ) : (
+                  <EmptyState title="No professional feed posts yet" description="High-value career updates and hiring posts will appear here as members contribute." />
+                )}
               </div>
-            )}
+            </main>
+
+            <aside className="jp-feed-right">
+              <div className="jp-feed-panel surface">
+                <div className="space-between">
+                  <strong>Profile strength</strong>
+                  <span className="pill">{profileStrength}%</span>
+                </div>
+                <div className="jp-progress-bar" style={{ marginTop: "1rem" }}>
+                  <div className="jp-progress-fill" style={{ width: `${profileStrength}%` }} />
+                </div>
+                <p className="helper" style={{ marginTop: "0.75rem" }}>Complete your profile to improve visibility and discoverability.</p>
+              </div>
+              <div className="jp-feed-panel surface">
+                <strong>Trending jobs</strong>
+                <ul className="jp-right-list">
+                  {jobs.slice(0, 3).map((job) => (
+                    <li key={job.id}>
+                      <strong>{job.title}</strong>
+                      <div className="helper">{job.company} · {job.location}</div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="jp-feed-panel surface">
+                <div className="space-between">
+                  <strong>Recruiter activity</strong>
+                  <span className="helper">Live signal</span>
+                </div>
+                <div className="stack" style={{ gap: "0.75rem", marginTop: "1rem" }}>
+                  {recruiterSignals.map((signal) => (
+                    <div key={signal.label} className="jp-signal-row row" style={{ justifyContent: "space-between", gap: "0.75rem" }}>
+                      <span>{signal.label}</span>
+                      <strong>{signal.value}</strong>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </aside>
           </div>
         </div>
       </section>

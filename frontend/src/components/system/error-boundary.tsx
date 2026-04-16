@@ -114,7 +114,7 @@ export class ErrorBoundary extends React.Component<React.PropsWithChildren, Erro
                 Try Again
               </button>
             </div>
-            {process.env.NODE_ENV === "development" && (
+            {import.meta.env.DEV && (
               <details style={{
                 marginTop: "2rem",
                 padding: "1rem",

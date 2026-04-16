@@ -1,0 +1,571 @@
+
+/* ==========================================
+   JobPlus Network Page V2 - Relationship Management
+   ========================================== */
+
+.jp-network-root {
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+/* Header */
+.jp-network-header {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.02) 0%, rgba(124, 58, 237, 0.02) 100%);
+  padding: 40px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.jp-network-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.jp-network-title h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.02em;
+}
+
+.jp-network-title p {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Network Insights Bar */
+.jp-network-insights {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-top: 32px;
+  padding: 24px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.03) 0%, rgba(124, 58, 237, 0.03) 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(79, 70, 229, 0.08);
+}
+
+.jp-insight-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.jp-insight-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #4F46E5;
+  line-height: 1;
+}
+
+.jp-insight-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.jp-insight-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(79, 70, 229, 0.15);
+}
+
+/* Decision Guidance */
+.jp-decision-guidance {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 24px 0;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.05) 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+.jp-guidance-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16, 185, 129, 0.1);
+  border-radius: 12px;
+  color: #10b981;
+  flex-shrink: 0;
+}
+
+.jp-guidance-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.jp-guidance-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.jp-guidance-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #10b981;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.jp-guidance-text {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+/* Main Layout */
+.jp-network-main {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  padding: 32px 0;
+}
+
+/* Recruiter Pipeline */
+.jp-recruiter-pipeline {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.jp-pipeline-tabs {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.jp-pipeline-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: #6b7280;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 220ms ease-in-out;
+}
+
+.jp-pipeline-tab:hover {
+  background: #f9fafb;
+  color: #4F46E5;
+}
+
+.jp-pipeline-tab.is-active {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  color: #ffffff;
+}
+
+.jp-tab-count {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+/* Recruiter Cards */
+.jp-recruiter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.jp-recruiter-card {
+  background: #ffffff;
+  border: 1px solid #f3f4f6;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 220ms ease-in-out;
+}
+
+.jp-recruiter-card:hover {
+  border-color: #4F46E5;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.08);
+  transform: translateY(-2px);
+}
+
+.jp-recruiter-card.is-selected {
+  border-color: #4F46E5;
+  background: rgba(79, 70, 229, 0.02);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+}
+
+/* Recruiter Card Header */
+.jp-recruiter-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.jp-recruiter-info {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+}
+
+.jp-avatar {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1.125rem;
+  font-weight: 600;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.jp-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.jp-recruiter-name {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 4px 0;
+}
+
+.jp-recruiter-role {
+  font-size: 0.9375rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Priority Badge */
+.jp-priority-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.jp-priority-high {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+}
+
+.jp-priority-medium {
+  background: rgba(245, 158, 11, 0.1);
+  color: #d97706;
+}
+
+.jp-priority-low {
+  background: rgba(107, 114, 128, 0.1);
+  color: #4b5563;
+}
+
+/* Why This Matters */
+.jp-why-matters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.03) 0%, rgba(124, 58, 237, 0.03) 100%);
+  border-radius: 8px;
+}
+
+.jp-why-matters svg {
+  width: 16px;
+  height: 16px;
+  color: #4F46E5;
+  flex-shrink: 0;
+}
+
+.jp-why-matters span {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Recruiter Meta */
+.jp-recruiter-meta {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.jp-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.jp-meta-item svg {
+  width: 16px;
+  height: 16px;
+}
+
+.jp-meta-active {
+  color: #10b981;
+  font-weight: 600;
+}
+
+/* Recruiter Actions */
+.jp-recruiter-actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid #f3f4f6;
+}
+
+.jp-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 220ms ease-in-out;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.jp-btn-primary {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  color: #ffffff;
+  border: none;
+}
+
+.jp-btn-primary:hover {
+  background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.jp-btn-secondary {
+  background: transparent;
+  color: #4F46E5;
+  border-color: #4F46E5;
+}
+
+.jp-btn-secondary:hover {
+  background: rgba(79, 70, 229, 0.02);
+  border-color: #4338ca;
+  color: #4338ca;
+}
+
+.jp-btn-remind {
+  padding: 8px;
+  background: transparent;
+  color: #6b7280;
+  border: 1px solid #e5e7eb;
+}
+
+.jp-btn-remind:hover {
+  color: #4F46E5;
+  border-color: #4F46E5;
+  background: rgba(79, 70, 229, 0.02);
+}
+
+.jp-btn-remind.is-active {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border-color: #10b981;
+}
+
+.jp-btn-remind svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Suggested Connections */
+.jp-suggested-connections {
+  position: sticky;
+  top: 24px;
+  height: fit-content;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+.jp-suggested-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.jp-suggested-header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.jp-suggested-count {
+  padding: 4px 12px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.08) 0%, rgba(124, 58, 237, 0.08) 100%);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4F46E5;
+}
+
+.jp-connection-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.jp-connection-card {
+  background: #ffffff;
+  border: 1px solid #f3f4f6;
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 220ms ease-in-out;
+}
+
+.jp-connection-card:hover {
+  border-color: #4F46E5;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.08);
+}
+
+.jp-connection-header {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.jp-connection-info {
+  flex: 1;
+}
+
+.jp-connection-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 4px 0;
+}
+
+.jp-connection-role {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Connection Strength */
+.jp-connection-strength {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.03) 0%, rgba(124, 58, 237, 0.03) 100%);
+  border-radius: 8px;
+}
+
+.jp-strength-indicator {
+  display: flex;
+  gap: 4px;
+}
+
+.jp-strength-bar {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e5e7eb;
+}
+
+.jp-strength-bar.is-active {
+  background: #4F46E5;
+}
+
+.jp-strength-text {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* Connection Reason */
+.jp-connection-reason {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 12px;
+  padding-left: 4px;
+}
+
+/* Connection Actions */
+.jp-connection-actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid #f3f4f6;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .jp-network-main {
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .jp-network-main {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .jp-suggested-connections {
+    position: relative;
+    top: 0;
+    max-height: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .jp-network-header {
+    padding: 32px 0;
+  }
+
+  .jp-network-title h1 {
+    font-size: 1.75rem;
+  }
+
+  .jp-network-insights {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .jp-insight-divider {
+    width: 100%;
+    height: 1px;
+  }
+
+  .jp-pipeline-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .jp-recruiter-actions {
+    flex-wrap: wrap;
+  }
+}

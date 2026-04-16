@@ -1,0 +1,87 @@
+/* JobPlus Design System CSS Variables */
+:root {
+  /* Light Mode Colors */
+  --jp-surface: #ffffff;
+  --jp-surface-variant: #f8f9fa;
+  --jp-text: #1a1a1a;
+  --jp-text-secondary: #6b7280;
+  --jp-border: #e5e7eb;
+  --jp-primary: #2563eb;
+  --jp-success: #10b981;
+  --jp-warning: #f59e0b;
+  --jp-danger: #ef4444;
+  --jp-accent: #7c3aed;
+
+  /* Dark Mode Colors */
+  --jp-dark-surface: #1f2937;
+  --jp-dark-surface-variant: #374151;
+  --jp-dark-text: #f9fafb;
+  --jp-dark-text-secondary: #d1d5db;
+  --jp-dark-border: #4b5563;
+  --jp-dark-primary: #3b82f6;
+  --jp-dark-success: #34d399;
+  --jp-dark-warning: #fbbf24;
+  --jp-dark-danger: #f87171;
+  --jp-dark-accent: #a78bfa;
+
+  /* Typography */
+  --jp-font-family: Inter, system-ui, sans-serif;
+  --jp-font-size-h1: 2.25rem;
+  --jp-font-size-h2: 1.875rem;
+  --jp-font-size-h3: 1.5rem;
+  --jp-font-size-h4: 1.25rem;
+  --jp-font-size-h5: 1.125rem;
+  --jp-font-size-body: 1rem;
+  --jp-font-size-caption: 0.875rem;
+  --jp-line-height-h1: 2.5rem;
+  --jp-line-height-h2: 2.25rem;
+  --jp-line-height-h3: 2rem;
+  --jp-line-height-h4: 1.75rem;
+  --jp-line-height-h5: 1.5rem;
+  --jp-line-height-body: 1.5rem;
+  --jp-line-height-caption: 1.25rem;
+  --jp-font-weight-normal: 400;
+  --jp-font-weight-medium: 500;
+  --jp-font-weight-semibold: 600;
+  --jp-font-weight-bold: 700;
+
+  /* Spacing */
+  --jp-space-0: 0px;
+  --jp-space-1: 4px;
+  --jp-space-2: 8px;
+  --jp-space-3: 12px;
+  --jp-space-4: 16px;
+  --jp-space-5: 20px;
+  --jp-space-6: 24px;
+  --jp-space-7: 32px;
+  --jp-space-8: 40px;
+  --jp-space-9: 48px;
+  --jp-space-10: 64px;
+
+  /* Radius */
+  --jp-radius-sm: 4px;
+  --jp-radius-md: 8px;
+  --jp-radius-lg: 12px;
+
+  /* Shadows */
+  --jp-shadow-e0: none;
+  --jp-shadow-e1: 0 1px 3px rgba(0,0,0,0.1);
+  --jp-shadow-e2: 0 4px 6px rgba(0,0,0,0.1);
+  --jp-shadow-e3: 0 10px 15px rgba(0,0,0,0.1);
+}
+
+/* Dark mode override */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --jp-surface: var(--jp-dark-surface);
+    --jp-surface-variant: var(--jp-dark-surface-variant);
+    --jp-text: var(--jp-dark-text);
+    --jp-text-secondary: var(--jp-dark-text-secondary);
+    --jp-border: var(--jp-dark-border);
+    --jp-primary: var(--jp-dark-primary);
+    --jp-success: var(--jp-dark-success);
+    --jp-warning: var(--jp-dark-warning);
+    --jp-danger: var(--jp-dark-danger);
+    --jp-accent: var(--jp-dark-accent);
+  }
+}

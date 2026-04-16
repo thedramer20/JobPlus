@@ -93,35 +93,42 @@ export function JobsPage() {
   const strategyHighlights = useMemo(() => sortedJobs.slice(0, 3).map((job) => ({ job, analysis: buildRoleRealitySnapshot(job, deferredCareerWeights) })), [sortedJobs, deferredCareerWeights]);
 
   return (
-    <section className="section-tight">
-      <div className="container stack" style={{ gap: "1rem" }}>
-        <div className="jp-jobs-toolbar-shell">
-          <div className="jp-jobs-toolbar-top">
-            <Link to="/" className="jp-jobs-toolbar-brand">
-              JOBPLUS
-            </Link>
-            <JobMarketSearch
-              query={filters.query}
-              onApply={(query) => setFilters({ ...filters, query })}
-            />
-            <NavLink to={resolveProfileHref(user?.role)} className="jp-toolbar-avatar" aria-label={t("jobsPage.openAccount")}>
-              <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M20 21C20 17.6863 16.4183 15 12 15C7.58172 15 4 17.6863 4 21M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
-                  stroke="currentColor"
-                  strokeWidth="1.7"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </NavLink>
+    <div className="jp-jobs-page">
+      <div className="jp-jobs-header surface">
+        <div className="container">
+          <div className="jp-jobs-header-content">
+            <div>
+              <div className="jp-eyebrow">Job Marketplace</div>
+              <h1 className="jp-h1">Find Your Next Opportunity</h1>
+              <p className="jp-body">Discover roles that match your career goals and skills.</p>
+            </div>
+            <div className="jp-jobs-header-actions">
+              <JobMarketSearch
+                query={filters.query}
+                onApply={(query) => setFilters({ ...filters, query })}
+              />
+              <NavLink to={resolveProfileHref(user?.role)} className="jp-avatar-btn" aria-label={t("jobsPage.openAccount")}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M20 21C20 17.6863 16.4183 15 12 15C7.58172 15 4 17.6863 4 21M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </NavLink>
+            </div>
           </div>
+        </div>
+      </div>
 
-          <JobFilterBar
-            filterConfigs={filterConfigs}
-            filterOptions={filterOptions}
-            filters={filters}
-            applying={isFetching && !isLoading}
+      <div className="container jp-jobs-content">
+        <JobFilterBar
+          filterConfigs={filterConfigs}
+          filterOptions={filterOptions}
+          filters={filters}
+          applying={isFetching && !isLoading}
           onReset={() => setFilters(defaultJobFilters)}
           onApply={(key, nextValue) => {
             setFilters((current) => ({
@@ -130,36 +137,19 @@ export function JobsPage() {
             }));
           }}
         />
-        </div>
 
         <SelectedFilterChips chips={chips} onClearAll={() => setFilters(defaultJobFilters)} />
 
-        <section className="section-tight">
-          <div className="container stack" style={{ gap: "1.5rem" }}>
-            <div className="space-between" style={{ alignItems: "center" }}>
-              <div>
-                <div className="eyebrow">Job Marketplace</div>
-                <h2 className="headline">Find Your Next Opportunity</h2>
-              </div>
-              <NavLink to={resolveProfileHref(user?.role)} className="jp-toolbar-avatar" aria-label="Your profile">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M20 21C20 17.6863 16.4183 15 12 15C7.58172 15 4 17.6863 4 21M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
-                    stroke="currentColor"
-                    strokeWidth="1.7"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </NavLink>
-            </div>
+        <div className="jp-jobs-results-header">
+          <div className="jp-results-count">
+            <span className="jp-ui-text">
+              {isLoading ? t("jobsPage.loadingJobs") : t("jobsPage.rolesFound", { count: sortedJobs.length })}
+            </span>
           </div>
-        </section>
-
-        <div className="space-between">
-          <div className="helper">{isLoading ? t("jobsPage.loadingJobs") : t("jobsPage.rolesFound", { count: sortedJobs.length })}</div>
-          <div className="jp-jobs-toolbar">
-            <span className="helper">{isFetching && !isLoading ? t("jobsPage.applyingFilters") : t("jobsPage.updatedNow")}</span>
+          <div className="jp-jobs-controls">
+            <span className="jp-helper-text">
+              {isFetching && !isLoading ? t("jobsPage.applyingFilters") : t("jobsPage.updatedNow")}
+            </span>
             <SortDropdown
               value={sortBy}
               options={sortOptions}
@@ -180,14 +170,16 @@ export function JobsPage() {
           </div>
         </div>
 
-        {isLoading ? <SkeletonList count={4} /> : null}
-        {isError ? <EmptyState title={t("jobsPage.loadErrorTitle")} description={t("jobsPage.loadErrorDesc")} /> : null}
-        {!isLoading && !isError && sortedJobs.length === 0 ? (
-          <EmptyState title={t("jobsPage.noMatchTitle")} description={t("jobsPage.noMatchDesc")} />
-        ) : null}
-        {!isLoading && !isError ? sortedJobs.map((job) => <JobCard key={job.id} job={job} />) : null}
+        <div className="jp-jobs-list">
+          {isLoading ? <SkeletonList count={4} /> : null}
+          {isError ? <EmptyState title={t("jobsPage.loadErrorTitle")} description={t("jobsPage.loadErrorDesc")} /> : null}
+          {!isLoading && !isError && sortedJobs.length === 0 ? (
+            <EmptyState title={t("jobsPage.noMatchTitle")} description={t("jobsPage.noMatchDesc")} />
+          ) : null}
+          {!isLoading && !isError ? sortedJobs.map((job) => <JobCard key={job.id} job={job} />) : null}
+        </div>
       </div>
-    </section>
+    </div>
   );
 }
 

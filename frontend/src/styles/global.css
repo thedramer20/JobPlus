@@ -1,60 +1,140 @@
 /* Import Global Typography System */
 @import './typography.css';
+@import './wow-effects.css';
 
 :root {
-  --bg: #f6f9ff;
-  --surface: #ffffff;
-  --surface-alt: #edf3ff;
-  --surface-subtle: #f8fbff;
-  --surface-strong: #0f172a;
-  --surface-dark: #0f172b;
-  --text: #0e1a2f;
-  --text-soft: #3f4f68;
-  --text-muted: #63748f;
-  --text-inverse: #f8fafc;
-  --border: #d9e4f3;
-  --border-strong: #b8cae2;
-  --primary: #2667ff;
-  --primary-strong: #1a4fd6;
-  --primary-dark: #12307f;
-  --accent: #10b9a8;
-  --success: #0a9967;
-  --warning: #d88a16;
-  --danger: #d9304f;
-  --brand-gradient: linear-gradient(135deg, #2667ff 0%, #0ea5e9 48%, #0fb9a6 100%);
-  --brand-gradient-soft: linear-gradient(140deg, rgba(38, 103, 255, 0.1), rgba(14, 165, 233, 0.07) 55%, rgba(15, 185, 166, 0.08));
-  --elevation-1: 0 6px 16px rgba(17, 32, 64, 0.06);
-  --elevation-2: 0 14px 30px rgba(17, 32, 64, 0.1);
-  --elevation-3: 0 20px 48px rgba(17, 32, 64, 0.14);
-  --shadow: var(--elevation-2);
-  --radius-xs: 10px;
-  --radius-sm: 14px;
-  --radius-md: 20px;
+  /* JobPlus Design System Variables - Light Mode Default */
+  --jp-surface: #ffffff;
+  --jp-surface-variant: #f8f9fa;
+  --jp-text: #1a1a1a;
+  --jp-text-secondary: #6b7280;
+  --jp-border: #e5e7eb;
+  --jp-primary: #2563eb;
+  --jp-success: #10b981;
+  --jp-warning: #f59e0b;
+  --jp-danger: #ef4444;
+  --jp-accent: #7c3aed;
+
+  /* Dark Mode Variables */
+  --jp-dark-surface: #1f2937;
+  --jp-dark-surface-variant: #374151;
+  --jp-dark-text: #f9fafb;
+  --jp-dark-text-secondary: #d1d5db;
+  --jp-dark-border: #4b5563;
+  --jp-dark-primary: #3b82f6;
+  --jp-dark-success: #34d399;
+  --jp-dark-warning: #fbbf24;
+  --jp-dark-danger: #f87171;
+  --jp-dark-accent: #a78bfa;
+
+  /* Typography */
+  --jp-font-family: Inter, system-ui, sans-serif;
+  --jp-font-size-h1: 2.25rem;
+  --jp-font-size-h2: 1.875rem;
+  --jp-font-size-h3: 1.5rem;
+  --jp-font-size-h4: 1.25rem;
+  --jp-font-size-h5: 1.125rem;
+  --jp-font-size-body: 1rem;
+  --jp-font-size-caption: 0.875rem;
+  --jp-line-height-h1: 2.5rem;
+  --jp-line-height-h2: 2.25rem;
+  --jp-line-height-h3: 2rem;
+  --jp-line-height-h4: 1.75rem;
+  --jp-line-height-h5: 1.5rem;
+  --jp-line-height-body: 1.5rem;
+  --jp-line-height-caption: 1.25rem;
+  --jp-font-weight-normal: 400;
+  --jp-font-weight-medium: 500;
+  --jp-font-weight-semibold: 600;
+  --jp-font-weight-bold: 700;
+
+  /* Spacing */
+  --jp-space-0: 0px;
+  --jp-space-1: 4px;
+  --jp-space-2: 8px;
+  --jp-space-3: 12px;
+  --jp-space-4: 16px;
+  --jp-space-5: 20px;
+  --jp-space-6: 24px;
+  --jp-space-7: 32px;
+  --jp-space-8: 40px;
+  --jp-space-9: 48px;
+  --jp-space-10: 64px;
+
+  /* Radius */
+  --jp-radius-sm: 4px;
+  --jp-radius-md: 8px;
+  --jp-radius-lg: 12px;
+
+  /* Shadows */
+  --jp-shadow-e0: none;
+  --jp-shadow-e1: 0 1px 3px rgba(0,0,0,0.1);
+  --jp-shadow-e2: 0 4px 6px rgba(0,0,0,0.1);
+  --jp-shadow-e3: 0 10px 15px rgba(0,0,0,0.1);
+
+  /* Legacy mappings for backward compatibility */
+  --bg: var(--jp-surface-variant);
+  --surface: var(--jp-surface);
+  --surface-alt: var(--jp-surface-variant);
+  --surface-subtle: var(--jp-surface-variant);
+  --surface-strong: var(--jp-dark-surface);
+  --surface-dark: var(--jp-dark-surface);
+  --text: var(--jp-text);
+  --text-soft: var(--jp-text-secondary);
+  --text-muted: var(--jp-text-secondary);
+  --text-inverse: var(--jp-dark-text);
+  --border: var(--jp-border);
+  --border-strong: var(--jp-border);
+  --primary: var(--jp-primary);
+  --primary-strong: var(--jp-primary);
+  --primary-dark: var(--jp-primary);
+  --accent: var(--jp-accent);
+  --success: var(--jp-success);
+  --warning: var(--jp-warning);
+  --danger: var(--jp-danger);
+  --brand-gradient: linear-gradient(135deg, var(--jp-primary) 0%, #0ea5e9 48%, var(--jp-accent) 100%);
+  --brand-gradient-soft: linear-gradient(140deg, rgba(37, 99, 235, 0.1), rgba(14, 165, 233, 0.07) 55%, rgba(124, 58, 237, 0.08));
+  --elevation-1: var(--jp-shadow-e1);
+  --elevation-2: var(--jp-shadow-e2);
+  --elevation-3: var(--jp-shadow-e3);
+  --shadow: var(--jp-shadow-e2);
+  --radius-xs: var(--jp-radius-sm);
+  --radius-sm: var(--jp-radius-md);
+  --radius-md: var(--jp-radius-lg);
   --radius-lg: 30px;
   --max-width: 1240px;
   --content-width: 1120px;
   /* New 2026 enhancements */
   --glass-bg: rgba(255, 255, 255, 0.1);
   --glass-border: rgba(255, 255, 255, 0.2);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --glass-shadow: var(--jp-shadow-e3);
   --neumorph-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), inset 0 -1px 3px rgba(255, 255, 255, 0.1);
   --neumorph-shadow-hover: inset 0 2px 6px rgba(0, 0, 0, 0.15), inset 0 -2px 6px rgba(255, 255, 255, 0.15);
-  --glow-primary: 0 0 20px rgba(38, 103, 255, 0.3);
-  --glow-accent: 0 0 20px rgba(15, 185, 166, 0.3);
+  --glow-primary: 0 0 20px rgba(37, 99, 235, 0.3);
+  --glow-accent: 0 0 20px rgba(124, 58, 237, 0.3);
   --transition-fast: 150ms ease-in-out;
   --transition-normal: 250ms ease-in-out;
   --transition-slow: 400ms ease-in-out;
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   /* Future-level intelligence variables */
-  --ambient-glow: 0 0 40px rgba(38, 103, 255, 0.05);
+  --ambient-glow: 0 0 40px rgba(37, 99, 235, 0.05);
   --magnetic-force: 20px;
-  --depth-layer-1: 10;
-  --depth-layer-2: 20;
-  --depth-layer-3: 30;
-  --ai-primary: #7c3aed;
-  --ai-accent: #ec4899;
-  --predictive-opacity: 0.7;
-  --context-alpha: 0.8;
+}
+
+/* Dark mode override */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --jp-surface: var(--jp-dark-surface);
+    --jp-surface-variant: var(--jp-dark-surface-variant);
+    --jp-text: var(--jp-dark-text);
+    --jp-text-secondary: var(--jp-dark-text-secondary);
+    --jp-border: var(--jp-dark-border);
+    --jp-primary: var(--jp-dark-primary);
+    --jp-success: var(--jp-dark-success);
+    --jp-warning: var(--jp-dark-warning);
+    --jp-danger: var(--jp-dark-danger);
+    --jp-accent: var(--jp-dark-accent);
+  }
 }
 
 :root[data-theme="dark"] {
@@ -2515,6 +2595,67 @@ img {
   border: 1px solid var(--border);
 }
 
+.jp-home-hero {
+  position: relative;
+}
+
+.jp-home-intelligence-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.6rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(124, 58, 237, 0.06));
+  border-radius: 22px;
+  border: 1px solid rgba(37, 99, 235, 0.12);
+}
+
+.jp-intelligence-pill {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem 1.1rem;
+  border-radius: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--elevation-1);
+}
+
+.jp-intelligence-pill strong {
+  font-size: 1.25rem;
+  color: var(--primary-dark);
+}
+
+.jp-home-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 15% 20%, rgba(37, 99, 235, 0.14), transparent 32%),
+              radial-gradient(circle at 92% 8%, rgba(124, 58, 237, 0.1), transparent 28%);
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.jp-feed-stream.feed-intelligent .jp-feed-card::after {
+  content: attr(data-relevance);
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--brand-gradient);
+  color: white;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  opacity: 0.95;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  transform: translateY(-5px);
+}
+
+.jp-feed-card:hover::after {
+  transform: translateY(-8px);
+}
+
 :root[data-theme="dark"] .hero-panel {
   background:
     radial-gradient(circle at 92% -6%, rgba(125, 179, 255, 0.12), transparent 38%),
@@ -4492,6 +4633,217 @@ img {
   padding: 1.35rem;
 }
 
+.jp-feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.jp-feed-status {
+  display: flex;
+  align-items: center;
+}
+
+.jp-feed-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(0, 2.2fr) minmax(250px, 1fr);
+  gap: 1.25rem;
+}
+
+.jp-feed-left,
+.jp-feed-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.jp-feed-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.2rem;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.jp-feed-nav-heading {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.jp-feed-nav-item {
+  text-align: left;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.95rem 1rem;
+  width: 100%;
+  border-radius: 14px;
+  color: var(--text);
+  font-weight: 600;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.jp-feed-nav-item:hover,
+.jp-feed-nav-item.active {
+  background: color-mix(in srgb, var(--primary) 12%, var(--surface));
+  color: var(--primary-dark);
+}
+
+.jp-feed-sidecard {
+  padding: 1.35rem;
+}
+
+.jp-feed-priorities {
+  margin: 0.85rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.jp-feed-priorities li {
+  font-size: 0.94rem;
+  color: var(--text-soft);
+}
+
+.jp-feed-composer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.35rem;
+}
+
+.jp-composer-avatar {
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 2px solid var(--primary);
+}
+
+.jp-composer-input {
+  width: 100%;
+  padding: 1rem 1rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  min-height: 120px;
+  resize: vertical;
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--surface);
+}
+
+.jp-composer-actions button {
+  min-width: 11rem;
+}
+
+.jp-feed-stream {
+  display: grid;
+  gap: 1rem;
+}
+
+.jp-feed-card-header {
+  gap: 1rem;
+}
+
+.jp-feed-avatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  object-fit: cover;
+}
+
+.jp-feed-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary) 14%, var(--surface));
+  color: var(--primary-dark);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.jp-feed-card-body {
+  display: grid;
+  gap: 1rem;
+}
+
+.jp-feed-tags {
+  margin-top: 0.25rem;
+}
+
+.jp-feed-tag {
+  display: inline-flex;
+  gap: 0.4rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary) 12%, var(--surface));
+  color: var(--text);
+  font-size: 0.82rem;
+}
+
+.jp-feed-card-footer {
+  gap: 0.5rem;
+}
+
+.jp-feed-action {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  background: var(--surface);
+  cursor: pointer;
+  color: var(--text-soft);
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.jp-feed-action:hover {
+  background: color-mix(in srgb, var(--primary) 12%, var(--surface));
+  color: var(--primary-dark);
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+}
+
+.jp-feed-panel {
+  padding: 1.35rem;
+}
+
+.jp-right-list {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.95rem;
+}
+
+.jp-right-list li {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.jp-signal-row {
+  padding: 0.95rem 1rem;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+}
+
+@media (max-width: 1100px) {
+  .jp-feed-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .jp-feed-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
 .jp-feed-card {
   display: flex;
   flex-direction: column;
@@ -4938,6 +5290,14 @@ img {
   border-radius: 18px;
 }
 
+.jp-auth-layout-shell {
+  min-height: 100vh;
+  padding: 2.5rem 0;
+  background: radial-gradient(circle at 12% 18%, rgba(37, 99, 235, 0.14), transparent 32%),
+              radial-gradient(circle at 92% 8%, rgba(124, 58, 237, 0.12), transparent 24%),
+              linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+}
+
 .jp-auth-shell {
   padding-block: 2.4rem;
 }
@@ -4947,6 +5307,63 @@ img {
   grid-template-columns: 1.05fr 0.95fr;
   gap: 1.25rem;
   align-items: stretch;
+}
+
+.jp-auth-form-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.jp-auth-brand-top {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.jp-auth-brand-icon {
+  min-width: 3rem;
+  min-height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  font-weight: 800;
+  color: white;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  box-shadow: var(--glow-accent);
+}
+
+.jp-auth-brand-subtitle {
+  margin-top: 0.9rem;
+  max-width: 62ch;
+}
+
+.jp-auth-card {
+  width: 100%;
+  max-width: 560px;
+  margin-inline: auto;
+  padding: 1.4rem;
+  border-radius: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(250,250,255,0.8));
+  border: 1px solid rgba(255,255,255,0.8);
+  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.08);
+}
+
+.jp-auth-card header {
+  gap: 0.25rem;
+}
+
+.jp-auth-card header h2 {
+  font-size: clamp(1.5rem, 2vw, 1.9rem);
+}
+
+.jp-auth-card header .helper {
+  color: var(--text-soft);
 }
 
 .jp-auth-brand {
@@ -7300,6 +7717,462 @@ a:focus-visible {
   .subtle-card {
     border-radius: 14px;
   }
+}
+
+/* =========================================================
+   JobPlus Premium 2026 Design System Overrides
+   ========================================================= */
+:root {
+  --jp-primary: #4f46e5;
+  --jp-primary-strong: #7c3aed;
+  --jp-success: #14b8a6;
+  --jp-warning: #f59e0b;
+  --jp-danger: #dc2626;
+  --jp-background: #f8fafc;
+  --jp-surface: #ffffff;
+  --jp-surface-variant: #f1f5f9;
+  --jp-border: #e2e8f0;
+  --jp-text: #0f172a;
+  --jp-text-secondary: #64748b;
+  --jp-surface-soft: #f8fbff;
+  --jp-radius: 16px;
+  --jp-radius-lg: 20px;
+  --jp-shadow: 0 18px 44px rgba(15, 23, 42, 0.08);
+  --jp-shadow-soft: 0 8px 24px rgba(15, 23, 42, 0.06);
+  --jp-brand-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  --jp-brand-gradient-soft: linear-gradient(135deg, rgba(79, 70, 229, 0.16), rgba(124, 58, 237, 0.12) 70%);
+  --jp-transition: 200ms ease;
+}
+
+:root[data-theme="dark"] {
+  --jp-background: #0f172a;
+  --jp-surface: #1e293b;
+  --jp-surface-variant: #273449;
+  --jp-border: #334155;
+  --jp-text: #e2e8f0;
+  --jp-text-secondary: #94a3b8;
+  --jp-surface-soft: #1f2a3f;
+  --jp-shadow: 0 20px 48px rgba(0, 0, 0, 0.36);
+  --jp-shadow-soft: 0 10px 28px rgba(0, 0, 0, 0.22);
+  --jp-brand-gradient-soft: linear-gradient(135deg, rgba(79, 70, 229, 0.24), rgba(124, 58, 237, 0.18) 70%);
+}
+
+html, body {
+  min-height: 100%;
+  background: var(--jp-background);
+  color: var(--jp-text);
+}
+
+body {
+  margin: 0;
+  font-family: var(--jp-font-family, "Satoshi", Inter, system-ui, sans-serif);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background-image: radial-gradient(circle at top left, rgba(79, 70, 229, 0.08), transparent 30%), radial-gradient(circle at 90% 10%, rgba(124, 58, 237, 0.06), transparent 18%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: rgba(79, 70, 229, 0.18);
+  color: var(--jp-text);
+}
+
+.page-shell {
+  min-height: 100vh;
+  padding: 0 1.5rem 2.5rem;
+  background: transparent;
+}
+
+.jp-auth-layout-shell {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 3rem 1.25rem;
+  background: linear-gradient(180deg, var(--jp-background) 0%, var(--jp-surface-variant) 100%);
+}
+
+.jp-topbar-shell {
+  position: sticky;
+  top: 1rem;
+  z-index: 70;
+  margin: 0 auto 1.5rem;
+  width: min(100% - 2rem, 1240px);
+  border-radius: 20px;
+  border: 1px solid rgba(226, 232, 240, 0.72);
+  background: linear-gradient(180deg, var(--jp-surface), var(--jp-surface-variant));
+  box-shadow: var(--jp-shadow-soft);
+  backdrop-filter: blur(16px);
+}
+
+.jp-topbar-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 1.8fr minmax(240px, 1fr);
+  align-items: center;
+  gap: 1rem;
+  padding: 0.95rem 1.2rem;
+}
+
+.jp-topbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  color: var(--jp-text);
+}
+
+.jp-topbar-brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.14), rgba(124, 58, 237, 0.1));
+}
+
+.jp-topbar-brand-wordmark {
+  display: inline-flex;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.jp-topbar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.jp-topbar-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.95rem 1rem;
+  color: var(--jp-text-secondary);
+  border-radius: 14px;
+  border: 1px solid transparent;
+  transition: background var(--jp-transition), color var(--jp-transition), transform var(--jp-transition), box-shadow var(--jp-transition);
+}
+
+.jp-topbar-link:hover,
+.jp-topbar-link.is-active {
+  color: var(--jp-text);
+  background: rgba(79, 70, 229, 0.08);
+  box-shadow: 0 10px 30px rgba(79, 70, 229, 0.08);
+}
+
+.jp-topbar-link.is-active {
+  border-color: rgba(79, 70, 229, 0.18);
+}
+
+.jp-topbar-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.jp-topbar-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 14px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  background: var(--jp-surface);
+  color: var(--jp-text);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.surface,
+.card,
+.subtle-card,
+.jp-profile-card,
+.jp-company-card,
+.jp-message-item,
+.jp-admin-kpi,
+.jp-settings-section {
+  background: var(--jp-surface);
+  border: 1px solid var(--jp-border);
+  border-radius: var(--jp-radius);
+  box-shadow: var(--jp-shadow-soft);
+}
+
+.surface-muted {
+  background: var(--jp-surface-variant);
+  border-color: rgba(226, 232, 240, 0.9);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 1.15rem;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: transform var(--jp-transition), box-shadow var(--jp-transition), background var(--jp-transition), border-color var(--jp-transition);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--jp-shadow-soft);
+}
+
+.btn-primary {
+  color: #fff;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  box-shadow: 0 14px 28px rgba(79, 70, 229, 0.18);
+}
+
+.btn-secondary {
+  color: var(--jp-text);
+  background: var(--jp-surface-variant);
+  border-color: var(--jp-border);
+}
+
+.btn-secondary:hover {
+  background: rgba(226, 232, 240, 0.9);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--jp-text);
+}
+
+.footer {
+  margin-top: 3rem;
+  padding: 2rem 0 1rem;
+  color: var(--jp-text-secondary);
+}
+
+.footer .container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.jp-admin-sidebar,
+.jp-dashboard-left,
+.jp-dashboard-right {
+  background: var(--jp-surface);
+  border: 1px solid var(--jp-border);
+  border-radius: var(--jp-radius);
+}
+
+.jp-admin-topbar,
+.jp-dashboard-topbar {
+  background: var(--jp-surface);
+  border: 1px solid var(--jp-border);
+  border-radius: 18px;
+  box-shadow: var(--jp-shadow-soft);
+}
+
+.jp-admin-search-bar {
+  display: grid;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  grid-template-columns: 1fr auto;
+  padding: 0.8rem 1rem;
+  border-radius: 14px;
+  background: var(--jp-surface-variant);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.jp-admin-search-bar input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--jp-text);
+  font-size: 0.95rem;
+}
+
+.jp-admin-badge,
+.jp-control-btn-badge,
+.jp-save-button .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.8rem;
+  min-height: 1.8rem;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--jp-primary);
+}
+
+.jp-topbar-shell,
+.jp-admin-sidebar,
+.jp-dashboard-left,
+.jp-dashboard-right,
+.surface,
+.card,
+.subtle-card {
+  transition: transform var(--jp-transition), box-shadow var(--jp-transition), border-color var(--jp-transition), background var(--jp-transition);
+}
+
+@media (max-width: 1024px) {
+  .jp-topbar-grid {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+
+  .jp-topbar-actions {
+    justify-content: stretch;
+  }
+}
+
+@media (max-width: 760px) {
+  .jp-topbar-shell {
+    width: calc(100% - 1rem);
+    top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .jp-topbar-link {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Jobs Page Styles */
+.jp-jobs-page {
+  min-height: 100vh;
+  background: var(--jp-background);
+}
+
+.jp-jobs-header {
+  padding: 3rem 0;
+  background: linear-gradient(135deg, var(--jp-surface-soft) 0%, var(--jp-surface) 100%);
+  border-bottom: 1px solid var(--jp-border);
+}
+
+.jp-jobs-header-content {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 2rem;
+}
+
+.jp-jobs-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.jp-avatar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 14px;
+  border: 1px solid var(--jp-border);
+  background: var(--jp-surface);
+  color: var(--jp-text);
+  transition: transform var(--jp-transition), box-shadow var(--jp-transition);
+}
+
+.jp-avatar-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--jp-shadow-soft);
+}
+
+.jp-jobs-content {
+  padding: 2rem 0;
+}
+
+.jp-jobs-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--jp-border);
+}
+
+.jp-results-count .jp-ui-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--jp-text-secondary);
+}
+
+.jp-jobs-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.jp-helper-text {
+  font-size: 13px;
+  color: var(--jp-text-secondary);
+}
+
+.jp-jobs-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+/* Typography Classes */
+.jp-h1 {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+  color: var(--jp-text);
+}
+
+.jp-body {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+  color: var(--jp-text-secondary);
+}
+
+.jp-ui-text {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--jp-text-secondary);
+}
+
+.jp-eyebrow {
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--jp-text-secondary);
+  margin-bottom: 0.5rem;
 }
 
 /* =========================================================

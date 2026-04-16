@@ -90,149 +90,128 @@ export function JobDetailsPage() {
   const isMutating = saveMutation.isPending || removeMutation.isPending;
 
   return (
-    <section className="section-tight">
-      <div className="container stack" style={{ gap: "1.25rem" }}>
-        <div className="jp-detail-hero surface">
-          <div className="jp-detail-brand">
-            <div className="jp-company-mark">{job.company.slice(0, 2).toUpperCase()}</div>
-            <div>
-              <div className="eyebrow">{job.category}</div>
-              <h1 className="headline" style={{ fontSize: "3rem", margin: "0.35rem 0" }}>
-                {job.title}
-              </h1>
-              <div className="jp-detail-meta">
-                <span>{job.company}</span>
-                <span>{job.location}</span>
-                <span>{job.type}</span>
-                <span>{job.workMode}</span>
-              </div>
+    <div className="jp-job-details-page">
+      {/* Hero Section */}
+      <div className="jp-job-hero surface">
+        <div className="container">
+          <div className="jp-job-hero-content">
+            <div className="jp-job-hero-main">
+              <div className="jp-eyebrow">{job.category}</div>
+              <h1 className="jp-h1">{job.title}</h1>
+              <p className="jp-body">{job.company} • {job.location} • {job.type} • {job.workMode}</p>
             </div>
-          </div>
-          <div className="jp-detail-actions">
-            <StatusBadge tone={job.status === "Open" ? "success" : "warning"} label={job.status} />
-            <span className="jp-salary-pill">{job.salary}</span>
+            <div className="jp-job-hero-actions">
+              <StatusBadge tone={job.status === "Open" ? "success" : "warning"} label={job.status} />
+              <span className="jp-salary-display">{job.salary}</span>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div className="detail-layout">
-          <div className="stack">
-            <div className="surface" style={{ padding: "1.5rem" }}>
-              <div className="jp-detail-grid">
-                {detailPoints.map((item) => (
-                  <div key={item.label} className="jp-detail-stat">
-                    <span className="helper">{item.label}</span>
-                    <strong>{item.value}</strong>
-                  </div>
-                ))}
+      <div className="container jp-job-content">
+        <div className="jp-job-layout">
+          {/* Main Content - Left Side */}
+          <div className="jp-job-main">
+            {/* Job Description */}
+            <div className="surface jp-job-section">
+              <h2 className="jp-h2">{t("jobDetails.aboutRole")}</h2>
+              <p className="jp-body">{job.description}</p>
+            </div>
+
+            {/* Requirements */}
+            <div className="surface jp-job-section">
+              <h2 className="jp-h2">{t("jobDetails.coreRequirements")}</h2>
+              <div className="jp-job-tags">
+                {job.requirements.length ? (
+                  job.requirements.map((requirement) => (
+                    <span key={requirement} className="jp-tag">{requirement}</span>
+                  ))
+                ) : (
+                  <span className="jp-ui-text">{t("jobDetails.requirementsFallback")}</span>
+                )}
               </div>
             </div>
 
-            <div className="surface" style={{ padding: "1.6rem" }}>
-              <div className="stack" style={{ gap: "1.4rem" }}>
-                <div>
-                  <h3 style={{ marginTop: 0 }}>{t("jobDetails.aboutRole")}</h3>
-                  <p className="helper" style={{ fontSize: "0.98rem", lineHeight: 1.75 }}>
-                    {job.description}
-                  </p>
+            {/* Responsibilities & Benefits */}
+            <div className="jp-job-grid">
+              <div className="surface jp-job-section">
+                <h3 className="jp-h3">{t("jobDetails.responsibilities")}</h3>
+                <ul className="jp-job-list">
+                  {(job as any).responsibilities?.map((resp: string, idx: number) => (
+                    <li key={idx}>{resp}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="surface jp-job-section">
+                <h3 className="jp-h3">{t("jobDetails.benefits")}</h3>
+                <ul className="jp-job-list">
+                  {(job as any).benefits?.map((benefit: string, idx: number) => (
+                    <li key={idx}>{benefit}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Preferred Qualifications */}
+            {(job as any).preferredQualifications && (job as any).preferredQualifications.length > 0 && (
+              <div className="surface jp-job-section">
+                <h2 className="jp-h2">{t("jobDetails.preferredQualifications")}</h2>
+                <div className="jp-job-tags">
+                  {(job as any).preferredQualifications.map((qual: string, idx: number) => (
+                    <span key={idx} className="jp-tag">{qual}</span>
+                  ))}
                 </div>
+              </div>
+            )}
 
-                <div>
-                  <h3>{t("jobDetails.coreRequirements")}</h3>
-                  <div className="row" style={{ flexWrap: "wrap" }}>
-                    {job.requirements.length ? (
-                      job.requirements.map((requirement) => (
-                        <span className="tag" key={requirement}>
-                          {requirement}
-                        </span>
-                      ))
-                    ) : (
-                      <span className="helper">{t("jobDetails.requirementsFallback")}</span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="grid grid-2">
-                  <div className="subtle-card">
-                    <strong>{t("jobDetails.responsibilities")}</strong>
-                    <ul className="jp-detail-list">
-                      {(job as any).responsibilities?.map((resp: string, idx: number) => (
-                        <li key={idx}>{resp}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="subtle-card">
-                    <strong>{t("jobDetails.benefits")}</strong>
-                    <ul className="jp-detail-list">
-                      {(job as any).benefits?.map((benefit: string, idx: number) => (
-                        <li key={idx}>{benefit}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                {(job as any).preferredQualifications && (job as any).preferredQualifications.length > 0 && (
-                  <div className="surface" style={{ padding: "1.5rem" }}>
-                    <h3>{t("jobDetails.preferredQualifications")}</h3>
-                    <div className="row" style={{ flexWrap: "wrap" }}>
-                      {(job as any).preferredQualifications.map((qual: string, idx: number) => (
-                        <span className="tag" key={idx}>{qual}</span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <div className="grid grid-2">
-                  <div className="subtle-card">
-                    <strong>{t("jobDetails.hiringProcess")}</strong>
-                    <ul className="jp-detail-list">
-                      {(job as any).hiringProcess?.map((step: string, idx: number) => (
-                        <li key={idx}>{step}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  {(job as any).teamInfo && (
-                    <div className="subtle-card">
-                      <strong>{t("jobDetails.teamInfo")}</strong>
-                      <p className="helper">{(job as any).teamInfo}</p>
-                      {(job as any).department && (
-                        <div style={{ marginTop: "0.5rem" }}>
-                          <span className="tag">{(job as any).department}</span>
-                        </div>
-                      )}
-                    </div>
+            {/* Hiring Process & Team Info */}
+            <div className="jp-job-grid">
+              <div className="surface jp-job-section">
+                <h3 className="jp-h3">{t("jobDetails.hiringProcess")}</h3>
+                <ul className="jp-job-list">
+                  {(job as any).hiringProcess?.map((step: string, idx: number) => (
+                    <li key={idx}>{step}</li>
+                  ))}
+                </ul>
+              </div>
+              {(job as any).teamInfo && (
+                <div className="surface jp-job-section">
+                  <h3 className="jp-h3">{t("jobDetails.teamInfo")}</h3>
+                  <p className="jp-body">{(job as any).teamInfo}</p>
+                  {(job as any).department && (
+                    <span className="jp-tag">{(job as any).department}</span>
                   )}
                 </div>
+              )}
+            </div>
 
-                <div className="surface-muted" style={{ padding: "1.2rem" }}>
-                  <div className="space-between">
-                    <div>
-                      <strong>{t("jobDetails.companySnapshot")}</strong>
-                      <div className="helper" style={{ marginTop: "0.35rem" }}>
-                        {t("jobDetails.companySnapshotDesc", { company: job.company })}
-                      </div>
-                    </div>
-                    <Link className="btn btn-secondary" to={`/companies/${job.companyId ?? 1}`}>
-                      {t("jobDetails.viewCompany")}
-                    </Link>
-                  </div>
+            {/* Company Snapshot */}
+            <div className="surface-muted jp-job-section">
+              <div className="jp-company-snapshot">
+                <div>
+                  <h3 className="jp-h3">{t("jobDetails.companySnapshot")}</h3>
+                  <p className="jp-ui-text">{t("jobDetails.companySnapshotDesc", { company: job.company })}</p>
                 </div>
+                <Link className="btn btn-secondary" to={`/companies/${job.companyId ?? 1}`}>
+                  {t("jobDetails.viewCompany")}
+                </Link>
               </div>
             </div>
           </div>
 
-          <aside className="surface jp-detail-sidebar">
-            <div className="stack">
-              <strong>{t("jobDetails.readyToApply")}</strong>
-              <div className="helper">{t("jobDetails.readyToApplyDesc")}</div>
-              <Link className="btn btn-primary" to={`/jobs/${job.id}/apply`}>
+          {/* Sidebar - Right Side */}
+          <div className="jp-job-sidebar">
+            {/* Apply Section */}
+            <div className="surface jp-apply-section">
+              <h3 className="jp-h3">{t("jobDetails.readyToApply")}</h3>
+              <p className="jp-ui-text">{t("jobDetails.readyToApplyDesc")}</p>
+              <Link className="btn btn-primary jp-apply-btn" to={`/jobs/${job.id}/apply`}>
                 {t("jobDetails.applyRole")}
               </Link>
               <button
-                className="btn btn-secondary"
+                className="btn btn-secondary jp-save-btn"
                 onClick={() => {
-                  if (!canSave) {
-                    return;
-                  }
+                  if (!canSave) return;
                   if (isSaved) {
                     removeMutation.mutate(job.id);
                     return;
@@ -245,92 +224,92 @@ export function JobDetailsPage() {
               >
                 {isMutating ? (isSaved ? t("jobCard.removing") : t("jobCard.saving")) : isSaved ? t("jobCard.saved") : t("jobDetails.saveJob")}
               </button>
-              <div className="jp-detail-divider" />
-              <div className="surface-muted" style={{ padding: "0.85rem" }}>
-                <strong>{t("jobDetails.recruiter")}</strong>
-                <div className="helper" style={{ marginTop: "0.3rem" }}>
-                  {t("jobDetails.recruiterDesc", { company: job.company })}
-                </div>
-                <button className="btn btn-secondary" style={{ marginTop: "0.65rem" }} type="button">
-                  {t("jobDetails.messageRecruiter")}
+            </div>
+
+            {/* Recruiter Section */}
+            <div className="surface jp-recruiter-section">
+              <h4 className="jp-h4">{t("jobDetails.recruiter")}</h4>
+              <p className="jp-ui-text">{t("jobDetails.recruiterDesc", { company: job.company })}</p>
+              <button className="btn btn-secondary" type="button">
+                {t("jobDetails.messageRecruiter")}
+              </button>
+            </div>
+
+            {/* Role Reality Snapshot */}
+            <div className="surface jp-snapshot-section">
+              <div className="jp-snapshot-header">
+                <h4 className="jp-h4">Role Reality Snapshot</h4>
+                <button className="btn btn-ghost" type="button" onClick={() => setSnapshotOpen((open) => !open)}>
+                  {snapshotOpen ? "Hide" : "Show"}
                 </button>
               </div>
-              <div className="jp-detail-divider" />
-              <div className="surface jp-role-snapshot" style={{ padding: "1rem" }}>
-                <div className="space-between">
-                  <strong>Role Reality Snapshot</strong>
-                  <button className="btn btn-ghost" type="button" onClick={() => setSnapshotOpen((open) => !open)}>
-                    {snapshotOpen ? "Hide" : "Show"}
-                  </button>
-                </div>
-                {snapshotOpen ? (
-                  <div className="stack" style={{ gap: "0.6rem", marginTop: "0.85rem" }}>
-                    <div className="space-between">
-                      <span className="helper">Acceptance momentum</span>
-                      <strong>72%</strong>
-                    </div>
-                    <div className="space-between">
-                      <span className="helper">Culture fit signal</span>
-                      <strong>High</strong>
-                    </div>
-                    <div className="space-between">
-                      <span className="helper">Role risk index</span>
-                      <strong>Moderate</strong>
-                    </div>
+              {snapshotOpen && (
+                <div className="jp-snapshot-metrics">
+                  <div className="jp-metric">
+                    <span className="jp-metric-label">Acceptance momentum</span>
+                    <strong className="jp-metric-value">72%</strong>
                   </div>
-                ) : null}
-              </div>
-
-              <div className="surface jp-offer-leverage" style={{ padding: "1rem", marginTop: "1rem" }}>
-                <div className="space-between">
-                  <strong>Offer Leverage Analyzer</strong>
-                  <span className="tag">{leverageScore}%</span>
+                  <div className="jp-metric">
+                    <span className="jp-metric-label">Culture fit signal</span>
+                    <strong className="jp-metric-value">High</strong>
+                  </div>
+                  <div className="jp-metric">
+                    <span className="jp-metric-label">Role risk index</span>
+                    <strong className="jp-metric-value">Moderate</strong>
+                  </div>
                 </div>
-                <div className="helper" style={{ marginTop: "0.75rem" }}>
-                  Assess the balance between compensation, demand, and your negotiation strength.
-                </div>
-                <div className="jp-progress-bar" style={{ marginTop: "1rem" }}>
-                  <div className="jp-progress-fill" style={{ width: `${leverageScore}%` }} />
-                </div>
-              </div>
-              <div className="jp-detail-divider" />
-              <div className="stack" style={{ gap: "0.7rem" }}>
-                <div className="space-between">
-                  <span className="helper">{t("common.companies")}</span>
-                  <strong>{job.company}</strong>
-                </div>
-                <div className="space-between">
-                  <span className="helper">{t("jobDetails.category")}</span>
-                  <strong>{job.category}</strong>
-                </div>
-                <div className="space-between">
-                  <span className="helper">{t("jobDetails.compensation")}</span>
-                  <strong>{job.salary}</strong>
-                </div>
-                <div className="space-between">
-                  <span className="helper">{t("jobDetails.workStyle")}</span>
-                  <strong>{job.workMode}</strong>
-                </div>
-              </div>
-              <div className="jp-detail-divider" />
-              <Link className="btn btn-ghost" to="/jobs">
-                {t("jobDetails.backJobs")}
-              </Link>
+              )}
             </div>
-          </aside>
+
+            {/* Offer Leverage Analyzer */}
+            <div className="surface jp-leverage-section">
+              <div className="jp-leverage-header">
+                <h4 className="jp-h4">Offer Leverage Analyzer</h4>
+                <span className="jp-leverage-score">{leverageScore}%</span>
+              </div>
+              <p className="jp-ui-text">Assess the balance between compensation, demand, and your negotiation strength.</p>
+              <div className="jp-progress-bar">
+                <div className="jp-progress-fill" style={{ width: `${leverageScore}%` }} />
+              </div>
+            </div>
+
+            {/* Job Details Summary */}
+            <div className="surface jp-details-summary">
+              <div className="jp-summary-item">
+                <span className="jp-summary-label">{t("common.companies")}</span>
+                <strong className="jp-summary-value">{job.company}</strong>
+              </div>
+              <div className="jp-summary-item">
+                <span className="jp-summary-label">{t("jobDetails.category")}</span>
+                <strong className="jp-summary-value">{job.category}</strong>
+              </div>
+              <div className="jp-summary-item">
+                <span className="jp-summary-label">{t("jobDetails.compensation")}</span>
+                <strong className="jp-summary-value">{job.salary}</strong>
+              </div>
+              <div className="jp-summary-item">
+                <span className="jp-summary-label">{t("jobDetails.workStyle")}</span>
+                <strong className="jp-summary-value">{job.workMode}</strong>
+              </div>
+            </div>
+
+            {/* Back to Jobs */}
+            <Link className="btn btn-ghost jp-back-btn" to="/jobs">
+              {t("jobDetails.backJobs")}
+            </Link>
+          </div>
         </div>
 
-        <div className="stack">
-          <div className="space-between">
-            <h2 className="headline" style={{ fontSize: "1.7rem", margin: 0 }}>
-              {t("jobDetails.relatedJobs")}
-            </h2>
+        {/* Related Jobs */}
+        <div className="jp-related-jobs">
+          <div className="jp-related-header">
+            <h2 className="jp-h2">{t("jobDetails.relatedJobs")}</h2>
             <Link className="btn btn-secondary" to="/jobs">
               {t("jobDetails.seeAllRoles")}
             </Link>
           </div>
           {relatedJobs.length ? (
-            <div className="grid grid-3">
+            <div className="jp-related-grid">
               {relatedJobs.map((item) => (
                 <JobCard key={item.id} job={item} />
               ))}
@@ -340,6 +319,6 @@ export function JobDetailsPage() {
           )}
         </div>
       </div>
-    </section>
+    </div>
   );
 }

@@ -41,7 +41,7 @@ export function PasswordField({
         />
         <button
           type="button"
-          className="btn btn-secondary jp-password-toggle"
+          className="jp-password-toggle"
           onClick={() => setVisible((prev) => !prev)}
           aria-label={visible ? "Hide password" : "Show password"}
           title={visible ? "Hide password" : "Show password"}
