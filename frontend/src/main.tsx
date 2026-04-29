@@ -7,6 +7,7 @@ import { ErrorBoundary } from "./components/system/error-boundary";
 import { PreferencesProvider } from "./context/PreferencesContext";
 import "./i18n";
 import "./styles/global.css";
+import "./styles/premium-polish.css";
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -23,7 +23,7 @@ export function SavedJobsPage() {
 
   return (
     <div className="stack">
-      <div>
+      <div className="jp-reveal-up">
         <div className="eyebrow">Saved jobs</div>
         <h2 className="headline" style={{ fontSize: "2rem", margin: "0.35rem 0 0" }}>
           Keep a shortlist of the jobs worth revisiting.
@@ -32,13 +32,13 @@ export function SavedJobsPage() {
           Saved roles stay here so you can compare offers, revisit details, and apply when you are ready.
         </p>
       </div>
-      <div className="stack">
+      <div className="stack jp-reveal-stagger">
         {isLoading ? <SkeletonList count={3} /> : null}
         {!isLoading && savedJobs.length === 0 ? (
           <EmptyState title="No saved jobs yet" description="Use Save on any job card and it will appear here instantly." />
         ) : null}
         {!isLoading && savedJobs.length > 0 ? (
-          <div className="row" style={{ justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}>
+          <div className="row jp-reveal" style={{ justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}>
             <span className="helper">{savedJobs.length} saved jobs</span>
             <Link className="btn btn-secondary" to="/jobs">
               Discover more jobs
@@ -46,7 +46,7 @@ export function SavedJobsPage() {
           </div>
         ) : null}
         {savedJobCards.map((job) => (
-          <div key={job.id} className="stack">
+          <div key={job.id} className="stack jp-reveal">
             <JobCard job={job} />
             <div>
               <button className="btn btn-secondary" disabled={removeMutation.isPending} onClick={() => removeMutation.mutate(job.id)}>

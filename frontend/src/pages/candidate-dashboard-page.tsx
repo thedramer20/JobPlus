@@ -28,9 +28,9 @@ export function CandidateDashboardPage() {
   ];
 
   return (
-    <div className="stack fade-in-stagger">
+    <div className="stack jp-reveal-stagger">
       {/* WOW: Personalized Hero Section */}
-      <div className="glass-card depth-2" style={{ padding: "2rem", marginBottom: "2rem", position: "relative" }}>
+      <div className="glass-card depth-2 jp-reveal" style={{ padding: "2rem", marginBottom: "2rem", position: "relative" }}>
         <div className="particles">
           {[...Array(20)].map((_, i) => (
             <div key={i} className="particle" style={{
@@ -52,7 +52,7 @@ export function CandidateDashboardPage() {
       </div>
 
       {/* WOW: Enhanced KPI Grid with Animations */}
-      <div className="grid grid-4 fade-in-stagger">
+      <div className="grid grid-4 jp-reveal-stagger">
         <div className="hover-lift interactive-scale">
           <StatCard
             label="Applications"
@@ -84,7 +84,7 @@ export function CandidateDashboardPage() {
       </div>
 
       {/* WOW: Next Best Action Panel */}
-      <div className="glass-card depth-3" style={{ padding: "2rem", marginBottom: "2rem" }}>
+      <div className="glass-card depth-3 jp-reveal" style={{ padding: "2rem", marginBottom: "2rem" }}>
         <h3 style={{ marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
           🎯 Next Best Actions
           <span className="pulse-primary" style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--jp-primary)" }} />
@@ -120,7 +120,7 @@ export function CandidateDashboardPage() {
         </div>
       </div>
 
-      <div className="grid grid-2 fade-in-stagger">
+      <div className="grid grid-2 jp-reveal-stagger">
         <div className="glass-surface soft-shadow" style={{ padding: "1.5rem", borderRadius: "var(--jp-radius-lg)" }}>
           <div className="space-between">
             <strong style={{ fontSize: "1.2rem" }}>Recent applications</strong>

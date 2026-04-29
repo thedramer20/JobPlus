@@ -1,6 +1,7 @@
 import { http } from "../lib/http";
 import type { CandidateProfile, Resume, SavedJob, UserProfile } from "../types/profile";
 import { demoSavedJobs, demoJobs } from "../mocks/comprehensive-demo-data";
+import { findDemoJob } from "../mocks/seed-system";
 
 // Demo saved jobs store
 let demoSavedJobsStore: SavedJob[] = [...demoSavedJobs];
@@ -72,7 +73,7 @@ export async function saveJob(jobId: number): Promise<SavedJob> {
   }
 
   // Find job details from demo data
-  const job = demoJobs.find(j => j.id === jobId);
+  const job = demoJobs.find(j => j.id === jobId) ?? findDemoJob(jobId);
   if (!job) {
     throw new Error("Job not found");
   }

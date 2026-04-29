@@ -274,7 +274,7 @@ export function SettingsPage() {
       <div className="container">
         <div className="jp-settings-page">
           <section className="surface jp-settings-shell">
-            <aside className="jp-settings-sidebar">
+            <aside className="jp-settings-sidebar jp-reveal-up">
               <div className="eyebrow">{t("common.settings")}</div>
               <h2 className="headline" style={{ margin: "0.35rem 0 0.55rem", fontSize: "1.95rem" }}>{t("settingsPage.title")}</h2>
               <p className="helper" style={{ marginTop: 0 }}>{t("settingsPage.subtitle")}</p>
@@ -290,9 +290,9 @@ export function SettingsPage() {
             </aside>
             <main className="jp-settings-main">
               {feedback ? <div className={`jp-settings-banner is-${feedback.type}`}>{feedback.text}</div> : null}
-              {loadingProfile ? <section className="jp-settings-section surface"><p className="helper">{t("settingsPage.loading")}</p></section> : null}
+              {loadingProfile ? <section className="jp-settings-section surface jp-reveal-up"><p className="helper">{t("settingsPage.loading")}</p></section> : null}
               {!loadingProfile && activeTab === "profile" ? (
-                <section className="jp-settings-section surface stack">
+                <section className="jp-settings-section surface stack jp-reveal-up">
                   <header className="jp-settings-section-header">
                     <h3>{t("settingsPage.tabs.profile")}</h3>
                     <p className="helper">{t("settingsPage.tabs.profileDesc")}</p>
@@ -378,7 +378,7 @@ export function SettingsPage() {
               ) : null}
 
               {!loadingProfile && activeTab === "account" ? (
-                <section className="jp-settings-section surface">
+                <section className="jp-settings-section surface jp-reveal-up">
                   <header className="jp-settings-section-header"><h3>{t("settingsPage.tabs.account")}</h3><p className="helper">{t("settingsPage.tabs.accountDesc")}</p></header>
                   <div className="form-grid">
                     <Field label="Full Name"><input className="input" value={accountForm.fullName} onChange={(e) => setAccountForm((c) => ({ ...c, fullName: e.target.value }))} /></Field>
@@ -433,7 +433,7 @@ export function SettingsPage() {
               ) : null}
 
               {!loadingProfile && activeTab === "security" ? (
-                <section className="jp-settings-section surface">
+                <section className="jp-settings-section surface jp-reveal-up">
                   <header className="jp-settings-section-header"><h3>{t("settingsPage.tabs.security")}</h3><p className="helper">{t("settingsPage.tabs.securityDesc")}</p></header>
                   <div className="form-grid">
                     <Field label="Current Password"><input type="password" className="input" value={passwordForm.currentPassword} onChange={(e) => setPasswordForm((c) => ({ ...c, currentPassword: e.target.value }))} /></Field>
@@ -447,7 +447,7 @@ export function SettingsPage() {
               ) : null}
 
               {!loadingProfile && activeTab === "notifications" ? (
-                <section className="jp-settings-section surface">
+                <section className="jp-settings-section surface jp-reveal-up">
                   <header className="jp-settings-section-header"><h3>{t("settingsPage.tabs.notifications")}</h3><p className="helper">{t("settingsPage.tabs.notificationsDesc")}</p></header>
                   <div className="jp-settings-notification-grid">
                     <NotificationCard title="Messages" values={{ inApp: notificationForm.messagesInApp, email: notificationForm.messagesEmail }} onChange={(changes) => setNotificationForm((c) => ({ ...c, ...changes }))} keys={{ inApp: "messagesInApp", email: "messagesEmail" }} />
@@ -459,7 +459,7 @@ export function SettingsPage() {
               ) : null}
 
               {!loadingProfile && activeTab === "preferences" ? (
-                <section className="jp-settings-section surface">
+                <section className="jp-settings-section surface jp-reveal-up">
                   <header className="jp-settings-section-header"><h3>{t("settingsPage.tabs.preferences")}</h3><p className="helper">{t("settingsPage.tabs.preferencesDesc")}</p></header>
                   <div className="form-grid">
                     <Field label={t("common.theme")}><select className="select" value={theme} onChange={(e) => setTheme(e.target.value as "light" | "dark")}><option value="light">{t("common.light")}</option><option value="dark">{t("common.dark")}</option></select></Field>

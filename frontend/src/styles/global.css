@@ -6089,6 +6089,12 @@ img {
   padding: 1rem;
 }
 
+.jp-dashboard-right {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
 .jp-dashboard-main {
   min-width: 0;
   display: grid;
@@ -6257,11 +6263,22 @@ img {
   background: linear-gradient(165deg, color-mix(in srgb, var(--surface) 95%, transparent), color-mix(in srgb, var(--surface-alt) 84%, transparent));
   border: 1px solid color-mix(in srgb, var(--border-strong) 70%, transparent);
   box-shadow: var(--elevation-1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  overflow: visible;
 }
 
 .jp-profile-summary-widget {
-  padding: 1rem;
-  gap: 0.72rem;
+  padding: 1.05rem;
+  border-radius: 18px;
+}
+
+.jp-profile-summary-name {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.25;
+  font-weight: 750;
 }
 
 .jp-profile-summary-head {
@@ -6295,6 +6312,7 @@ img {
 }
 
 .jp-profile-summary-text {
+  margin: 0;
   line-height: 1.58;
 }
 
@@ -6304,6 +6322,22 @@ img {
   min-height: 2.72rem;
   border-radius: 13px;
   font-weight: 700;
+  margin-top: 0.3rem;
+  flex-shrink: 0;
+}
+
+.jp-dashboard-widget-header {
+  margin-bottom: 0.15rem;
+}
+
+.jp-dashboard-widget-title {
+  font-size: 1.02rem;
+  line-height: 1.3;
+}
+
+.jp-dashboard-widget-list {
+  margin-top: 0.2rem;
+  gap: 0.6rem;
 }
 
 .jp-dashboard-mini-link {
@@ -6325,7 +6359,9 @@ img {
 .jp-dashboard-mini-link small {
   display: block;
   color: var(--text-soft);
-  margin-top: 0.2rem;
+  margin-top: 0.25rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 .jp-dashboard-mini-line {
@@ -6398,9 +6434,11 @@ img {
 
 .jp-message-end {
   display: grid;
-  justify-items: end;
+  justify-items: center;
   align-content: start;
+  justify-content: center;
   gap: 0.3rem;
+  min-width: 1.65rem;
 }
 
 .jp-message-end small {
@@ -6408,17 +6446,38 @@ img {
 }
 
 .jp-message-unread {
-  min-width: 20px;
-  height: 20px;
+  width: 1.5rem;
+  min-width: 1.5rem;
+  height: 1.5rem;
   border-radius: 999px;
-  padding: 0 0.35rem;
+  padding: 0;
   background: var(--primary);
   color: white;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
+  line-height: 1;
+  font-size: 0.76rem;
+  font-variant-numeric: tabular-nums;
   font-weight: 700;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--surface) 92%, transparent);
+}
+
+.jp-message-count-pill {
+  width: 2rem;
+  min-width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--primary) 26%, var(--border));
+  background: color-mix(in srgb, var(--surface-alt) 86%, transparent);
+  color: var(--primary-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-size: 0.84rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 .jp-messages-timeline {
@@ -7840,17 +7899,55 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 14px;
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.14), rgba(124, 58, 237, 0.1));
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
 .jp-topbar-brand-wordmark {
   display: inline-flex;
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  align-items: center;
+  line-height: 1;
+}
+
+.jp-logo-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.jp-logo-icon {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+}
+
+.jp-logo-wordmark {
+  display: inline-block;
+  width: 108px;
+  height: auto;
+  max-width: 100%;
+}
+
+.jp-topbar-brand .jp-logo-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
+.jp-topbar-brand .jp-logo-wordmark {
+  width: 112px;
+  transform: translateY(0.5px);
+}
+
+.jp-admin-brandline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.jp-admin-brand-icon {
+  width: 1.4rem;
+  height: 1.4rem;
 }
 
 .jp-topbar-nav {
@@ -8029,6 +8126,16 @@ a {
   font-weight: 700;
   color: #fff;
   background: var(--jp-primary);
+}
+
+.jp-admin-badge,
+.jp-control-btn-badge,
+.jp-save-button .badge,
+.jp-message-unread,
+.jp-message-count-pill {
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
 }
 
 .jp-topbar-shell,
@@ -8468,7 +8575,168 @@ html[data-ui-personality="dynamic"] .subtle-card {
 
 /* Admin enterprise polish */
 .jp-admin-section {
-  padding: 1.2rem;
+  padding: 1.2rem 1.25rem;
+}
+
+.jp-admin-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.jp-admin-page-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.55rem;
+}
+
+.jp-admin-user-filters {
+  display: grid;
+  grid-template-columns: 2.2fr repeat(5, minmax(120px, 1fr));
+  gap: 0.65rem;
+  align-items: end;
+  margin-top: 0.9rem;
+}
+
+.jp-admin-filter-field {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.jp-admin-filter-field > span {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--text-soft);
+}
+
+.jp-admin-selection-row {
+  margin-top: 0.85rem;
+  margin-bottom: 0.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.jp-admin-table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--border), var(--primary) 12%);
+  background: var(--surface);
+}
+
+.jp-admin-topbar {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1rem;
+}
+
+.jp-admin-sidebar-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.jp-admin-nav {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.jp-admin-nav-group {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.jp-admin-nav-group-label {
+  padding: 0 0.25rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.jp-admin-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 2.6rem;
+  border-radius: 12px;
+  padding: 0.52rem 0.65rem;
+}
+
+.jp-admin-nav-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.jp-admin-nav-link.active {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--primary), transparent 68%);
+}
+
+.jp-admin-sidebar-summary {
+  margin: 0.85rem 0;
+  padding: 0.75rem;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--border), var(--primary) 15%);
+  background: color-mix(in srgb, var(--surface-alt), var(--primary) 4%);
+  display: grid;
+  gap: 0.4rem;
+}
+
+.jp-admin-topbar-main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.jp-admin-topbar-context {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.jp-admin-topbar-context h1 {
+  margin: 0;
+  font-size: 1.4rem;
+  line-height: 1.2;
+}
+
+.jp-admin-topbar-context p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
+.jp-admin-breadcrumbs {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.jp-admin-breadcrumb-separator {
+  opacity: 0.65;
+}
+
+.jp-admin-topbar-search-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .jp-admin-filter-row {
@@ -8481,37 +8749,52 @@ html[data-ui-personality="dynamic"] .subtle-card {
   position: relative;
   display: flex;
   align-items: center;
+  gap: 0;
   min-width: 320px;
-  width: min(540px, 100%);
+  width: min(760px, 100%);
+  min-height: 2.7rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 0;
 }
 
 .jp-admin-search-icon {
   position: absolute;
-  left: 0.7rem;
+  left: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
   color: var(--text-muted);
   pointer-events: none;
+  z-index: 2;
 }
 
 .jp-admin-search-bar input {
   width: 100%;
-  padding-left: 2rem;
+  height: 2.7rem;
+  padding-left: 2.25rem;
   padding-right: 2.2rem;
   border-radius: 12px;
   border: 1px solid color-mix(in srgb, var(--border), var(--primary) 18%);
   background: var(--surface-subtle);
-  min-height: 2.4rem;
+  min-height: 2.7rem;
+  line-height: 1.2;
 }
 
 .jp-admin-search-clear {
   position: absolute;
   right: 0.45rem;
-  width: 1.5rem;
-  height: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.65rem;
+  height: 1.65rem;
   border: 0;
   border-radius: 999px;
   background: color-mix(in srgb, var(--surface-alt), var(--primary) 8%);
   color: var(--text-soft);
   cursor: pointer;
+  font-size: 0.95rem;
+  line-height: 1;
 }
 
 .jp-admin-search-clear:hover {
@@ -8590,6 +8873,26 @@ html[data-ui-personality="dynamic"] .subtle-card {
   gap: 1rem;
 }
 
+.jp-admin-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.jp-admin-topbar-actions .btn {
+  min-height: 2.45rem;
+  padding: 0 0.9rem;
+}
+
+.jp-admin-topbar-actions button svg,
+.jp-admin-page-actions button svg,
+.jp-admin-selection-row button svg,
+.jp-admin-filter-field svg {
+  display: block;
+}
+
 .jp-admin-role-card {
   padding: 1rem;
 }
@@ -8599,6 +8902,19 @@ html[data-ui-personality="dynamic"] .subtle-card {
 }
 
 @media (max-width: 980px) {
+  .jp-admin-page-header {
+    flex-direction: column;
+  }
+
+  .jp-admin-page-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .jp-admin-user-filters {
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+  }
+
   .jp-admin-settings-layout {
     grid-template-columns: 1fr;
   }
@@ -8607,20 +8923,21 @@ html[data-ui-personality="dynamic"] .subtle-card {
     min-width: 100%;
   }
 
-  .jp-admin-topbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.5rem;
-  }
-
+  .jp-admin-topbar-main,
   .jp-admin-topbar-actions {
+    flex-wrap: wrap;
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
 
-  .jp-admin-search-bar {
-    flex: 1;
-    min-width: 200px;
+  .jp-admin-topbar-context {
+    width: 100%;
+  }
+}
+
+@media (max-width: 680px) {
+  .jp-admin-user-filters {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -86,15 +86,23 @@ export function DashboardLayout() {
         <Outlet />
       </main>
       <aside className="jp-dashboard-right stack">
-        <ProfileSummaryWidget
-          name={user?.name ?? "JobPlus User"}
-          roleLabel={formatRole(user?.role ?? "guest")}
-          title={user?.title}
-          profileHref={resolveProfileRoute(user?.role)}
-        />
-        <SuggestedJobsWidget jobs={jobs} loading={jobsLoading} />
-        <SuggestedCompaniesWidget companies={companies} loading={companiesLoading} />
-        <HiringInsightsWidget notifications={notifications} loading={notificationsLoading} />
+        <div className="jp-reveal" data-reveal-delay="0">
+          <ProfileSummaryWidget
+            name={user?.name ?? "JobPlus User"}
+            roleLabel={formatRole(user?.role ?? "guest")}
+            title={user?.title}
+            profileHref={resolveProfileRoute(user?.role)}
+          />
+        </div>
+        <div className="jp-reveal" data-reveal-delay="1">
+          <SuggestedJobsWidget jobs={jobs} loading={jobsLoading} />
+        </div>
+        <div className="jp-reveal" data-reveal-delay="2">
+          <SuggestedCompaniesWidget companies={companies} loading={companiesLoading} />
+        </div>
+        <div className="jp-reveal" data-reveal-delay="3">
+          <HiringInsightsWidget notifications={notifications} loading={notificationsLoading} />
+        </div>
       </aside>
     </div>
   );

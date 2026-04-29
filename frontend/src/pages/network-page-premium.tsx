@@ -163,7 +163,7 @@ export function NetworkPage() {
       priority: recruitersData.filter(r => r.pipeline === "priority"),
       warm: recruitersData.filter(r => r.pipeline === "warm"),
       cold: recruitersData.filter(r => r.pipeline === "cold"),
-      followUp: recruitersData.filter(r => r.pipeline === "follow-up")
+      "follow-up": recruitersData.filter(r => r.pipeline === "follow-up")
     };
   }, []);
 
@@ -208,7 +208,7 @@ export function NetworkPage() {
   return (
     <div className="jp-network-root">
       {/* Header */}
-      <header className="jp-network-header">
+      <header className="jp-network-header jp-reveal-up">
         <div className="jp-network-container">
           <div className="jp-network-title">
             <h1>Network Intelligence</h1>
@@ -242,7 +242,7 @@ export function NetworkPage() {
 
       {/* Decision Guidance */}
       <div className="jp-network-container">
-        <div className="jp-decision-guidance">
+        <div className="jp-decision-guidance jp-reveal-up">
           <div className="jp-guidance-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="12" cy="12" r="10"/>
@@ -271,13 +271,13 @@ export function NetworkPage() {
       {/* Main Content */}
       <div className="jp-network-container jp-network-main">
         {/* Left - Recruiter Pipeline */}
-        <main className="jp-recruiter-pipeline">
+        <main className="jp-recruiter-pipeline jp-reveal-stagger">
           <div className="jp-pipeline-tabs">
             {[
               { key: "priority", label: "Priority", count: pipelineGroups.priority.length },
               { key: "warm", label: "Warm", count: pipelineGroups.warm.length },
               { key: "cold", label: "Cold", count: pipelineGroups.cold.length },
-              { key: "follow-up", label: "Follow-up", count: pipelineGroups.followUp.length }
+{ key: "follow-up", label: "Follow-up", count: pipelineGroups["follow-up"].length }
             ].map(tab => (
               <button
                 key={tab.key}
@@ -291,7 +291,7 @@ export function NetworkPage() {
           </div>
 
           <div className="jp-recruiter-list">
-            {pipelineGroups[activePipeline].map((recruiter) => (
+            {pipelineGroups[activePipeline].map((recruiter: Recruiter) => (
               <div
                 key={recruiter.id}
                 className={`jp-recruiter-card ${selectedRecruiter?.id === recruiter.id ? "is-selected" : ""} ${recruiter.priority === "high" ? "is-high-priority" : ""}`}
@@ -304,7 +304,7 @@ export function NetworkPage() {
                       {recruiter.avatar ? (
                         <img src={recruiter.avatar} alt={recruiter.name} />
                       ) : (
-                        <span>{recruiter.name.split(" ").map(n => n[0]).join("")}</span>
+                        <span>{recruiter.name.split(" ").map((n: string) => n[0]).join("")}</span>
                       )}
                     </div>
                     <div>
@@ -398,13 +398,13 @@ export function NetworkPage() {
 
           <div className="jp-suggested-list">
             {suggestedConnectionsData.map((connection) => (
-              <div key={connection.id} className="jp-connection-card">
+              <div key={connection.id} className="jp-connection-card jp-reveal">
                 <div className="jp-connection-header">
                   <div className="jp-avatar jp-avatar-small">
                     {connection.avatar ? (
                       <img src={connection.avatar} alt={connection.name} />
                     ) : (
-                      <span>{connection.name.split(" ").map(n => n[0]).join("")}</span>
+                      <span>{connection.name.split(" ").map((n: string) => n[0]).join("")}</span>
                     )}
                   </div>
                   <div className="jp-connection-info">
@@ -469,5 +469,4 @@ export function NetworkPage() {
       </div>
     </div>
   );
-}
 }

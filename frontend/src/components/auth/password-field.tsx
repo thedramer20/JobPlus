@@ -79,7 +79,7 @@ function getPasswordStrength(value: string): { level: 0 | 1 | 2 | 3; label: stri
   let score = 0;
   if (value.length >= 8) score += 1;
   if (/[A-Z]/.test(value) && /[a-z]/.test(value)) score += 1;
-  if (/\d/.test(value) && /[^A-Za-z0-9]/.test(value)) score += 1;
+  if (/\d/.test(value)) score += 1;
   if (score === 1) return { level: 1, label: "Weak" };
   if (score === 2) return { level: 2, label: "Medium" };
   return { level: 3, label: "Strong" };

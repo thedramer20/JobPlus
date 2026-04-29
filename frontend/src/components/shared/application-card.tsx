@@ -16,7 +16,7 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
           : "warning";
 
   return (
-    <article className="card stack jp-application-card">
+    <article className="card stack jp-application-card jp-reveal">
       <div className="space-between">
         <div>
           <strong>{application.jobTitle}</strong>

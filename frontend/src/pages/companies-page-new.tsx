@@ -49,7 +49,7 @@ export function CompaniesPage() {
   return (
     <div className="jp-companies-root">
       {/* TOP SECTION */}
-      <section className="jp-companies-hero">
+      <section className="jp-companies-hero jp-reveal-up">
         <div className="jp-companies-container">
           <div className="jp-companies-header">
             <h1 className="jp-companies-title">Discover companies that match your ambition</h1>
@@ -105,7 +105,7 @@ export function CompaniesPage() {
       </section>
 
       {/* FEATURED COMPANIES */}
-      <section className="jp-featured-companies">
+      <section className="jp-featured-companies jp-reveal-stagger">
         <div className="jp-companies-container">
           <div className="jp-section-header">
             <h2 className="jp-section-title">Featured Companies</h2>
@@ -141,7 +141,7 @@ export function CompaniesPage() {
       </section>
 
       {/* COMPANY INSIGHT STRIP */}
-      <section className="jp-companies-insights">
+      <section className="jp-companies-insights jp-reveal-stagger">
         <div className="jp-companies-container">
           <div className="jp-insights-grid">
             {insights.map((insight) => (
@@ -186,7 +186,7 @@ export function CompaniesPage() {
       </section>
 
       {/* MAIN GRID */}
-      <section className="jp-companies-main">
+      <section className="jp-companies-main jp-reveal-stagger">
         <div className="jp-companies-container">
           <div className="jp-section-header">
             <h2 className="jp-section-title">All Companies</h2>
@@ -212,7 +212,7 @@ export function CompaniesPage() {
               <div className="jp-empty">No companies found matching your criteria</div>
             ) : (
               mainCompanies.map((company) => (
-                <Link key={company.id} to={`/companies/${company.id}`} className="jp-company-card">
+                <Link key={company.id} to={`/companies/${company.id}`} className="jp-company-card jp-reveal">
                   <div className="jp-company-card-header">
                     <div className="jp-company-logo-wrapper">
                       {company.logoUrl ? (

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { SettingsMenu } from "../components/shared/settings-menu";
+import { JobPlusLogo } from "../components/shared/jobplus-logo";
 import { authStore } from "../store/auth-store";
 import { listAdminNotificationsData } from "../services/admin-service";
 import { useResizable } from "../lib/use-resizable";
@@ -14,10 +15,10 @@ interface AdminNavItem {
 }
 
 const navGroups: { title: string; items: AdminNavItem[] }[] = [
-  { title: "Overview", items: [{ label: "Executive Dashboard", path: "/admin", key: "dashboard", end: true }] },
   {
-    title: "Operations",
+    title: "Operations Control",
     items: [
+      { label: "Overview", path: "/admin", key: "dashboard", end: true },
       { label: "Users", path: "/admin/users", key: "users" },
       { label: "Companies", path: "/admin/companies", key: "companies" },
       { label: "Jobs", path: "/admin/jobs", key: "jobs" },
@@ -39,7 +40,12 @@ const navGroups: { title: string; items: AdminNavItem[] }[] = [
     items: [
       { label: "Analytics", path: "/admin/analytics", key: "analytics" },
       { label: "Permissions", path: "/admin/permissions", key: "permissions" },
-      { label: "Audit Logs", path: "/admin/audit-logs", key: "audit" },
+      { label: "Audit Logs", path: "/admin/audit-logs", key: "audit" }
+    ]
+  },
+  {
+    title: "Settings & Profile",
+    items: [
       { label: "Settings", path: "/admin/settings", key: "settings" },
       { label: "Profile", path: "/admin/profile", key: "profile" }
     ]
@@ -95,6 +101,8 @@ export function AdminLayout() {
 
   const unreadCount = useMemo(() => notifications.filter((item) => !item.isRead).length, [notifications]);
   const activeLabel = breadcrumbMap[location.pathname] ?? "Executive overview";
+  const isUsersPage = location.pathname === "/admin/users";
+
   const searchSuggestions = useMemo(
     () =>
       navGroups
@@ -105,11 +113,18 @@ export function AdminLayout() {
   );
 
   return (
-    <div ref={containerRef} className={`jp-admin-layout ${collapsed ? "is-collapsed" : ""} ${isResizing ? "is-resizing" : ""}`} style={{ display: "flex", width: "100%", height: "100vh", overflow: "hidden" }}>
-      <aside className="jp-admin-sidebar surface" style={{ width: size, minWidth: size, maxWidth: size, flexShrink: 0 }}>
+    <div
+      ref={containerRef}
+      className={`jp-admin-layout ${collapsed ? "is-collapsed" : ""} ${isResizing ? "is-resizing" : ""}`}
+      style={{ display: "flex", width: "100%", height: "100vh", overflow: "hidden" }}
+    >
+      <aside className="jp-admin-sidebar surface jp-reveal" style={{ width: size, minWidth: size, maxWidth: size, flexShrink: 0 }}>
         <div className="jp-admin-sidebar-header">
           <div>
-            <div className="eyebrow">JobPlus Enterprise</div>
+            <div className="jp-admin-brandline">
+              <JobPlusLogo variant="icon" className="jp-admin-brand-icon" />
+              <span className="eyebrow">JobPlus Enterprise</span>
+            </div>
             <h2 style={{ margin: "0.3rem 0 0", fontSize: "1.1rem" }}>Operations control</h2>
           </div>
           <button className="btn btn-secondary" type="button" onClick={() => setCollapsed((value) => !value)}>
@@ -142,33 +157,75 @@ export function AdminLayout() {
           </div>
         </div>
 
-        <button className="btn btn-secondary" onClick={() => { logout(); navigate("/login"); }}>
+        <button
+          className="btn btn-secondary"
+          onClick={() => {
+            logout();
+            navigate("/login");
+          }}
+        >
           Sign out
         </button>
       </aside>
 
-      <div ref={resizerRef} className={`resizer admin-resizer ${isResizing ? "is-resizing" : ""}`} title="Drag to resize sidebar" style={{ width: "4px", height: "100%", backgroundColor: isResizing ? "var(--primary)" : "var(--border)", cursor: "col-resize", transition: isResizing ? "none" : "background-color var(--transition-fast)", flexShrink: 0 }} />
+      <div
+        ref={resizerRef}
+        className={`resizer admin-resizer ${isResizing ? "is-resizing" : ""}`}
+        title="Drag to resize sidebar"
+        style={{
+          width: "4px",
+          height: "100%",
+          backgroundColor: isResizing ? "var(--primary)" : "var(--border)",
+          cursor: "col-resize",
+          transition: isResizing ? "none" : "background-color var(--transition-fast)",
+          flexShrink: 0
+        }}
+      />
 
       <main className="jp-admin-main" style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
         <header className="jp-admin-topbar surface">
-          <div className="jp-admin-topbar-context">
-            <div className="jp-admin-breadcrumbs">
-              <span>Admin</span>
-              <span className="jp-admin-breadcrumb-separator">/</span>
-              <strong>{activeLabel}</strong>
+          <div className="jp-admin-topbar-main">
+            <div className="jp-admin-topbar-context">
+              <div className="jp-admin-breadcrumbs">
+                <span>Admin</span>
+                <span className="jp-admin-breadcrumb-separator">/</span>
+                <strong>{activeLabel}</strong>
+              </div>
+              <h1>{activeLabel}</h1>
+              <p>Manage platform scale, moderation workflows, and critical operations with executive clarity.</p>
             </div>
-            <h1>{activeLabel}</h1>
-            <p>Manage platform scale, moderation workflows, and critical operations with executive clarity.</p>
+
+            <div className="jp-admin-topbar-actions">
+              <button className="btn btn-secondary">Quick Update</button>
+              {isUsersPage ? <button className="btn btn-secondary">Export CSV</button> : null}
+              {isUsersPage ? <button className="btn btn-primary">Add User</button> : null}
+              <button className="jp-admin-bell" aria-label="Notifications dashboard">
+                {renderBellIcon()}
+                {unreadCount > 0 ? <span className="jp-admin-badge">{unreadCount}</span> : null}
+              </button>
+              <button className="jp-topbar-avatar" type="button" aria-label="Admin profile">
+                {(user?.name ?? "Admin")
+                  .split(" ")
+                  .map((part) => part[0]?.toUpperCase() ?? "")
+                  .join("")
+                  .slice(0, 2)}
+              </button>
+              <SettingsMenu />
+            </div>
           </div>
 
-          <div className="jp-admin-topbar-actions">
+          <div className="jp-admin-topbar-search-row">
             <div className="jp-admin-search-bar">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" className="jp-admin-search-icon">
                 <circle cx="11" cy="11" r="7" />
                 <path d="m20 20-3.2-3.2" />
               </svg>
               <input type="search" placeholder="Search users, companies, jobs, incidents..." value={query} onChange={(event) => setQuery(event.target.value)} />
-              {query ? <button type="button" className="jp-admin-search-clear" onClick={() => setQuery("")} aria-label="Clear search">×</button> : null}
+              {query ? (
+                <button type="button" className="jp-admin-search-clear" onClick={() => setQuery("")} aria-label="Clear search">
+                  ×
+                </button>
+              ) : null}
               {query.trim().length > 1 && searchSuggestions.length > 0 ? (
                 <div className="jp-admin-search-suggestions">
                   {searchSuggestions.map((item) => (
@@ -180,19 +237,10 @@ export function AdminLayout() {
                 </div>
               ) : null}
             </div>
-            <button className="btn btn-secondary">Quick update</button>
-            <button className="jp-admin-bell" aria-label="Notifications dashboard">
-              {renderBellIcon()}
-              {unreadCount > 0 ? <span className="jp-admin-badge">{unreadCount}</span> : null}
-            </button>
-            <button className="jp-topbar-avatar" type="button" aria-label="Admin profile">
-              {(user?.name ?? "Admin").split(" ").map((part) => part[0]?.toUpperCase() ?? "").join("").slice(0, 2)}
-            </button>
-            <SettingsMenu />
           </div>
         </header>
 
-        <div style={{ flex: 1, overflowY: "auto", paddingTop: "1rem" }}>
+        <div className="jp-reveal" style={{ flex: 1, overflowY: "auto", paddingTop: "1rem" }}>
           <Outlet />
         </div>
       </main>

@@ -161,18 +161,18 @@ export function NetworkPage() {
   // Group recruiters by pipeline status
   const pipelineGroups = useMemo(() => {
     return {
-      priority: recruitersData.filter(r => r.pipeline === "priority"),
-      warm: recruitersData.filter(r => r.pipeline === "warm"),
-      cold: recruitersData.filter(r => r.pipeline === "cold"),
-      followUp: recruitersData.filter(r => r.pipeline === "follow-up")
+      priority: recruitersData.filter((r: Recruiter) => r.pipeline === "priority"),
+      warm: recruitersData.filter((r: Recruiter) => r.pipeline === "warm"),
+      cold: recruitersData.filter((r: Recruiter) => r.pipeline === "cold"),
+      "follow-up": recruitersData.filter((r: Recruiter) => r.pipeline === "follow-up")
     };
   }, []);
 
   // Calculate network insights
   const insights = useMemo(() => {
-    const highOpportunity = recruitersData.filter(r => r.priority === "high" && r.hiringStatus === "active").length;
-    const warmConnections = recruitersData.filter(r => r.pipeline === "warm").length;
-    const activeRecruiters = recruitersData.filter(r => r.hiringStatus === "active").length;
+    const highOpportunity = recruitersData.filter((r: Recruiter) => r.priority === "high" && r.hiringStatus === "active").length;
+    const warmConnections = recruitersData.filter((r: Recruiter) => r.pipeline === "warm").length;
+    const activeRecruiters = recruitersData.filter((r: Recruiter) => r.hiringStatus === "active").length;
     const totalConnections = recruitersData.length + suggestedConnectionsData.length;
     return {
       highOpportunity,
@@ -180,7 +180,7 @@ export function NetworkPage() {
       activeRecruiters,
       totalConnections,
       bestNextAction: `Message ${recruitersData.find(r => r.priority === "high")?.name || "Sarah Mitchell"} today`,
-      warmIntroAvailable: recruitersData.filter(r => r.pipeline === "warm" && r.mutualConnections > 0).length > 0
+      warmIntroAvailable: recruitersData.filter((r: Recruiter) => r.pipeline === "warm" && r.mutualConnections > 0).length > 0
     };
   }, []);
 
@@ -278,7 +278,7 @@ export function NetworkPage() {
               { key: "priority", label: "Priority", count: pipelineGroups.priority.length },
               { key: "warm", label: "Warm", count: pipelineGroups.warm.length },
               { key: "cold", label: "Cold", count: pipelineGroups.cold.length },
-              { key: "follow-up", label: "Follow-up", count: pipelineGroups.followUp.length }
+              { key: "follow-up", label: "Follow-up", count: pipelineGroups["follow-up"].length }
             ].map(tab => (
               <button
                 key={tab.key}
@@ -292,7 +292,7 @@ export function NetworkPage() {
           </div>
 
           <div className="jp-recruiter-list">
-            {pipelineGroups[activePipeline].map((recruiter) => (
+            {pipelineGroups[activePipeline].map((recruiter: Recruiter) => (
               <div
                 key={recruiter.id}
                 className={`jp-recruiter-card ${selectedRecruiter?.id === recruiter.id ? "is-selected" : ""} ${recruiter.priority === "high" ? "is-high-priority" : ""}`}
@@ -305,7 +305,7 @@ export function NetworkPage() {
                       {recruiter.avatar ? (
                         <img src={recruiter.avatar} alt={recruiter.name} />
                       ) : (
-                        <span>{recruiter.name.split(" ").map(n => n[0]).join("")}</span>
+                        <span>{recruiter.name.split(" ").map((n: string) => n[0]).join("")}</span>
                       )}
                     </div>
                     <div>
@@ -406,7 +406,7 @@ export function NetworkPage() {
                     {connection.avatar ? (
                       <img src={connection.avatar} alt={connection.name} />
                     ) : (
-                      <span>{connection.name.split(" ").map(n => n[0]).join("")}</span>
+                      <span>{connection.name.split(" ").map((n: string) => n[0]).join("")}</span>
                     )}
                   </div>
                   <div className="jp-connection-info">

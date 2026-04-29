@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { AuthCard } from "../components/auth/auth-card";
 import { AuthShell } from "../components/auth/auth-shell";
 import { InlineMessage } from "../components/auth/inline-message";
 import { PasswordField } from "../components/auth/password-field";
 import { resetPassword } from "../services/auth-service";
+import { MIN_PASSWORD_LENGTH, validatePasswordPolicy } from "../lib/password-policy";
 
 export function ResetPasswordPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [password, setPassword] = useState("");
@@ -15,8 +18,12 @@ export function ResetPasswordPage() {
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-    if (password.length < 8) {
-      setState({ error: "Password must be at least 8 characters." });
+    if (password.length < MIN_PASSWORD_LENGTH) {
+      setState({ error: t("auth.validations.passwordMin") });
+      return;
+    }
+    if (!validatePasswordPolicy(password).valid) {
+      setState({ error: t("auth.validations.passwordComplexity", { defaultValue: "Password must include uppercase, lowercase, and a number." }) });
       return;
     }
     if (password !== confirmPassword) {

@@ -18,18 +18,42 @@ interface CompanyDto {
 // Import demo data for testing
 import { demoCompanies } from "../mocks/comprehensive-demo-data";
 
-export async function listCompanies(): Promise<Company[]> {
-  // Return demo data for testing purposes
-  return Promise.resolve(demoCompanies);
+const FORCE_DEMO_MODE = import.meta.env.VITE_DEMO_MODE === "only";
+const ALLOW_DEMO_FALLBACK = import.meta.env.VITE_DEMO_MODE !== "false";
 
-  // Original code commented out for demo:
-  // const { data } = await http.get<CompanyDto[]>("/api/companies");
-  // return data.map(mapCompany);
+export async function listCompanies(): Promise<Company[]> {
+  if (FORCE_DEMO_MODE) {
+    return Promise.resolve(demoCompanies);
+  }
+
+  try {
+    const { data } = await http.get<CompanyDto[]>("/api/companies");
+    const mapped = data.map(mapCompany);
+    if (mapped.length > 0) {
+      return mapped;
+    }
+    return ALLOW_DEMO_FALLBACK ? [...demoCompanies] : [];
+  } catch {
+    return ALLOW_DEMO_FALLBACK ? [...demoCompanies] : [];
+  }
 }
 
 export async function getCompany(id: number): Promise<Company> {
-  const { data } = await http.get<CompanyDto>(`/api/companies/${id}`);
-  return mapCompany(data);
+  if (FORCE_DEMO_MODE) {
+    const demo = demoCompanies.find((item) => item.id === id);
+    if (!demo) throw new Error("Company not found");
+    return demo;
+  }
+
+  try {
+    const { data } = await http.get<CompanyDto>(`/api/companies/${id}`);
+    return mapCompany(data);
+  } catch {
+    if (!ALLOW_DEMO_FALLBACK) throw new Error("Unable to load company.");
+    const demo = demoCompanies.find((item) => item.id === id);
+    if (!demo) throw new Error("Company not found");
+    return demo;
+  }
 }
 
 export async function getMyCompany(): Promise<Company> {

@@ -1,0 +1,1199 @@
+/* =========================================================
+   JobPlus Premium 2026 Design Polish Layer
+   Non-destructive enhancement over existing design system
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   1. Refined CSS Variables (override/extend existing)
+   --------------------------------------------------------- */
+:root {
+  --fx-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --fx-fast: 180ms var(--fx-ease);
+  --fx-mid: 260ms var(--fx-ease);
+  --fx-slow: 420ms var(--fx-ease);
+
+  --fx-ring: 0 0 0 3px rgba(38, 103, 255, 0.16);
+  --fx-ring-accent: 0 0 0 3px rgba(15, 185, 166, 0.18);
+
+  --fx-card-shadow: 0 1px 1px rgba(17, 24, 39, 0.03),
+                    0 10px 26px rgba(17, 24, 39, 0.08),
+                    0 26px 60px rgba(17, 24, 39, 0.06);
+  --fx-card-shadow-hover: 0 3px 8px rgba(17, 24, 39, 0.08),
+                          0 18px 36px rgba(17, 24, 39, 0.14),
+                          0 34px 74px rgba(17, 24, 39, 0.1);
+
+  --fx-glow-primary: 0 0 20px rgba(79, 70, 229, 0.15);
+  --fx-glow-accent: 0 0 20px rgba(124, 58, 237, 0.12);
+}
+
+:root[data-theme="dark"] {
+  --fx-ring: 0 0 0 3px rgba(125, 179, 255, 0.24);
+  --fx-ring-accent: 0 0 0 3px rgba(45, 212, 191, 0.22);
+  --fx-card-shadow: 0 4px 10px rgba(0, 0, 0, 0.3),
+                    0 14px 34px rgba(0, 0, 0, 0.45),
+                    0 30px 70px rgba(0, 0, 0, 0.35);
+  --fx-card-shadow-hover: 0 10px 20px rgba(0, 0, 0, 0.38),
+                          0 20px 44px rgba(0, 0, 0, 0.55),
+                          0 40px 82px rgba(0, 0, 0, 0.48);
+  --fx-glow-primary: 0 0 24px rgba(125, 179, 255, 0.22);
+  --fx-glow-accent: 0 0 24px rgba(45, 212, 191, 0.18);
+}
+
+/* ---------------------------------------------------------
+   2. Scroll-Reveal Animation System
+   --------------------------------------------------------- */
+@keyframes jp-reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes jp-reveal-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes jp-reveal-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.jp-reveal,
+.jp-reveal-up,
+.jp-reveal-scale,
+.jp-reveal-fade {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.jp-reveal.is-visible,
+.jp-reveal-up.is-visible {
+  animation: jp-reveal-up var(--fx-slow) var(--fx-ease) both;
+}
+
+.jp-reveal-scale.is-visible {
+  animation: jp-reveal-scale var(--fx-slow) var(--fx-ease) both;
+}
+
+.jp-reveal-fade.is-visible {
+  animation: jp-reveal-fade var(--fx-mid) var(--fx-ease) both;
+}
+
+.jp-reveal-stagger > .jp-reveal:nth-child(1),
+.jp-reveal-stagger > .jp-reveal-up:nth-child(1) { animation-delay: 0ms; }
+.jp-reveal-stagger > .jp-reveal:nth-child(2),
+.jp-reveal-stagger > .jp-reveal-up:nth-child(2) { animation-delay: 60ms; }
+.jp-reveal-stagger > .jp-reveal:nth-child(3),
+.jp-reveal-stagger > .jp-reveal-up:nth-child(3) { animation-delay: 120ms; }
+.jp-reveal-stagger > .jp-reveal:nth-child(4),
+.jp-reveal-stagger > .jp-reveal-up:nth-child(4) { animation-delay: 180ms; }
+.jp-reveal-stagger > .jp-reveal:nth-child(5),
+.jp-reveal-stagger > .jp-reveal-up:nth-child(5) { animation-delay: 240ms; }
+.jp-reveal-stagger > .jp-reveal:nth-child(6),
+.jp-reveal-stagger > .jp-reveal-up:nth-child(6) { animation-delay: 300ms; }
+.jp-reveal-stagger > .jp-reveal:nth-child(7),
+.jp-reveal-stagger > .jp-reveal-up:nth-child(7) { animation-delay: 360ms; }
+.jp-reveal-stagger > .jp-reveal:nth-child(8),
+.jp-reveal-stagger > .jp-reveal-up:nth-child(8) { animation-delay: 420ms; }
+
+/* ---------------------------------------------------------
+   3. Surface / Card Premium Overrides
+   --------------------------------------------------------- */
+.surface,
+.card,
+.subtle-card,
+.jp-profile-card,
+.jp-company-card,
+.jp-notification-card,
+.jp-message-item,
+.jp-admin-kpi,
+.jp-settings-section,
+.jp-dashboard-widget {
+  border-radius: clamp(14px, 1.4vw, 20px);
+  box-shadow: var(--fx-card-shadow);
+  transition: transform var(--fx-mid), box-shadow var(--fx-mid),
+              border-color var(--fx-mid), background var(--fx-mid);
+}
+
+.surface:hover,
+.card:hover,
+.subtle-card:hover,
+.jp-profile-card:hover,
+.jp-company-card:hover,
+.jp-notification-card:hover,
+.jp-message-item:hover,
+.jp-dashboard-widget:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--fx-card-shadow-hover);
+}
+
+.card::before {
+  height: 0;
+  opacity: 0;
+}
+
+.card:hover::before {
+  height: 2px;
+  opacity: 1;
+  background: linear-gradient(90deg, var(--jp-primary), var(--jp-accent));
+}
+
+/* ---------------------------------------------------------
+   4. Topbar / Shell Premium Overrides
+   --------------------------------------------------------- */
+.jp-topbar-shell {
+  position: sticky;
+  top: 0.65rem;
+  z-index: 60;
+  margin: 0.6rem auto 0;
+  width: min(100% - 1.8rem, 1240px);
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--jp-border), var(--jp-primary) 12%);
+  background: linear-gradient(135deg,
+      color-mix(in srgb, var(--jp-surface), #fff 12%) 0%,
+      color-mix(in srgb, var(--jp-surface), var(--jp-surface-variant) 18%) 100%);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  box-shadow: 0 8px 26px rgba(15, 23, 42, 0.1),
+              0 20px 60px rgba(15, 23, 42, 0.08);
+}
+
+.jp-topbar-link {
+  position: relative;
+  border-radius: 14px;
+  transition: transform var(--fx-fast), color var(--fx-fast),
+              background var(--fx-fast), box-shadow var(--fx-fast);
+}
+
+.jp-topbar-link::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 0.14rem;
+  height: 2px;
+  border-radius: 999px;
+  transform: scaleX(0);
+  transform-origin: center;
+  background: linear-gradient(90deg, var(--jp-primary), var(--jp-accent));
+  transition: transform var(--fx-mid);
+}
+
+.jp-topbar-link:hover {
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--jp-surface-variant), var(--jp-primary) 6%);
+}
+
+.jp-topbar-link:hover::after,
+.jp-topbar-link.is-active::after {
+  transform: scaleX(1);
+}
+
+.jp-topbar-link.is-active {
+  color: var(--jp-primary);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--jp-primary), transparent 72%);
+  background: color-mix(in srgb, var(--jp-surface), var(--jp-primary) 7%);
+}
+
+.jp-topbar-avatar,
+.jp-settings-trigger {
+  transition: transform var(--fx-fast), box-shadow var(--fx-fast),
+              border-color var(--fx-fast), background var(--fx-fast);
+}
+
+.jp-topbar-avatar:hover,
+.jp-settings-trigger:hover {
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: var(--fx-ring-accent), var(--fx-card-shadow);
+}
+
+/* ---------------------------------------------------------
+   5. Button Premium Overrides
+   --------------------------------------------------------- */
+.btn {
+  border-radius: 14px;
+  transition: transform var(--fx-fast), box-shadow var(--fx-fast),
+              filter var(--fx-fast), background var(--fx-fast),
+              border-color var(--fx-fast);
+}
+
+.btn:hover {
+  transform: translateY(-1px) scale(1.015);
+  box-shadow: var(--fx-card-shadow);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.99);
+}
+
+.btn:focus-visible,
+.input:focus-visible,
+.select:focus-visible,
+.textarea:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: none;
+  box-shadow: var(--fx-ring);
+}
+
+.btn-primary {
+  background-image: linear-gradient(136deg,
+    color-mix(in srgb, var(--jp-primary), #fff 6%) 0%,
+    color-mix(in srgb, var(--jp-primary), var(--jp-accent) 20%) 100%);
+  border-color: color-mix(in srgb, var(--jp-primary), #fff 12%);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.03);
+  box-shadow: var(--fx-ring), var(--fx-card-shadow-hover);
+}
+
+/* ---------------------------------------------------------
+   6. Input / Form Premium Overrides
+   --------------------------------------------------------- */
+.input,
+.select,
+.textarea {
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--jp-border), var(--jp-primary) 10%);
+  background: linear-gradient(180deg,
+      color-mix(in srgb, var(--jp-surface), #fff 10%),
+      color-mix(in srgb, var(--jp-surface), var(--jp-surface-variant) 8%));
+  transition: border-color var(--fx-fast), box-shadow var(--fx-fast),
+              background var(--fx-fast), transform var(--fx-fast);
+}
+
+.input:hover,
+.select:hover,
+.textarea:hover {
+  border-color: color-mix(in srgb, var(--jp-border), var(--jp-primary) 24%);
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: color-mix(in srgb, var(--jp-primary), #fff 18%);
+  box-shadow: var(--fx-ring);
+  transform: translateY(-1px);
+}
+
+/* ---------------------------------------------------------
+   7. Table Premium Overrides
+   --------------------------------------------------------- */
+.table {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--jp-border), var(--jp-primary) 8%);
+  background: color-mix(in srgb, var(--jp-surface), #fff 4%);
+}
+
+.table thead th {
+  background: linear-gradient(180deg,
+      color-mix(in srgb, var(--jp-surface-variant), #fff 45%),
+      color-mix(in srgb, var(--jp-surface-variant), var(--jp-primary) 7%));
+  letter-spacing: 0.02em;
+  font-weight: 650;
+}
+
+.table tbody tr {
+  transition: background var(--fx-fast), transform var(--fx-fast);
+}
+
+.table tbody tr:hover {
+  background: color-mix(in srgb, var(--jp-surface-variant), var(--jp-primary) 6%);
+}
+
+/* ---------------------------------------------------------
+   8. Tag / Pill / Status Premium Overrides
+   --------------------------------------------------------- */
+.jp-save-button,
+.tag,
+.pill,
+.status {
+  transition: transform var(--fx-fast), box-shadow var(--fx-fast),
+              background var(--fx-fast), color var(--fx-fast);
+}
+
+.jp-save-button:hover,
+.tag:hover,
+.pill:hover,
+.status:hover {
+  transform: translateY(-1px);
+}
+
+/* ---------------------------------------------------------
+   9. Dropdown / Panel Premium Overrides
+   --------------------------------------------------------- */
+.jp-dropdown,
+.jp-settings-panel {
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--jp-border), var(--jp-primary) 12%);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12),
+              0 30px 70px rgba(15, 23, 42, 0.1);
+  backdrop-filter: blur(8px) saturate(1.2);
+  -webkit-backdrop-filter: blur(8px) saturate(1.2);
+  animation: jp-reveal-up 220ms var(--fx-ease) both;
+}
+
+.jp-dropdown-item {
+  border-radius: 10px;
+  margin: 0.16rem;
+  transition: background var(--fx-fast), color var(--fx-fast), transform var(--fx-fast);
+}
+
+.jp-dropdown-item:hover {
+  transform: translateX(2px);
+}
+
+.jp-dropdown-item.is-active {
+  background: color-mix(in srgb, var(--jp-primary), var(--jp-surface) 82%);
+  color: color-mix(in srgb, var(--jp-primary), #000 30%);
+}
+
+/* ---------------------------------------------------------
+   10. Skeleton / Loader Premium Overrides
+   --------------------------------------------------------- */
+.jp-global-loader-spinner,
+.skeleton,
+.jp-skeleton-item {
+  background-image: linear-gradient(110deg,
+      color-mix(in srgb, var(--jp-surface-variant), #fff 24%) 8%,
+      color-mix(in srgb, var(--jp-surface), #fff 76%) 18%,
+      color-mix(in srgb, var(--jp-surface-variant), #fff 24%) 33%);
+  background-size: 220% 100%;
+  animation: jp-soft-shimmer 1.25s linear infinite;
+}
+
+@keyframes jp-soft-shimmer {
+  0% { background-position: 220% 0; }
+  100% { background-position: -220% 0; }
+}
+
+/* ---------------------------------------------------------
+   11. Dashboard Layout Premium Overrides
+   --------------------------------------------------------- */
+.jp-dashboard-left,
+.jp-dashboard-right {
+  border-radius: 20px;
+  box-shadow: var(--fx-card-shadow);
+  background: linear-gradient(165deg,
+      color-mix(in srgb, var(--jp-surface), #fff 5%),
+      color-mix(in srgb, var(--jp-surface-variant), #fff 2%));
+  border: 1px solid color-mix(in srgb, var(--jp-border), var(--jp-primary) 8%);
+}
+
+.jp-dashboard-topbar {
+  border-radius: 18px;
+  box-shadow: var(--fx-card-shadow-hover);
+  background: linear-gradient(155deg,
+      color-mix(in srgb, var(--jp-surface), #fff 8%),
+      color-mix(in srgb, var(--jp-surface-variant), #fff 4%));
+  border: 1px solid color-mix(in srgb, var(--jp-border), var(--jp-primary) 10%);
+}
+
+.jp-workspace-link,
+.jp-control-btn,
+.jp-dashboard-mini-link,
+.jp-profile-summary-action {
+  transition: transform 200ms var(--fx-ease), box-shadow 200ms ease,
+              background 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+
+.jp-workspace-link:hover,
+.jp-workspace-link.active,
+.jp-control-btn:hover,
+.jp-dashboard-mini-link:hover,
+.jp-profile-summary-action:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--fx-card-shadow);
+}
+
+.jp-workspace-link.active {
+  box-shadow: var(--fx-card-shadow-hover),
+              0 0 0 2px color-mix(in srgb, var(--jp-primary), transparent 88%);
+}
+
+/* ---------------------------------------------------------
+   12. Admin Layout Premium Overrides
+   --------------------------------------------------------- */
+.jp-admin-sidebar {
+  border-right: 1px solid color-mix(in srgb, var(--jp-border), var(--jp-primary) 10%);
+  background: linear-gradient(180deg,
+      color-mix(in srgb, var(--jp-surface), #fff 6%),
+      color-mix(in srgb, var(--jp-surface-variant), #fff 2%));
+}
+
+.jp-admin-nav-link {
+  border-radius: 12px;
+  transition: background var(--fx-fast), color var(--fx-fast),
+              transform var(--fx-fast), box-shadow var(--fx-fast);
+}
+
+.jp-admin-nav-link:hover,
+.jp-admin-nav-link.active {
+  transform: translateX(2px);
+  box-shadow: var(--fx-card-shadow);
+}
+
+.jp-admin-topbar {
+  border-radius: 16px;
+  margin: 0.5rem;
+  box-shadow: var(--fx-card-shadow);
+  border: 1px solid color-mix(in srgb, var(--jp-border), var(--jp-primary) 10%);
+}
+
+.jp-admin-kpi {
+  border-radius: 16px;
+}
+
+.jp-admin-search-bar {
+  border-radius: 14px;
+  transition: box-shadow var(--fx-fast), border-color var(--fx-fast);
+}
+
+.jp-admin-search-bar:focus-within {
+  box-shadow: var(--fx-ring);
+  border-color: color-mix(in srgb, var(--jp-border), var(--jp-primary) 40%);
+}
+
+/* ---------------------------------------------------------
+   13. Job Card Premium Overrides
+   --------------------------------------------------------- */
+.jp-job-card {
+  border-radius: 20px;
+  box-shadow: var(--fx-card-shadow);
+  transition: transform var(--fx-mid), box-shadow var(--fx-mid),
+              border-color var(--fx-mid);
+}
+
+.jp-job-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--fx-card-shadow-hover), var(--fx-glow-primary);
+  border-color: color-mix(in srgb, var(--jp-border), var(--jp-primary) 30%);
+}
+
+.jp-job-card.is-selected {
+  border-color: var(--jp-primary);
+  box-shadow: var(--fx-card-shadow-hover), var(--fx-glow-primary);
+  background: color-mix(in srgb, var(--jp-surface), var(--jp-primary) 3%);
+}
+
+/* ---------------------------------------------------------
+   14. Company Card Premium Overrides
+   --------------------------------------------------------- */
+.jp-company-card {
+  border-radius: 20px;
+  box-shadow: var(--fx-card-shadow);
+  transition: transform var(--fx-mid), box-shadow var(--fx-mid),
+              border-color var(--fx-mid);
+}
+
+.jp-company-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--fx-card-shadow-hover), var(--fx-glow-accent);
+  border-color: color-mix(in srgb, var(--jp-border), var(--jp-accent) 30%);
+}
+
+/* ---------------------------------------------------------
+   15. Scrollbar Polish
+   --------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--jp-border), var(--jp-primary) 20%);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--jp-border), var(--jp-primary) 50%);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--jp-border), var(--jp-primary) 20%) transparent;
+}
+
+/* ---------------------------------------------------------
+   16. Reduced Motion Safety
+   --------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .jp-reveal,
+  .jp-reveal-up,
+  .jp-reveal-scale,
+  .jp-reveal-fade,
+  .surface,
+  .card,
+  .subtle-card,
+  .btn,
+  .input,
+  .jp-topbar-link,
+  .jp-job-card,
+  .jp-company-card {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* ---------------------------------------------------------
+   17. Mobile Refinements
+   --------------------------------------------------------- */
+@media (max-width: 980px) {
+  .jp-topbar-shell {
+    top: 0.3rem;
+    border-radius: 14px;
+    width: calc(100% - 1rem);
+  }
+
+  .surface,
+  .card,
+  .subtle-card {
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .jp-topbar-shell {
+    top: 0;
+    border-radius: 0;
+    width: 100%;
+    margin: 0;
+  }
+
+  .jp-dashboard-left,
+  .jp-dashboard-right {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+/* ---------------------------------------------------------
+   18. Selection & Misc Polish
+   --------------------------------------------------------- */
+::selection {
+  background: color-mix(in srgb, var(--jp-primary), transparent 80%);
+  color: var(--jp-text);
+}
+
+img {
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+img:hover {
+  opacity: 0.95;
+}
+
+/* Smooth page transitions for route changes */
+.page-shell {
+  animation: jp-reveal-fade 400ms var(--fx-ease) both;
+}
+
+/* Focus ring for interactive elements */
+.jp-control-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+/* Enhanced empty states */
+.empty-state {
+  border-style: solid;
+  border-width: 1px;
+  background: linear-gradient(135deg,
+      color-mix(in srgb, var(--jp-surface), #fff 4%),
+      color-mix(in srgb, var(--jp-surface-variant), #fff 2%));
+  box-shadow: var(--fx-card-shadow);
+  border-radius: 18px;
+}
+
+/* Improved notification cards */
+.jp-notification-card.is-unread {
+  border-left: 3px solid var(--jp-primary);
+  background: color-mix(in srgb, var(--jp-surface), var(--jp-primary) 4%);
+}
+
+.jp-notification-card.is-read {
+  opacity: 0.85;
+}
+
+/* Message bubbles polish */
+.jp-message-bubble.is-me {
+  background: linear-gradient(135deg,
+      color-mix(in srgb, var(--jp-primary), #fff 30%),
+      color-mix(in srgb, var(--jp-primary), var(--jp-accent) 20%));
+  color: #fff;
+  border: none;
+}
+
+/* Profile header polish */
+.jp-profile-cover {
+  background: linear-gradient(120deg,
+      color-mix(in srgb, var(--jp-primary), #fff 10%),
+      color-mix(in srgb, var(--jp-accent), #fff 20%));
+}
+
+.jp-profile-avatar {
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--jp-primary), transparent 70%);
+}
+
+/* Settings page polish */
+.jp-settings-sidebar {
+  border-radius: 18px;
+  box-shadow: var(--fx-card-shadow);
+  border: 1px solid color-mix(in srgb, var(--jp-border), var(--jp-primary) 8%);
+}
+
+.jp-settings-nav-item {
+  border-radius: 14px;
+  transition: transform var(--fx-fast), background var(--fx-fast),
+              border-color var(--fx-fast), box-shadow var(--fx-fast);
+}
+
+.jp-settings-nav-item:hover,
+.jp-settings-nav-item.is-active {
+  transform: translateX(2px);
+  box-shadow: var(--fx-card-shadow);
+}
+
+/* Network card polish */
+.jp-network-card {
+  border-radius: 22px;
+  box-shadow: var(--fx-card-shadow);
+  transition: transform var(--fx-mid), box-shadow var(--fx-mid);
+}
+
+.jp-network-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--fx-card-shadow-hover);
+}
+
+/* Premium shimmer for buttons */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  transition: left 500ms ease;
+}
+
+.btn-primary:hover::after {
+  left: 100%;
+}
+
+/* Floating action button polish */
+.jp-floating-action {
+  box-shadow: var(--fx-card-shadow-hover), var(--fx-glow-primary);
+  transition: transform var(--fx-fast), box-shadow var(--fx-fast);
+}
+
+.jp-floating-action:hover {
+  transform: scale(1.12);
+  box-shadow: var(--fx-card-shadow-hover), var(--fx-glow-accent);
+}
+
+/* Auth layout polish */
+.jp-auth-card {
+  border-radius: 24px;
+  box-shadow: var(--fx-card-shadow-hover);
+  border: 1px solid color-mix(in srgb, var(--jp-border), var(--jp-primary) 10%);
+}
+
+.jp-auth-brand {
+  border-radius: 24px;
+  box-shadow: var(--fx-card-shadow-hover);
+}
+
+/* Hero panel polish */
+.hero-panel {
+  border-radius: 24px;
+  box-shadow: var(--fx-card-shadow-hover);
+  border: 1px solid color-mix(in srgb, var(--jp-border), var(--jp-primary) 10%);
+}
+
+/* Feed card polish */
+.jp-feed-card {
+  border-radius: 22px;
+  box-shadow: var(--fx-card-shadow);
+  transition: transform var(--fx-mid), box-shadow var(--fx-mid), border-color var(--fx-mid);
+}
+
+.jp-feed-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--fx-card-shadow-hover);
+  border-color: color-mix(in srgb, var(--jp-border), var(--jp-primary) 25%);
+}
+
+/* Editor card polish */
+.jp-editor-card {
+  border-radius: 18px;
+  box-shadow: var(--fx-card-shadow);
+  transition: transform var(--fx-mid), box-shadow var(--fx-mid), border-color var(--fx-mid);
+}
+
+.jp-editor-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--fx-card-shadow-hover);
+}
+
+/* Category card polish */
+.jp-category-card {
+  border-radius: 20px;
+  box-shadow: var(--fx-card-shadow);
+  transition: transform var(--fx-mid), box-shadow var(--fx-mid), border-color var(--fx-mid);
+}
+
+.jp-category-card:hover,
+.jp-category-card.is-active {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--fx-card-shadow-hover);
+}
+
+/* Topic pill polish */
+.jp-topic-pill {
+  transition: transform var(--fx-fast), box-shadow var(--fx-fast),
+              border-color var(--fx-fast), background var(--fx-fast), color var(--fx-fast);
+}
+
+.jp-topic-pill:hover,
+.jp-topic-pill.is-selected {
+  transform: translateY(-2px);
+  box-shadow: var(--fx-card-shadow);
+}
+
+/* Company banner polish */
+.jp-company-banner {
+  border-radius: 18px;
+  box-shadow: var(--fx-card-shadow);
+}
+
+/* Suggest item polish */
+.jp-suggest-item {
+  border-radius: 16px;
+  transition: transform var(--fx-fast), box-shadow var(--fx-fast),
+              border-color var(--fx-fast), background var(--fx-fast);
+}
+
+.jp-suggest-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--fx-card-shadow);
+}
+
+/* Link button polish */
+.jp-link-button {
+  border-radius: 14px;
+  transition: transform var(--fx-fast), box-shadow var(--fx-fast),
+              border-color var(--fx-fast), background var(--fx-fast);
+}
+
+.jp-link-button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--fx-card-shadow);
+}
+
+/* Skill pill polish */
+.jp-skill-pill {
+  border-radius: 999px;
+  transition: transform var(--fx-fast), box-shadow var(--fx-fast), border-color var(--fx-fast);
+}
+
+.jp-skill-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--fx-card-shadow);
+}
+
+/* Application card polish */
+.jp-application-card {
+  border-radius: 18px;
+  box-shadow: var(--fx-card-shadow);
+  transition: transform var(--fx-mid), box-shadow var(--fx-mid), border-color var(--fx-mid);
+}
+
+.jp-application-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--fx-card-shadow-hover);
+}
+
+/* Status badge polish */
+.status-success { background: color-mix(in srgb, #10b981, transparent 88%); color: #047857; }
+.status-warning { background: color-mix(in srgb, #f59e0b, transparent 88%); color: #b45309; }
+.status-danger  { background: color-mix(in srgb, #ef4444, transparent 88%); color: #b91c1c; }
+.status-info    { background: color-mix(in srgb, #3b82f6, transparent 88%); color: #1d4ed8; }
+
+:root[data-theme="dark"] .status-success { background: color-mix(in srgb, #34d399, transparent 80%); color: #6ee7b7; }
+:root[data-theme="dark"] .status-warning { background: color-mix(in srgb, #fbbf24, transparent 80%); color: #fcd34d; }
+:root[data-theme="dark"] .status-danger  { background: color-mix(in srgb, #f87171, transparent 80%); color: #fca5a5; }
+:root[data-theme="dark"] .status-info    { background: color-mix(in srgb, #60a5fa, transparent 80%); color: #93c5fd; }
+
+/* Loader spinner polish */
+.jp-global-loader-ring {
+  border-top-color: var(--jp-primary);
+  border-right-color: color-mix(in srgb, var(--jp-accent), #fff 40%);
+  animation: jp-loader-spin 0.72s linear infinite;
+}
+
+@keyframes jp-loader-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Glass panels polish */
+.jp-glass {
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid color-mix(in srgb, var(--jp-border), var(--jp-primary) 15%);
+  box-shadow: var(--fx-card-shadow);
+}
+
+/* Neumorph polish */
+.jp-neumorph {
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.06), inset 0 -2px 4px rgba(255,255,255,0.5);
+  border: none;
+}
+
+.jp-neumorph:hover {
+  box-shadow: inset 0 3px 6px rgba(0,0,0,0.08), inset 0 -3px 6px rgba(255,255,255,0.6);
+}
+
+:root[data-theme="dark"] .jp-neumorph {
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.3), inset 0 -2px 4px rgba(255,255,255,0.05);
+}
+
+/* Responsive table wrapper */
+.jp-admin-table-wrap {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--jp-border), var(--jp-primary) 10%);
+  box-shadow: var(--fx-card-shadow);
+}
+
+/* Profile strength bar polish */
+.jp-profile-strength-track {
+  background: color-mix(in srgb, var(--jp-border), transparent 40%);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.jp-profile-strength-track > span {
+  background: linear-gradient(90deg, var(--jp-primary), var(--jp-accent));
+  transition: width 600ms var(--fx-ease);
+}
+
+/* Apply steps polish */
+.jp-apply-steps span {
+  border-radius: 999px;
+  transition: background var(--fx-fast), border-color var(--fx-fast), color var(--fx-fast);
+}
+
+.jp-apply-steps span.is-active {
+  background: color-mix(in srgb, var(--jp-primary), transparent 88%);
+  border-color: var(--jp-primary);
+  color: var(--jp-primary);
+}
+
+/* Progress bar polish */
+.jp-progress-bar {
+  background: color-mix(in srgb, var(--jp-border), transparent 50%);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.jp-progress-fill {
+  background: linear-gradient(90deg, var(--jp-primary), var(--jp-accent));
+  border-radius: 999px;
+  transition: width 600ms var(--fx-ease);
+}
+
+/* Decision tools polish */
+.jp-decision-tools {
+  gap: 12px;
+}
+
+.jp-decision-card {
+  border-radius: 14px;
+  box-shadow: var(--fx-card-shadow);
+  background: linear-gradient(135deg,
+      color-mix(in srgb, var(--jp-surface), var(--jp-primary) 3%),
+      color-mix(in srgb, var(--jp-surface-variant), var(--jp-accent) 2%));
+  border: 1px solid color-mix(in srgb, var(--jp-border), var(--jp-primary) 10%);
+  transition: transform var(--fx-fast), box-shadow var(--fx-fast);
+}
+
+.jp-decision-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--fx-card-shadow-hover);
+}
+
+/* Filter chips polish */
+.jp-filter-chip {
+  border-radius: 999px;
+  transition: transform var(--fx-fast), box-shadow var(--fx-fast),
+              background var(--fx-fast), border-color var(--fx-fast), color var(--fx-fast);
+}
+
+.jp-filter-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--fx-card-shadow);
+}
+
+.jp-filter-chip.is-active {
+  box-shadow: var(--fx-card-shadow-hover), var(--fx-glow-primary);
+}
+
+/* Info bar polish */
+.jp-info-bar {
+  border-top: 1px solid color-mix(in srgb, var(--jp-border), var(--jp-primary) 10%);
+}
+
+.jp-info-value {
+  background: linear-gradient(135deg, var(--jp-primary), var(--jp-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Match score polish */
+.jp-match-score {
+  background: linear-gradient(135deg, var(--jp-primary), var(--jp-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.jp-job-match {
+  background: linear-gradient(135deg,
+      color-mix(in srgb, var(--jp-primary), transparent 92%),
+      color-mix(in srgb, var(--jp-accent), transparent 92%));
+}
+
+/* Salary pill polish */
+.jp-salary-pill {
+  background: linear-gradient(135deg,
+      color-mix(in srgb, #10b981, transparent 88%),
+      color-mix(in srgb, #059669, transparent 88%));
+  color: #047857;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px color-mix(in srgb, #10b981, transparent 80%);
+}
+
+/* Premium hover glow utility */
+.jp-hover-glow {
+  transition: box-shadow var(--fx-mid);
+}
+
+.jp-hover-glow:hover {
+  box-shadow: var(--fx-glow-primary);
+}
+
+/* Smooth image loading */
+img {
+  opacity: 1;
+  transition: opacity 400ms ease;
+}
+
+img[loading] {
+  opacity: 0;
+}
+
+/* Animation utilities */
+.jp-pulse-soft {
+  animation: jp-pulse-soft 2s ease-in-out infinite;
+}
+
+@keyframes jp-pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.jp-bounce-in {
+  animation: jp-bounce-in 0.5s var(--fx-ease) both;
+}
+
+@keyframes jp-bounce-in {
+  0% { opacity: 0; transform: scale(0.3); }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Hover lift utility */
+.jp-hover-lift {
+  transition: transform var(--fx-mid), box-shadow var(--fx-mid);
+}
+
+.jp-hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--fx-card-shadow-hover);
+}
+
+/* Scale utility */
+.jp-hover-scale {
+  transition: transform var(--fx-fast);
+}
+
+.jp-hover-scale:hover {
+  transform: scale(1.02);
+}
+
+/* Spring transition utility */
+.jp-spring {
+  transition: all var(--fx-mid) var(--fx-ease);
+}
+
+/* Fade in utility */
+.jp-fade-in {
+  animation: jp-reveal-fade 0.6s ease-out both;
+}
+
+/* Slide up utility */
+.jp-slide-up {
+  animation: jp-reveal-up 0.5s ease-out both;
+}
+
+/* Shimmer utility */
+.jp-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.jp-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: jp-shimmer-move 1.5s infinite;
+}
+
+@keyframes jp-shimmer-move {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Card modern utility */
+.jp-card-modern {
+  background: linear-gradient(135deg, var(--jp-surface) 0%, color-mix(in srgb, var(--jp-surface-variant), transparent 20%) 100%);
+  border: 1px solid color-mix(in srgb, var(--jp-border), transparent 20%);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  transition: all var(--fx-mid);
+  position: relative;
+  overflow: hidden;
+}
+
+.jp-card-modern::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--jp-primary), var(--jp-accent));
+  opacity: 0;
+  transition: opacity var(--fx-fast);
+}
+
+.jp-card-modern:hover::before {
+  opacity: 1;
+}
+
+.jp-card-modern:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  border-color: color-mix(in srgb, var(--jp-primary), transparent 30%);
+}
+
+/* Tooltip utility */
+.jp-tooltip {
+  position: relative;
+}
+
+.jp-tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--jp-surface);
+  color: var(--jp-text);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--fx-fast);
+  box-shadow: var(--fx-card-shadow);
+  z-index: 1000;
+}
+
+.jp-tooltip:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Loading skeleton utility */
+.jp-loading-skeleton {
+  background: linear-gradient(90deg, var(--jp-surface-variant) 25%, color-mix(in srgb, var(--jp-primary), transparent 90%) 50%, var(--jp-surface-variant) 75%);
+  background-size: 200% 100%;
+  animation: jp-loading-shimmer 1.5s infinite;
+}
+
+@keyframes jp-loading-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Theme transition utility */
+.jp-theme-transition {
+  transition: background var(--fx-slow), color var(--fx-mid), border-color var(--fx-mid);
+}
+
+/* Print styles */
+@media print {
+  .jp-topbar-shell,
+  .jp-dashboard-left,
+  .jp-dashboard-right,
+  .jp-admin-sidebar,
+  .jp-floating-action,
+  .jp-settings-panel,
+  .jp-dropdown {
+    display: none !important;
+  }
+  
+  .surface,
+  .card,
+  .subtle-card {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+  }
+}

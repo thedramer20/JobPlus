@@ -17,13 +17,13 @@ export function JobsPage() {
   });
   const [expandedFilters, setExpandedFilters] = useState(false);
 
-  const { data: jobs = [], isLoading } = useQuery({
+  const { data: jobs = [], isLoading } = useQuery<Job[]>({
     queryKey: ["jobs"],
-    queryFn: listJobs
+    queryFn: () => listJobs()
   });
 
   const filteredJobs = useMemo(() => {
-    return jobs.filter(job => {
+    return jobs.filter((job: Job) => {
       if (filters.search && !job.title.toLowerCase().includes(filters.search.toLowerCase())) return false;
       if (filters.location && !job.location.toLowerCase().includes(filters.location.toLowerCase())) return false;
       if (filters.jobType && !job.type?.toLowerCase().includes(filters.jobType.toLowerCase())) return false;
@@ -142,7 +142,7 @@ export function JobsPage() {
           ) : filteredJobs.length === 0 ? (
             <div className="jp-empty">No jobs found matching your criteria</div>
           ) : (
-            filteredJobs.map((job) => (
+            filteredJobs.map((job: Job) => (
               <div
                 key={job.id}
                 className={`jp-job-card ${selectedJob?.id === job.id ? "is-selected" : ""}`}

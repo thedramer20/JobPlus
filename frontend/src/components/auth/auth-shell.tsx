@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import "../../styles/auth-shell-new.css";
+import { JobPlusLogo } from "../shared/jobplus-logo";
 
 interface AuthShellProps {
   title: string;
@@ -14,8 +15,7 @@ export function AuthShell({ title, subtitle, children }: AuthShellProps) {
         <aside className="jp-auth-brand">
           {/* Logo */}
           <div className="jp-auth-logo">
-            <div className="jp-logo-mark">J+</div>
-            <span className="jp-logo-text">JobPlus</span>
+            <JobPlusLogo variant="lockup" />
           </div>
 
           {/* Headline */}

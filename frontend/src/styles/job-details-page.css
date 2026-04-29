@@ -1,0 +1,360 @@
+.jp-job-details-page {
+  --jp-job-primary: #4f46e5;
+  --jp-job-accent: #7c3aed;
+  --jp-job-ink: #0f172a;
+  --jp-job-muted: #64748b;
+  --jp-job-border: #e2e8f0;
+  --jp-job-surface: #ffffff;
+  --jp-job-surface-soft: #f8fafc;
+  background: linear-gradient(180deg, #f8faff 0%, #f4f7fc 56%, #f8fbff 100%);
+  color: var(--jp-job-ink);
+  padding-bottom: 2.25rem;
+}
+
+.jp-job-details-page .container {
+  max-width: 1240px;
+}
+
+.jp-job-hero {
+  margin-top: 0.9rem;
+  border-radius: 20px;
+  border: 1px solid var(--jp-job-border);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.07);
+  background:
+    radial-gradient(1100px 300px at 80% -40%, rgba(79, 70, 229, 0.12), transparent 56%),
+    radial-gradient(900px 280px at 10% -60%, rgba(124, 58, 237, 0.1), transparent 58%),
+    var(--jp-job-surface);
+}
+
+.jp-job-hero-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.1rem;
+  padding: 2rem 0 1.5rem;
+}
+
+.jp-job-hero-main .jp-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid #dbe2f3;
+  background: #f7f9ff;
+  color: #4f46e5;
+  font-size: 0.73rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.jp-job-hero-main .jp-h1 {
+  margin: 0.85rem 0 0.55rem;
+  font-size: clamp(1.65rem, 2.5vw, 2.45rem);
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  font-weight: 800;
+}
+
+.jp-job-hero-main .jp-body {
+  margin: 0;
+  color: var(--jp-job-muted);
+  font-size: 1rem;
+  font-weight: 520;
+}
+
+.jp-job-hero-actions {
+  display: grid;
+  justify-items: end;
+  gap: 0.62rem;
+  min-width: 230px;
+}
+
+.jp-salary-display {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 0.95rem;
+  border-radius: 12px;
+  border: 1px solid #dce3f5;
+  background: #f8faff;
+  color: #312e81;
+  font-size: 1rem;
+  font-weight: 780;
+  letter-spacing: -0.01em;
+}
+
+.jp-job-content {
+  padding-top: 1.25rem;
+}
+
+.jp-job-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 1rem;
+  align-items: start;
+}
+
+.jp-job-main {
+  display: grid;
+  gap: 0.95rem;
+}
+
+.jp-job-section {
+  border-radius: 16px;
+  border: 1px solid var(--jp-job-border);
+  background: var(--jp-job-surface);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+  padding: 1.15rem 1.2rem;
+}
+
+.jp-job-section .jp-h2,
+.jp-job-section .jp-h3 {
+  margin: 0 0 0.7rem;
+  letter-spacing: -0.01em;
+  font-weight: 780;
+  color: #0f172a;
+}
+
+.jp-job-section .jp-body,
+.jp-job-section .jp-ui-text {
+  margin: 0;
+  color: #475569;
+  line-height: 1.68;
+  font-size: 0.98rem;
+}
+
+.jp-job-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.95rem;
+}
+
+.jp-job-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.jp-job-tags .jp-tag {
+  border-radius: 999px;
+  border: 1px solid #d9e1f5;
+  background: #f9fbff;
+  color: #334155;
+  font-size: 0.82rem;
+  font-weight: 650;
+  padding: 0.4rem 0.72rem;
+}
+
+.jp-job-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.jp-job-list li {
+  position: relative;
+  padding-left: 1.02rem;
+  color: #475569;
+  line-height: 1.55;
+  font-size: 0.94rem;
+}
+
+.jp-job-list li::before {
+  content: "";
+  position: absolute;
+  top: 0.54rem;
+  left: 0;
+  width: 0.34rem;
+  height: 0.34rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--jp-job-primary), var(--jp-job-accent));
+}
+
+.jp-company-snapshot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.jp-company-snapshot .btn {
+  border-radius: 12px;
+}
+
+.jp-job-sidebar {
+  position: sticky;
+  top: 1.05rem;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.jp-apply-section,
+.jp-recruiter-section,
+.jp-snapshot-section,
+.jp-leverage-section,
+.jp-details-summary {
+  border-radius: 16px;
+  border: 1px solid var(--jp-job-border);
+  background: var(--jp-job-surface);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+  padding: 1rem 1rem 1.05rem;
+}
+
+.jp-apply-section .jp-apply-btn,
+.jp-apply-section .jp-save-btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: 0.55rem;
+}
+
+.jp-snapshot-header,
+.jp-leverage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.jp-snapshot-metrics {
+  margin-top: 0.62rem;
+  display: grid;
+  gap: 0.52rem;
+}
+
+.jp-metric {
+  border: 1px solid #e5ebf5;
+  border-radius: 12px;
+  background: #f8fbff;
+  padding: 0.62rem 0.72rem;
+}
+
+.jp-metric-label {
+  display: block;
+  color: #64748b;
+  font-size: 0.78rem;
+  margin-bottom: 0.2rem;
+}
+
+.jp-metric-value {
+  color: #0f172a;
+  font-size: 0.96rem;
+}
+
+.jp-leverage-score {
+  min-width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 999px;
+  border: 1px solid #d7ddf3;
+  background: #f8faff;
+  color: #312e81;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 780;
+}
+
+.jp-progress-bar {
+  width: 100%;
+  height: 0.56rem;
+  border-radius: 999px;
+  background: #e9eef9;
+  overflow: hidden;
+}
+
+.jp-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--jp-job-primary), var(--jp-job-accent));
+}
+
+.jp-summary-item + .jp-summary-item {
+  margin-top: 0.52rem;
+  padding-top: 0.52rem;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.jp-summary-label {
+  display: block;
+  color: #64748b;
+  font-size: 0.78rem;
+  margin-bottom: 0.12rem;
+}
+
+.jp-summary-value {
+  color: #0f172a;
+  font-size: 0.93rem;
+}
+
+.jp-back-btn {
+  width: 100%;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.jp-related-jobs {
+  margin-top: 1.35rem;
+  border-radius: 16px;
+  border: 1px solid var(--jp-job-border);
+  background: var(--jp-job-surface);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+  padding: 1rem;
+}
+
+.jp-related-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.jp-related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+@media (max-width: 1120px) {
+  .jp-job-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .jp-job-sidebar {
+    position: static;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .jp-back-btn,
+  .jp-apply-section .jp-apply-btn,
+  .jp-apply-section .jp-save-btn {
+    width: auto;
+  }
+}
+
+@media (max-width: 880px) {
+  .jp-job-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .jp-job-hero-content {
+    flex-direction: column;
+  }
+
+  .jp-job-hero-actions {
+    justify-items: start;
+    min-width: 0;
+  }
+
+  .jp-job-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .jp-related-grid {
+    grid-template-columns: 1fr;
+  }
+}

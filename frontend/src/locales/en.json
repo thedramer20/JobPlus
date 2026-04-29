@@ -113,6 +113,7 @@
       "requiredFullName": "Full name is required.",
       "usernameMin": "Username must be at least 3 characters.",
       "passwordMin": "Password must be at least 8 characters.",
+      "passwordComplexity": "Password must include uppercase, lowercase, and a number.",
       "passwordMismatch": "Passwords do not match.",
       "acceptTerms": "Please accept Terms and Privacy Policy."
     }

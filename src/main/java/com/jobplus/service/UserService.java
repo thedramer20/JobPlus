@@ -49,8 +49,11 @@ public class UserService {
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             throw new IllegalArgumentException("Current password is incorrect");
         }
-        if (newPassword.length() < 6) {
-            throw new IllegalArgumentException("New password must be at least 6 characters");
+        if (newPassword.length() < 8) {
+            throw new IllegalArgumentException("New password must be at least 8 characters");
+        }
+        if (!isStrongPassword(newPassword)) {
+            throw new IllegalArgumentException("New password must include uppercase, lowercase, and a number");
         }
         if (!newPassword.equals(confirmPassword)) {
             throw new IllegalArgumentException("New password and confirm password do not match");
@@ -83,5 +86,15 @@ public class UserService {
 
     private String blankToNull(String value) {
         return value == null || value.isBlank() ? null : value.trim();
+    }
+
+    private boolean isStrongPassword(String password) {
+        if (password == null) {
+            return false;
+        }
+        boolean hasUpper = password.chars().anyMatch(Character::isUpperCase);
+        boolean hasLower = password.chars().anyMatch(Character::isLowerCase);
+        boolean hasDigit = password.chars().anyMatch(Character::isDigit);
+        return hasUpper && hasLower && hasDigit;
     }
 }

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { authStore } from "../store/auth-store";
 import { recordIntentInteraction } from "../lib/ui-intelligence";
+import { authStore } from "../store/auth-store";
 
 type Conversation = {
   id: number;
@@ -58,17 +58,22 @@ export function MessagesPage() {
   const [activeId, setActiveId] = useState(conversationsSeed[0]?.id ?? 0);
   const [draft, setDraft] = useState("");
   const [coachAdvice, setCoachAdvice] = useState("This reply is well timed; keep the tone concise and opportunity-focused.");
-  const [timeline, setTimeline] = useState<string[]>([
-    t("messagesPage.seed.welcome"),
-    t("messagesPage.seed.backendReady")
-  ]);
+  const [timeline, setTimeline] = useState([t("messagesPage.seed.welcome"), t("messagesPage.seed.backendReady")]);
 
   const activeConversation = useMemo(
     () => conversations.find((item) => item.id === activeId) ?? conversations[0],
     [activeId, conversations]
   );
-  const replyIntelligence = useMemo(() => estimateReplyChance(draft, activeConversation?.status ?? "offline"), [draft, activeConversation?.status]);
-  const suggestions = useMemo(() => buildReplyBoostSuggestions(draft, activeConversation?.name ?? ""), [draft, activeConversation?.name]);
+
+  const replyIntelligence = useMemo(
+    () => estimateReplyChance(draft, activeConversation?.status ?? "offline"),
+    [draft, activeConversation?.status]
+  );
+
+  const suggestions = useMemo(
+    () => buildReplyBoostSuggestions(draft, activeConversation?.name ?? ""),
+    [draft, activeConversation?.name]
+  );
 
   function sendMessage() {
     if (!draft.trim()) {
@@ -90,12 +95,14 @@ export function MessagesPage() {
 
   return (
     <section className="jp-messages-layout">
-      <aside className="surface jp-messages-list">
+      <aside className="surface jp-messages-list jp-reveal-up">
         <div className="space-between" style={{ alignItems: "center" }}>
           <h2 style={{ margin: 0 }}>{t("common.messages")}</h2>
-          <span className="pill">{conversations.length}</span>
+          <span className="jp-message-count-pill" aria-label={`${conversations.length} conversations`}>
+            {conversations.length}
+          </span>
         </div>
-        <div className="stack" style={{ gap: "0.6rem" }}>
+        <div className="stack jp-reveal-stagger" style={{ gap: "0.6rem" }}>
           {conversations.map((conversation) => (
             <button
               key={conversation.id}
@@ -104,12 +111,12 @@ export function MessagesPage() {
                 recordIntentInteraction("messages", 1);
                 setActiveId(conversation.id);
               }}
-              className={`jp-message-item ${conversation.id === activeId ? "is-active" : ""}`}
+              className={`jp-message-item jp-reveal ${conversation.id === activeId ? "is-active" : ""}`}
             >
               <span className="jp-message-avatar">{conversation.avatar}</span>
               <span className="jp-message-meta">
                 <strong>{conversation.name}</strong>
-                <small>{conversation.role} • {conversation.company}</small>
+                <small>{conversation.role} - {conversation.company}</small>
                 <small>{conversation.lastMessage}</small>
               </span>
               <span className="jp-message-end">
@@ -121,12 +128,12 @@ export function MessagesPage() {
         </div>
       </aside>
 
-      <article className="surface jp-messages-thread">
-        <header className="space-between" style={{ alignItems: "center" }}>
+      <article className="surface jp-messages-thread jp-reveal-up">
+        <header className="space-between jp-reveal" style={{ alignItems: "center" }}>
           <div>
             <h3 style={{ margin: 0 }}>{activeConversation?.name}</h3>
             <div className="helper">
-              {activeConversation?.role} • {activeConversation?.company} • {activeConversation?.status}
+              {activeConversation?.role} - {activeConversation?.company} - {activeConversation?.status}
             </div>
           </div>
           <button className="btn btn-secondary" type="button">
@@ -134,25 +141,24 @@ export function MessagesPage() {
           </button>
         </header>
 
-        <div className="conversation-intel">
+        <div className="conversation-intel jp-reveal">
           <span className="metric positive">Reply readiness: high</span>
           <span className="metric">Estimated response: 12-18h</span>
           <span className="metric urgent">Best follow-up: set a clear next meeting request</span>
-          <div className="helper" style={{ marginTop: "0.7rem" }}>{coachAdvice}</div>
+          <div className="helper" style={{ marginTop: "0.7rem" }}>
+            {coachAdvice}
+          </div>
         </div>
 
         <div className="jp-messages-timeline">
           {timeline.map((entry, index) => (
-            <div
-              key={`${entry}-${index}`}
-              className={`jp-message-bubble ${index % 2 === 0 ? "is-them" : "is-me"}`}
-            >
+            <div key={`${entry}-${index}`} className={`jp-message-bubble ${index % 2 === 0 ? "is-them" : "is-me"}`}>
               {entry}
             </div>
           ))}
         </div>
 
-        <div className="jp-messages-compose">
+        <div className="jp-messages-compose jp-reveal-up">
           <div className="surface jp-reply-intelligence">
             <div className="space-between" style={{ alignItems: "center" }}>
               <strong>Response Engine</strong>
@@ -163,12 +169,7 @@ export function MessagesPage() {
             </p>
             <div className="row" style={{ gap: "0.45rem", flexWrap: "wrap" }}>
               {suggestions.map((suggestion) => (
-                <button
-                  key={suggestion}
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => setDraft(suggestion)}
-                >
+                <button key={suggestion} type="button" className="btn btn-secondary" onClick={() => setDraft(suggestion)}>
                   Use suggestion
                 </button>
               ))}
@@ -225,7 +226,7 @@ function buildReplyBoostSuggestions(current: string, name: string) {
     ];
   }
   return [
-    `Hi ${safeName}, I’m interested in this role and can share a short impact summary relevant to your team.`,
+    `Hi ${safeName}, I'm interested in this role and can share a short impact summary relevant to your team.`,
     `Hi ${safeName}, thanks for connecting. Could we schedule a quick call about the role requirements this week?`
   ];
 }

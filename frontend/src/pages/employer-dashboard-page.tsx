@@ -8,7 +8,7 @@ export function EmployerDashboardPage() {
   const { data: jobs = [] } = useQuery({ queryKey: ["jobs", "employer"], queryFn: listEmployerJobs });
 
   return (
-    <div className="stack">
+    <div className="stack jp-reveal-stagger">
       <div className="grid grid-4">
         <StatCard label="Active jobs" value={String(jobs.length)} meta="Live openings tied to your company account" />
         <StatCard label="Company profile" value={company ? "Ready" : "Missing"} meta="Create a company profile before posting jobs" />

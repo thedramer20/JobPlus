@@ -9,9 +9,7 @@ import com.jobplus.mapper.OAuthAccountMapper;
 import com.jobplus.mapper.UserMapper;
 import com.jobplus.security.JwtService;
 import com.jobplus.security.UserDetailsServiceImpl;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,7 +25,6 @@ public class AuthService {
     private final UserMapper userMapper;
     private final OAuthAccountMapper oauthAccountMapper;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtService jwtService;
 
@@ -40,13 +37,11 @@ public class AuthService {
     public AuthService(UserMapper userMapper,
                        OAuthAccountMapper oauthAccountMapper,
                        PasswordEncoder passwordEncoder,
-                       AuthenticationManager authenticationManager,
                        UserDetailsServiceImpl userDetailsService,
                        JwtService jwtService) {
         this.userMapper = userMapper;
         this.oauthAccountMapper = oauthAccountMapper;
         this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.jwtService = jwtService;
     }
@@ -62,8 +57,11 @@ public class AuthService {
         if (username == null || username.isEmpty()) {
             throw new IllegalArgumentException("Username is required");
         }
-        if (password == null || password.length() < 6) {
-            throw new IllegalArgumentException("Password must be at least 6 characters");
+        if (password == null || password.length() < 8) {
+            throw new IllegalArgumentException("Password must be at least 8 characters");
+        }
+        if (!isStrongPassword(password)) {
+            throw new IllegalArgumentException("Password must include uppercase, lowercase, and a number");
         }
         if (userMapper.existsByUsername(username)) {
             throw new IllegalArgumentException("Username already exists");
@@ -95,16 +93,11 @@ public class AuthService {
     public AuthResponse login(LoginRequest request) {
         String username = safeTrim(request.getUsername());
         String password = request.getPassword();
-        try {
-            authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password)
-            );
-        } catch (Exception ex) {
-            throw new BadCredentialsException("Invalid username or password");
-        }
-
         User user = userMapper.findByUsername(username);
         if (user == null) {
+            throw new BadCredentialsException("Invalid username or password");
+        }
+        if (password == null || !passwordEncoder.matches(password, user.getPassword())) {
             throw new BadCredentialsException("Invalid username or password");
         }
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -126,6 +119,16 @@ public class AuthService {
 
     private String safeTrim(String value) {
         return value == null ? null : value.trim();
+    }
+
+    private boolean isStrongPassword(String password) {
+        if (password == null) {
+            return false;
+        }
+        boolean hasUpper = password.chars().anyMatch(Character::isUpperCase);
+        boolean hasLower = password.chars().anyMatch(Character::isLowerCase);
+        boolean hasDigit = password.chars().anyMatch(Character::isDigit);
+        return hasUpper && hasLower && hasDigit;
     }
 
     public SocialAuthResult handleSocialAuth(String provider,

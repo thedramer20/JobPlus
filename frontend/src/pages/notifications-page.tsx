@@ -43,7 +43,7 @@ export function NotificationsPage() {
 
   return (
     <div className="stack">
-      <div className="space-between" style={{ alignItems: "center" }}>
+      <div className="space-between jp-reveal-up" style={{ alignItems: "center" }}>
         <div>
           <div className="eyebrow">{t("common.notifications")}</div>
           <h2 className="headline" style={{ fontSize: "2rem", margin: "0.35rem 0 0" }}>
@@ -53,7 +53,7 @@ export function NotificationsPage() {
         <span className="pill">{t("notificationsPage.total", { count: notifications.length })}</span>
       </div>
 
-      <section className="surface jp-priority-intelligence">
+      <section className="surface jp-priority-intelligence jp-reveal-up">
         <div className="space-between" style={{ alignItems: "center" }}>
           <strong>Priority Intelligence</strong>
           <span className="helper">Focus: {insights.dominantIntent}</span>
@@ -70,14 +70,14 @@ export function NotificationsPage() {
       ) : null}
 
       {!isLoading && priorityTop.length ? (
-        <section className="surface jp-priority-feed">
+        <section className="surface jp-priority-feed jp-reveal-up">
           <div className="space-between" style={{ alignItems: "center" }}>
             <h3 style={{ margin: 0 }}>Top Priority Queue</h3>
             <span className="helper">Showing top {priorityTop.length}</span>
           </div>
-          <div className="stack" style={{ gap: "0.6rem", marginTop: "0.7rem" }}>
+          <div className="stack jp-reveal-stagger" style={{ gap: "0.6rem", marginTop: "0.7rem" }}>
             {priorityTop.map((notification) => (
-              <article key={`priority-${notification.id}`} className="jp-priority-item">
+              <article key={`priority-${notification.id}`} className="jp-priority-item jp-reveal">
                 <div className="space-between" style={{ alignItems: "center" }}>
                   <strong>{notification.type}</strong>
                   <span className="tag">P{calculatePriorityScore(notification)}</span>
@@ -91,16 +91,16 @@ export function NotificationsPage() {
 
       {!isLoading
         ? orderedGroups.map((group) => (
-            <section key={group} className="surface jp-notification-group">
+            <section key={group} className="surface jp-notification-group jp-reveal-up">
               <div className="space-between" style={{ alignItems: "center" }}>
                 <h3 style={{ margin: 0 }}>{translateGroup(group, t)}</h3>
                 <span className="helper">{grouped[group].length}</span>
               </div>
-              <div className="stack" style={{ gap: "0.7rem", marginTop: "0.85rem" }}>
+              <div className="stack jp-reveal-stagger" style={{ gap: "0.7rem", marginTop: "0.85rem" }}>
                 {grouped[group].map((notification) => (
                   <article
                     key={notification.id}
-                    className={`jp-notification-card ${notification.isRead ? "is-read" : "is-unread"}`}
+                    className={`jp-notification-card jp-reveal ${notification.isRead ? "is-read" : "is-unread"}`}
                     onMouseEnter={() => recordIntentInteraction("messages", group === "Messages" ? 1 : 0)}
                   >
                     <div className="space-between" style={{ alignItems: "center" }}>

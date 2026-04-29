@@ -12,6 +12,7 @@ import { authStore } from "../store/auth-store";
 import { getSocialProviders, register, startSocialAuth, type SocialProvider } from "../services/auth-service";
 import type { UserRole } from "../types/auth";
 import { useQuery } from "@tanstack/react-query";
+import { MIN_PASSWORD_LENGTH, validatePasswordPolicy } from "../lib/password-policy";
 
 export function RegisterPage() {
   const { t } = useTranslation();
@@ -211,7 +212,10 @@ function validateRegisterForm(form: {
   if (!form.fullName.trim()) return t("auth.validations.requiredFullName");
   if (!form.username.trim() || form.username.trim().length < 3) return t("auth.validations.usernameMin");
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) return t("auth.validations.invalidEmail");
-  if (form.password.length < 8) return t("auth.validations.passwordMin");
+  if (form.password.length < MIN_PASSWORD_LENGTH) return t("auth.validations.passwordMin");
+  if (!validatePasswordPolicy(form.password).valid) {
+    return t("auth.validations.passwordComplexity");
+  }
   if (form.password !== form.confirmPassword) return t("auth.validations.passwordMismatch");
   if (!form.acceptTerms) return t("auth.validations.acceptTerms");
   return null;

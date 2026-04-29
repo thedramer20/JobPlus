@@ -111,6 +111,7 @@
       "requiredFullName": "El nombre completo es obligatorio.",
       "usernameMin": "El usuario debe tener al menos 3 caracteres.",
       "passwordMin": "La contraseña debe tener al menos 8 caracteres.",
+      "passwordComplexity": "La contraseña debe incluir mayúsculas, minúsculas y un número.",
       "passwordMismatch": "Las contraseñas no coinciden.",
       "acceptTerms": "Acepta Términos y Política de Privacidad."
     }
@@ -139,3 +140,5 @@
     "openProfile": "Abrir perfil"
   }
 }
+
+

@@ -16,13 +16,13 @@ export function JobsPage() {
     workType: ""
   });
 
-  const { data: jobs = [], isLoading } = useQuery({
+  const { data: jobs = [], isLoading } = useQuery<Job[]>({
     queryKey: ["jobs"],
-    queryFn: listJobs
+    queryFn: () => listJobs()
   });
 
   const filteredJobs = useMemo(() => {
-    return jobs.filter(job => {
+    return jobs.filter((job: Job) => {
       if (filters.search && !job.title.toLowerCase().includes(filters.search.toLowerCase())) return false;
       if (filters.location && !job.location.toLowerCase().includes(filters.location.toLowerCase())) return false;
       if (filters.jobType && !job.type?.toLowerCase().includes(filters.jobType.toLowerCase())) return false;
@@ -43,7 +43,7 @@ export function JobsPage() {
     "Good salary for your market",
     "Strong growth potential"
   ].slice(0, 3);
-  const getAverageMatch = () => Math.floor(filteredJobs.reduce((acc, _) => acc + getMatchScore(), 0) / filteredJobs.length) || 0;
+  const getAverageMatch = () => Math.floor(filteredJobs.reduce((acc: number) => acc + getMatchScore(), 0) / filteredJobs.length) || 0;
 
   return (
     <div className="jp-jobs-root">
@@ -77,63 +77,88 @@ export function JobsPage() {
       <div className="jp-jobs-container jp-jobs-main">
         {/* Left Sidebar - Filters */}
         <aside className="jp-filters-sidebar">
-          <div className="jp-filter-group">
-            <h4 className="jp-filter-group-title">Location</h4>
-            <div className="jp-filter-chips">
-              {["Remote", "San Francisco", "New York", "London", "Berlin"].map((location) => (
-                <button
-                  key={location}
-                  className={`jp-filter-chip ${filters.location === location ? "is-active" : ""}`}
-                  onClick={() => setFilters({ ...filters, location: filters.location === location ? "" : location })}
-                >
-                  {location}
-                </button>
-              ))}
+          <div className="jp-filters-panel">
+            <div className="jp-filters-panel-head">
+              <h3>Refine jobs</h3>
+              <button
+                type="button"
+                className="jp-filters-clear"
+                onClick={() =>
+                  setFilters({
+                    search: "",
+                    location: "",
+                    jobType: "",
+                    salary: "",
+                    workType: ""
+                  })
+                }
+              >
+                Clear all
+              </button>
             </div>
-          </div>
 
-          <div className="jp-filter-group">
-            <h4 className="jp-filter-group-title">Job Type</h4>
-            <div className="jp-filter-chips">
-              {["Full-time", "Part-time", "Contract", "Internship"].map((type) => (
-                <button
-                  key={type}
-                  className={`jp-filter-chip ${filters.jobType === type ? "is-active" : ""}`}
-                  onClick={() => setFilters({ ...filters, jobType: filters.jobType === type ? "" : type })}
-                >
-                  {type}
-                </button>
-              ))}
+            <div className="jp-filter-row">
+              <span className="jp-filter-group-title">Location</span>
+              <div className="jp-filter-chips">
+                {["Remote", "San Francisco", "New York", "London", "Berlin"].map((location) => (
+                  <button
+                    key={location}
+                    type="button"
+                    className={`jp-filter-chip ${filters.location === location ? "is-active" : ""}`}
+                    onClick={() => setFilters({ ...filters, location: filters.location === location ? "" : location })}
+                  >
+                    {location}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div className="jp-filter-group">
-            <h4 className="jp-filter-group-title">Work Mode</h4>
-            <div className="jp-filter-chips">
-              {["Remote", "Hybrid", "On-site"].map((mode) => (
-                <button
-                  key={mode}
-                  className={`jp-filter-chip ${filters.workType === mode ? "is-active" : ""}`}
-                  onClick={() => setFilters({ ...filters, workType: filters.workType === mode ? "" : mode })}
-                >
-                  {mode}
-                </button>
-              ))}
+            <div className="jp-filter-row">
+              <span className="jp-filter-group-title">Job Type</span>
+              <div className="jp-filter-chips">
+                {["Full-time", "Part-time", "Contract", "Internship"].map((type) => (
+                  <button
+                    key={type}
+                    type="button"
+                    className={`jp-filter-chip ${filters.jobType === type ? "is-active" : ""}`}
+                    onClick={() => setFilters({ ...filters, jobType: filters.jobType === type ? "" : type })}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div className="jp-filter-group">
-            <h4 className="jp-filter-group-title">Salary Range</h4>
-            <div className="jp-filter-chips">
-              {["$60k+", "$80k+", "$100k+", "$120k+"].map((salary) => (
-                <button
-                  key={salary}
-                  className={`jp-filter-chip ${filters.salary === salary ? "is-active" : ""}`}
-                  onClick={() => setFilters({ ...filters, salary: filters.salary === salary ? "" : salary })}
-                >
-                  {salary}
-                </button>
-              ))}
+            <div className="jp-filter-row">
+              <span className="jp-filter-group-title">Work Mode</span>
+              <div className="jp-filter-chips">
+                {["Remote", "Hybrid", "On-site"].map((mode) => (
+                  <button
+                    key={mode}
+                    type="button"
+                    className={`jp-filter-chip ${filters.workType === mode ? "is-active" : ""}`}
+                    onClick={() => setFilters({ ...filters, workType: filters.workType === mode ? "" : mode })}
+                  >
+                    {mode}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="jp-filter-row">
+              <span className="jp-filter-group-title">Salary Range</span>
+              <div className="jp-filter-chips">
+                {["$60k+", "$80k+", "$100k+", "$120k+"].map((salary) => (
+                  <button
+                    key={salary}
+                    type="button"
+                    className={`jp-filter-chip ${filters.salary === salary ? "is-active" : ""}`}
+                    onClick={() => setFilters({ ...filters, salary: filters.salary === salary ? "" : salary })}
+                  >
+                    {salary}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </aside>
@@ -145,7 +170,7 @@ export function JobsPage() {
           ) : filteredJobs.length === 0 ? (
             <div className="jp-empty">No jobs found matching your criteria</div>
           ) : (
-            filteredJobs.map((job) => (
+            filteredJobs.map((job: Job) => (
               <div
                 key={job.id}
                 className={`jp-job-card ${selectedJob?.id === job.id ? "is-selected" : ""}`}

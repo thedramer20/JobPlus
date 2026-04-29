@@ -186,7 +186,7 @@ export function ProfilePage() {
           {banner ? <div className="auth-note">{banner}</div> : null}
           {loading ? <ProfilePageSkeleton /> : null}
 
-          <article className="surface jp-profile-header">
+          <article className="surface jp-profile-header jp-reveal-up">
             <div className="jp-profile-cover" />
             <div className="jp-profile-header-content">
               <div className="jp-profile-avatar">{identity.avatar ? <img src={identity.avatar} alt={identity.fullName} style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover" }} /> : identity.fullName.slice(0, 1)}</div>
@@ -241,7 +241,7 @@ export function ProfilePage() {
             )}
           </article>
 
-          <article id="about-section" className="surface jp-profile-card"><div className="space-between"><h2 style={{ margin: 0 }}>About</h2>{viewingOwn ? <button className="btn btn-secondary" onClick={openAboutEditor}>Edit</button> : null}</div><p className="jp-profile-text">{aboutText}</p></article>
+          <article id="about-section" className="surface jp-profile-card jp-reveal-up"><div className="space-between"><h2 style={{ margin: 0 }}>About</h2>{viewingOwn ? <button className="btn btn-secondary" onClick={openAboutEditor}>Edit</button> : null}</div><p className="jp-profile-text">{aboutText}</p></article>
 
           <article className="surface jp-profile-card">
             <div className="space-between">
@@ -291,7 +291,7 @@ export function ProfilePage() {
             </article>
           ) : null}
 
-          <article id="activity-section" className="surface jp-profile-card">
+          <article id="activity-section" className="surface jp-profile-card jp-reveal-up">
             <div className="space-between"><h2 style={{ margin: 0 }}>Activity</h2><div className="row" style={{ gap: "0.45rem", flexWrap: "wrap" }}>{(["posts", "articles", "media", "likes"] as ActivityTab[]).map((entry) => <button key={entry} className={tab === entry ? "btn btn-primary" : "btn btn-secondary"} onClick={() => setTab(entry)}>{entry[0].toUpperCase() + entry.slice(1)}</button>)}</div></div>
             <div className="stack" style={{ marginTop: "0.9rem" }}>{activitySeed.filter((entry) => (tab === "posts" ? entry.type === "posts" || entry.type === "media" : entry.type === tab)).map((entry) => <article key={entry.id} className="jp-profile-activity-item"><strong>{entry.title}</strong><p className="helper" style={{ margin: 0 }}>{entry.preview}</p><div className="helper">{entry.date} • {entry.engagement} interactions</div></article>)}</div>
           </article>
@@ -322,7 +322,7 @@ export function ProfilePage() {
 }
 
 function SectionCard({ sectionId, title, action, children }: { sectionId?: string; title: string; action?: ReactNode; children: ReactNode }) {
-  return <article id={sectionId} className="surface jp-profile-card"><div className="space-between"><h2 style={{ margin: 0 }}>{title}</h2>{action}</div><div className="stack" style={{ marginTop: "0.8rem" }}>{children}</div></article>;
+  return <article id={sectionId} className="surface jp-profile-card jp-reveal-up"><div className="space-between"><h2 style={{ margin: 0 }}>{title}</h2>{action}</div><div className="stack" style={{ marginTop: "0.8rem" }}>{children}</div></article>;
 }
 function FormGrid({ fields }: { fields: [string, string, (value: string) => void][] }) {
   return <div className="form-grid">{fields.map(([label, value, set]) => <div className="field" key={label}><label>{label}</label><input className="input" value={value} onChange={(event) => set(event.target.value)} /></div>)}</div>;

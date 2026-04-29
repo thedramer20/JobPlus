@@ -12,7 +12,7 @@ export const SettingsMenu: React.FC = () => {
     <div className="jp-settings">
       <Link
         to={settingsPath}
-        className="jp-settings-trigger"
+        className="jp-settings-trigger jp-hover-scale"
         aria-label={t("common.settings")}
         title={t("common.settings")}
         data-tooltip={t("common.settings")}

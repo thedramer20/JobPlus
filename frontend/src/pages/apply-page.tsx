@@ -47,7 +47,7 @@ export function ApplyPage() {
   return (
     <section className="section">
       <div className="container detail-layout">
-        <div className="surface" style={{ padding: "2rem" }}>
+        <div className="surface jp-reveal-up" style={{ padding: "2rem" }}>
           <div className="eyebrow">Application flow</div>
           <h1 className="headline" style={{ fontSize: "2.4rem", margin: "0.4rem 0 0.8rem" }}>
             Submit a polished application for {job.title}
@@ -58,7 +58,7 @@ export function ApplyPage() {
             <span>3. Submit</span>
           </div>
 
-          <section className="surface jp-application-lock">
+          <section className="surface jp-application-lock jp-reveal">
             <div className="space-between" style={{ alignItems: "center" }}>
               <strong>Application Quality Lock</strong>
               <span className={`tag ${qualityGate.ready ? "" : "status-warning"}`}>
@@ -140,7 +140,7 @@ export function ApplyPage() {
           </div>
         </div>
 
-        <aside className="surface jp-detail-sidebar">
+        <aside className="surface jp-detail-sidebar jp-reveal-up">
           <div className="stack">
             <strong>Role Summary</strong>
             <div className="space-between"><span className="helper">Company</span><strong>{job.company}</strong></div>

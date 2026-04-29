@@ -41,11 +41,11 @@ export function ProfileSummaryWidget({ name, roleLabel, title, profileHref }: Pr
           {initials}
         </div>
         <div className="jp-profile-summary-copy">
-          <h3 style={{ margin: 0 }}>{name}</h3>
+          <h3 className="jp-profile-summary-name">{name}</h3>
           <div className="helper jp-profile-summary-role">{roleLabel}</div>
         </div>
       </div>
-      <p className="helper jp-profile-summary-text" style={{ marginTop: "0.45rem" }}>
+      <p className="helper jp-profile-summary-text">
         {title ?? `Signed in as ${roleLabel}. Complete your profile to improve matching quality.`}
       </p>
       <NavLink className="btn btn-secondary jp-profile-summary-action" to={profileHref}>
@@ -58,13 +58,13 @@ export function ProfileSummaryWidget({ name, roleLabel, title, profileHref }: Pr
 export function SuggestedJobsWidget({ jobs, loading }: SuggestedJobsWidgetProps) {
   return (
     <article className="surface jp-dashboard-widget">
-      <div className="space-between" style={{ alignItems: "center" }}>
-        <strong>Suggested roles</strong>
+      <div className="space-between jp-dashboard-widget-header">
+        <strong className="jp-dashboard-widget-title">Suggested roles</strong>
         <NavLink className="helper" to="/jobs">
           View all
         </NavLink>
       </div>
-      <div className="stack" style={{ marginTop: "0.7rem", gap: "0.55rem" }}>
+      <div className="stack jp-dashboard-widget-list">
         {loading ? (
           <div className="helper">Loading roles...</div>
         ) : (
@@ -72,7 +72,7 @@ export function SuggestedJobsWidget({ jobs, loading }: SuggestedJobsWidgetProps)
             <NavLink key={job.id} className="jp-dashboard-mini-link" to={`/jobs/${job.id}`}>
               <strong>{job.title}</strong>
               <small>
-                {job.company} • {job.location}
+                {job.company} - {job.location}
               </small>
             </NavLink>
           ))
@@ -86,13 +86,13 @@ export function SuggestedJobsWidget({ jobs, loading }: SuggestedJobsWidgetProps)
 export function SuggestedCompaniesWidget({ companies, loading }: SuggestedCompaniesWidgetProps) {
   return (
     <article className="surface jp-dashboard-widget">
-      <div className="space-between" style={{ alignItems: "center" }}>
-        <strong>Suggested companies</strong>
+      <div className="space-between jp-dashboard-widget-header">
+        <strong className="jp-dashboard-widget-title">Suggested companies</strong>
         <NavLink className="helper" to="/companies">
           Browse
         </NavLink>
       </div>
-      <div className="stack" style={{ marginTop: "0.7rem", gap: "0.55rem" }}>
+      <div className="stack jp-dashboard-widget-list">
         {loading ? (
           <div className="helper">Loading companies...</div>
         ) : (
@@ -100,7 +100,7 @@ export function SuggestedCompaniesWidget({ companies, loading }: SuggestedCompan
             <NavLink key={company.id} className="jp-dashboard-mini-link" to={`/companies/${company.id}`}>
               <strong>{company.name}</strong>
               <small>
-                {company.industry} • {company.location}
+                {company.industry} - {company.location}
               </small>
             </NavLink>
           ))
@@ -114,8 +114,8 @@ export function SuggestedCompaniesWidget({ companies, loading }: SuggestedCompan
 export function HiringInsightsWidget({ notifications, loading }: HiringInsightsWidgetProps) {
   return (
     <article className="surface jp-dashboard-widget">
-      <strong>Hiring insights</strong>
-      <div className="stack" style={{ marginTop: "0.7rem", gap: "0.55rem" }}>
+      <strong className="jp-dashboard-widget-title">Hiring insights</strong>
+      <div className="stack jp-dashboard-widget-list">
         {loading ? (
           <div className="helper">Loading insights...</div>
         ) : (

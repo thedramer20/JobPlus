@@ -1,5 +1,6 @@
 import { http } from "../lib/http";
 import type { Job, JobFilters } from "../types/job";
+import { findDemoJob, listDemoJobs } from "../mocks/seed-system";
 
 interface JobDto {
   id: number;
@@ -38,22 +39,53 @@ interface JobPayload {
   applicationDeadline: string | null;
 }
 
-// Import comprehensive demo data for testing
-import { demoJobs } from "../mocks/comprehensive-demo-data";
+const FORCE_DEMO_MODE = import.meta.env.VITE_DEMO_MODE === "only";
+const ALLOW_DEMO_FALLBACK = import.meta.env.VITE_DEMO_MODE !== "false";
 
 export async function listJobs(filters?: Partial<JobFilters>): Promise<Job[]> {
-  // Return demo data for testing purposes
-  return Promise.resolve(demoJobs);
+  if (FORCE_DEMO_MODE) {
+    return listDemoJobs(filters);
+  }
 
-  // Original code commented out for demo:
-  // const params = buildJobParams(filters);
-  // const { data } = await http.get<JobDto[]>(params ? `/jobs?${params.toString()}` : "/jobs");
-  // return data.map(mapJob);
+  try {
+    const params = buildJobParams(filters);
+    const { data } = await http.get<JobDto[]>(params ? `/jobs?${params.toString()}` : "/jobs");
+    const mapped = data.map(mapJob);
+    if (mapped.length > 0) {
+      return mapped;
+    }
+    return ALLOW_DEMO_FALLBACK ? listDemoJobs(filters) : [];
+  } catch {
+    return ALLOW_DEMO_FALLBACK ? listDemoJobs(filters) : [];
+  }
 }
 
 export async function getJob(id: number): Promise<Job> {
-  const { data } = await http.get<JobDto>(`/jobs/${id}`);
-  return mapJob(data);
+  if (!Number.isFinite(id) || id <= 0) {
+    throw new Error("Invalid job id");
+  }
+
+  if (FORCE_DEMO_MODE) {
+    const demo = findDemoJob(id);
+    if (!demo) {
+      throw new Error("Job not found");
+    }
+    return demo;
+  }
+
+  try {
+    const { data } = await http.get<JobDto>(`/jobs/${id}`);
+    return mapJob(data);
+  } catch {
+    if (!ALLOW_DEMO_FALLBACK) {
+      throw new Error("Unable to load job details.");
+    }
+    const demo = findDemoJob(id);
+    if (!demo) {
+      throw new Error("Job not found");
+    }
+    return demo;
+  }
 }
 
 export async function listEmployerJobs(): Promise<Job[]> {

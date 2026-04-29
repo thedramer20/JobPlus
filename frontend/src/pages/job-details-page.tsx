@@ -10,11 +10,14 @@ import { StatusBadge } from "../components/shared/status-badge";
 import { getJob, listJobs } from "../services/jobs-service";
 import { listSavedJobs, removeSavedJob, saveJob } from "../services/profile-service";
 import { authStore } from "../store/auth-store";
+import "../styles/job-details-page.css";
 
 export function JobDetailsPage() {
   const { t } = useTranslation();
   const params = useParams();
   const jobId = Number(params.jobId);
+  const [snapshotOpen, setSnapshotOpen] = useState(true);
+  const [leverageScore] = useState(86);
   const { user } = authStore();
   const queryClient = useQueryClient();
   const { data: job, isLoading, isError } = useQuery({
@@ -84,15 +87,13 @@ export function JobDetailsPage() {
     .filter((item) => item.id !== job.id)
     .filter((item) => item.category === job.category || item.location === job.location || item.companyId === job.companyId)
     .slice(0, 3);
-  const [snapshotOpen, setSnapshotOpen] = useState(true);
-  const [leverageScore, setLeverageScore] = useState(86);
   const isSaved = canSave && savedJobs.some((item) => item.jobId === job.id);
   const isMutating = saveMutation.isPending || removeMutation.isPending;
 
   return (
     <div className="jp-job-details-page">
       {/* Hero Section */}
-      <div className="jp-job-hero surface">
+      <div className="jp-job-hero surface jp-reveal-up">
         <div className="container">
           <div className="jp-job-hero-content">
             <div className="jp-job-hero-main">
@@ -113,13 +114,13 @@ export function JobDetailsPage() {
           {/* Main Content - Left Side */}
           <div className="jp-job-main">
             {/* Job Description */}
-            <div className="surface jp-job-section">
+            <div className="surface jp-job-section jp-reveal-up">
               <h2 className="jp-h2">{t("jobDetails.aboutRole")}</h2>
               <p className="jp-body">{job.description}</p>
             </div>
 
             {/* Requirements */}
-            <div className="surface jp-job-section">
+            <div className="surface jp-job-section jp-reveal-up">
               <h2 className="jp-h2">{t("jobDetails.coreRequirements")}</h2>
               <div className="jp-job-tags">
                 {job.requirements.length ? (
@@ -134,7 +135,7 @@ export function JobDetailsPage() {
 
             {/* Responsibilities & Benefits */}
             <div className="jp-job-grid">
-              <div className="surface jp-job-section">
+              <div className="surface jp-job-section jp-reveal-up">
                 <h3 className="jp-h3">{t("jobDetails.responsibilities")}</h3>
                 <ul className="jp-job-list">
                   {(job as any).responsibilities?.map((resp: string, idx: number) => (
@@ -142,7 +143,7 @@ export function JobDetailsPage() {
                   ))}
                 </ul>
               </div>
-              <div className="surface jp-job-section">
+              <div className="surface jp-job-section jp-reveal-up">
                 <h3 className="jp-h3">{t("jobDetails.benefits")}</h3>
                 <ul className="jp-job-list">
                   {(job as any).benefits?.map((benefit: string, idx: number) => (
@@ -154,7 +155,7 @@ export function JobDetailsPage() {
 
             {/* Preferred Qualifications */}
             {(job as any).preferredQualifications && (job as any).preferredQualifications.length > 0 && (
-              <div className="surface jp-job-section">
+              <div className="surface jp-job-section jp-reveal-up">
                 <h2 className="jp-h2">{t("jobDetails.preferredQualifications")}</h2>
                 <div className="jp-job-tags">
                   {(job as any).preferredQualifications.map((qual: string, idx: number) => (
@@ -166,7 +167,7 @@ export function JobDetailsPage() {
 
             {/* Hiring Process & Team Info */}
             <div className="jp-job-grid">
-              <div className="surface jp-job-section">
+              <div className="surface jp-job-section jp-reveal-up">
                 <h3 className="jp-h3">{t("jobDetails.hiringProcess")}</h3>
                 <ul className="jp-job-list">
                   {(job as any).hiringProcess?.map((step: string, idx: number) => (
@@ -175,7 +176,7 @@ export function JobDetailsPage() {
                 </ul>
               </div>
               {(job as any).teamInfo && (
-                <div className="surface jp-job-section">
+                <div className="surface jp-job-section jp-reveal-up">
                   <h3 className="jp-h3">{t("jobDetails.teamInfo")}</h3>
                   <p className="jp-body">{(job as any).teamInfo}</p>
                   {(job as any).department && (
@@ -202,7 +203,7 @@ export function JobDetailsPage() {
           {/* Sidebar - Right Side */}
           <div className="jp-job-sidebar">
             {/* Apply Section */}
-            <div className="surface jp-apply-section">
+            <div className="surface jp-apply-section jp-reveal-up">
               <h3 className="jp-h3">{t("jobDetails.readyToApply")}</h3>
               <p className="jp-ui-text">{t("jobDetails.readyToApplyDesc")}</p>
               <Link className="btn btn-primary jp-apply-btn" to={`/jobs/${job.id}/apply`}>
@@ -227,7 +228,7 @@ export function JobDetailsPage() {
             </div>
 
             {/* Recruiter Section */}
-            <div className="surface jp-recruiter-section">
+            <div className="surface jp-recruiter-section jp-reveal-up">
               <h4 className="jp-h4">{t("jobDetails.recruiter")}</h4>
               <p className="jp-ui-text">{t("jobDetails.recruiterDesc", { company: job.company })}</p>
               <button className="btn btn-secondary" type="button">
@@ -236,7 +237,7 @@ export function JobDetailsPage() {
             </div>
 
             {/* Role Reality Snapshot */}
-            <div className="surface jp-snapshot-section">
+            <div className="surface jp-snapshot-section jp-reveal-up">
               <div className="jp-snapshot-header">
                 <h4 className="jp-h4">Role Reality Snapshot</h4>
                 <button className="btn btn-ghost" type="button" onClick={() => setSnapshotOpen((open) => !open)}>
@@ -262,7 +263,7 @@ export function JobDetailsPage() {
             </div>
 
             {/* Offer Leverage Analyzer */}
-            <div className="surface jp-leverage-section">
+            <div className="surface jp-leverage-section jp-reveal-up">
               <div className="jp-leverage-header">
                 <h4 className="jp-h4">Offer Leverage Analyzer</h4>
                 <span className="jp-leverage-score">{leverageScore}%</span>
@@ -274,7 +275,7 @@ export function JobDetailsPage() {
             </div>
 
             {/* Job Details Summary */}
-            <div className="surface jp-details-summary">
+            <div className="surface jp-details-summary jp-reveal-up">
               <div className="jp-summary-item">
                 <span className="jp-summary-label">{t("common.companies")}</span>
                 <strong className="jp-summary-value">{job.company}</strong>
@@ -301,7 +302,7 @@ export function JobDetailsPage() {
         </div>
 
         {/* Related Jobs */}
-        <div className="jp-related-jobs">
+        <div className="jp-related-jobs jp-reveal-stagger">
           <div className="jp-related-header">
             <h2 className="jp-h2">{t("jobDetails.relatedJobs")}</h2>
             <Link className="btn btn-secondary" to="/jobs">

@@ -48,7 +48,7 @@ export function JobCard({ job }: JobCardProps) {
   const saveLabel = isMutating ? (isSaved ? t("jobCard.removing") : t("jobCard.saving")) : isSaved ? t("jobCard.saved") : t("jobCard.save");
 
   return (
-    <article className="card stack jp-job-card">
+    <article className="card stack jp-job-card jp-reveal">
       <div className="space-between" style={{ alignItems: "flex-start" }}>
         <div className="jp-job-card-copy">
           <div className="jp-job-card-brand">

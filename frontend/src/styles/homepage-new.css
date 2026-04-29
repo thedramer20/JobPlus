@@ -1,4 +1,3 @@
-
 /* ==========================================
    JobPlus Homepage Styles - Clean & Premium
    ========================================== */
@@ -8,9 +7,22 @@
   min-height: 90vh;
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  background: linear-gradient(135deg,
+      var(--jp-surface-variant, #f8f9fa) 0%,
+      var(--jp-surface, #ffffff) 100%);
   position: relative;
   overflow: hidden;
+}
+
+.jp-hero-section::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(79, 70, 229, 0.06), transparent 70%);
+  pointer-events: none;
 }
 
 .jp-hero-container {
@@ -38,7 +50,7 @@
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 700;
   line-height: 1.2;
-  color: #1a1a1a;
+  color: var(--jp-text, #1a1a1a);
   margin: 0;
   letter-spacing: -0.02em;
 }
@@ -46,7 +58,7 @@
 .jp-hero-subtext {
   font-size: 1.125rem;
   line-height: 1.6;
-  color: #6b7280;
+  color: var(--jp-text-secondary, #6b7280);
   margin: 0;
   max-width: 560px;
 }
@@ -59,23 +71,30 @@
 .jp-search-wrapper {
   display: flex;
   align-items: center;
-  background: #ffffff;
+  background: var(--jp-surface, #ffffff);
   border-radius: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--fx-card-shadow, 0 4px 6px rgba(0,0,0,0.04));
   height: 64px;
   padding: 0 8px;
-  transition: all 220ms ease-in-out;
+  transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  border: 1px solid transparent;
 }
 
 .jp-search-wrapper:hover {
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--fx-card-shadow-hover, 0 8px 12px rgba(0,0,0,0.06));
   transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--jp-primary, #4F46E5), transparent 80%);
+}
+
+.jp-search-wrapper:focus-within {
+  border-color: var(--jp-primary, #4F46E5);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1), var(--fx-card-shadow);
 }
 
 .jp-search-icon {
   width: 24px;
   height: 24px;
-  color: #9ca3af;
+  color: var(--jp-text-secondary, #9ca3af);
   margin: 0 16px;
 }
 
@@ -84,18 +103,18 @@
   border: none;
   outline: none;
   font-size: 1rem;
-  color: #1a1a1a;
+  color: var(--jp-text, #1a1a1a);
   background: transparent;
   height: 100%;
   padding: 0 16px;
 }
 
 .jp-search-input::placeholder {
-  color: #9ca3af;
+  color: var(--jp-text-secondary, #9ca3af);
 }
 
 .jp-search-button {
-  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  background: linear-gradient(135deg, var(--jp-primary, #4F46E5) 0%, var(--jp-accent, #7C3AED) 100%);
   color: #ffffff;
   border: none;
   border-radius: 12px;
@@ -104,13 +123,13 @@
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 220ms ease-in-out;
+  transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .jp-search-button:hover {
   background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.3);
 }
 
 /* CTA Buttons */
@@ -129,32 +148,31 @@
   font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
-  transition: all 220ms ease-in-out;
+  transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
   cursor: pointer;
   border: 2px solid transparent;
 }
 
 .jp-btn-primary {
-  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  background: linear-gradient(135deg, var(--jp-primary, #4F46E5) 0%, var(--jp-accent, #7C3AED) 100%);
   color: #ffffff;
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.2);
 }
 
 .jp-btn-primary:hover {
-  background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.3);
 }
 
 .jp-btn-secondary {
-  background: #ffffff;
-  color: #4F46E5;
-  border-color: #4F46E5;
+  background: var(--jp-surface, #ffffff);
+  color: var(--jp-primary, #4F46E5);
+  border-color: var(--jp-primary, #4F46E5);
 }
 
 .jp-btn-secondary:hover {
-  background: #f9fafb;
-  border-color: #4338ca;
-  color: #4338ca;
+  background: color-mix(in srgb, var(--jp-primary, #4F46E5), transparent 95%);
+  transform: translateY(-2px);
 }
 
 /* Smart Floating Cards */
@@ -165,14 +183,14 @@
 
 .jp-float-card {
   position: absolute;
-  background: #ffffff;
+  background: var(--jp-surface, #ffffff);
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
-  transition: all 220ms ease-in-out;
+  box-shadow: var(--fx-card-shadow, 0 4px 6px rgba(0,0,0,0.04));
+  transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
   opacity: 0;
   transform: translateY(20px);
-  animation: floatUp 0.6s ease-out forwards;
+  animation: floatUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .jp-float-card.is-visible {
@@ -203,7 +221,7 @@
 
 .jp-float-card:hover {
   transform: scale(1.02) translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--fx-card-shadow-hover, 0 12px 24px rgba(0,0,0,0.08));
 }
 
 .jp-float-card-header {
@@ -224,18 +242,18 @@
 .jp-float-card-title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--jp-text, #1a1a1a);
   margin: 0 0 8px 0;
 }
 
 .jp-float-card-company {
   font-size: 0.9375rem;
-  color: #6b7280;
+  color: var(--jp-text-secondary, #6b7280);
   margin: 0 0 16px 0;
 }
 
 .jp-float-card-footer {
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--jp-border, #e5e7eb);
   padding-top: 12px;
   margin-top: 12px;
 }
@@ -243,14 +261,14 @@
 .jp-salary {
   font-size: 0.9375rem;
   font-weight: 600;
-  color: #4F46E5;
+  color: var(--jp-primary, #4F46E5);
 }
 
 .jp-match-reason {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 220ms ease-in-out;
-  color: #6b7280;
+  transition: max-height 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  color: var(--jp-text-secondary, #6b7280);
   font-size: 0.875rem;
   margin-top: 0;
 }
@@ -273,10 +291,10 @@
 
 /* SMART STATS STRIP */
 .jp-stats-strip {
-  background: #ffffff;
+  background: var(--jp-surface, #ffffff);
   padding: 48px 0;
-  border-top: 1px solid #e5e7eb;
-  border-bottom: 1px solid #e5e7eb;
+  border-top: 1px solid var(--jp-border, #e5e7eb);
+  border-bottom: 1px solid var(--jp-border, #e5e7eb);
 }
 
 .jp-stats-container {
@@ -310,19 +328,19 @@
 
 .jp-stat-label {
   font-size: 1rem;
-  color: #6b7280;
+  color: var(--jp-text-secondary, #6b7280);
 }
 
 .jp-stat-roles {
   font-size: 1rem;
-  color: #4F46E5;
+  color: var(--jp-primary, #4F46E5);
   font-weight: 600;
 }
 
 /* HOW IT WORKS */
 .jp-how-it-works {
   padding: 96px 0;
-  background: #ffffff;
+  background: var(--jp-surface, #ffffff);
 }
 
 .jp-section-container {
@@ -334,7 +352,7 @@
 .jp-section-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--jp-text, #1a1a1a);
   text-align: center;
   margin: 0 0 64px 0;
   letter-spacing: -0.02em;
@@ -350,17 +368,20 @@
   text-align: center;
   padding: 32px;
   border-radius: 16px;
-  transition: all 220ms ease-in-out;
+  transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  border: 1px solid transparent;
 }
 
 .jp-step-card:hover {
   transform: translateY(-4px);
+  box-shadow: var(--fx-card-shadow, 0 8px 16px rgba(0,0,0,0.06));
+  border-color: color-mix(in srgb, var(--jp-primary, #4F46E5), transparent 85%);
 }
 
 .jp-step-icon {
   width: 64px;
   height: 64px;
-  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  background: linear-gradient(135deg, var(--jp-primary, #4F46E5) 0%, var(--jp-accent, #7C3AED) 100%);
   border-radius: 16px;
   display: flex;
   align-items: center;
@@ -377,21 +398,21 @@
 .jp-step-card h3 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--jp-text, #1a1a1a);
   margin: 0 0 12px 0;
 }
 
 .jp-step-card p {
   font-size: 1rem;
   line-height: 1.6;
-  color: #6b7280;
+  color: var(--jp-text-secondary, #6b7280);
   margin: 0;
 }
 
 /* FEATURES SECTION */
 .jp-features {
   padding: 96px 0;
-  background: #f8f9fa;
+  background: var(--jp-surface-variant, #f8f9fa);
 }
 
 .jp-features-grid {
@@ -401,21 +422,23 @@
 }
 
 .jp-feature-item {
-  background: #ffffff;
+  background: var(--jp-surface, #ffffff);
   padding: 32px;
   border-radius: 16px;
-  transition: all 220ms ease-in-out;
+  transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  border: 1px solid transparent;
 }
 
 .jp-feature-item:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--fx-card-shadow-hover, 0 8px 16px rgba(0,0,0,0.06));
+  border-color: color-mix(in srgb, var(--jp-primary, #4F46E5), transparent 85%);
 }
 
 .jp-feature-icon {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  background: linear-gradient(135deg, var(--jp-primary, #4F46E5) 0%, var(--jp-accent, #7C3AED) 100%);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -432,21 +455,21 @@
 .jp-feature-item h3 {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--jp-text, #1a1a1a);
   margin: 0 0 8px 0;
 }
 
 .jp-feature-item p {
   font-size: 0.9375rem;
   line-height: 1.5;
-  color: #6b7280;
+  color: var(--jp-text-secondary, #6b7280);
   margin: 0;
 }
 
 /* FEATURED COMPANIES */
 .jp-companies {
   padding: 96px 0;
-  background: #ffffff;
+  background: var(--jp-surface, #ffffff);
 }
 
 .jp-companies-grid {
@@ -457,25 +480,27 @@
 
 .jp-company-item {
   position: relative;
-  background: #f8f9fa;
+  background: var(--jp-surface-variant, #f8f9fa);
   border-radius: 12px;
   padding: 24px;
   text-align: center;
   text-decoration: none;
   color: inherit;
-  transition: all 220ms ease-in-out;
+  transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
   overflow: hidden;
+  border: 1px solid transparent;
 }
 
 .jp-company-item:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--fx-card-shadow, 0 8px 16px rgba(0,0,0,0.06));
+  border-color: color-mix(in srgb, var(--jp-primary, #4F46E5), transparent 85%);
 }
 
 .jp-company-logo {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  background: linear-gradient(135deg, var(--jp-primary, #4F46E5) 0%, var(--jp-accent, #7C3AED) 100%);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -489,7 +514,7 @@
 .jp-company-name {
   font-size: 0.9375rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--jp-text, #1a1a1a);
 }
 
 .jp-company-overlay {
@@ -500,7 +525,7 @@
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: opacity 220ms ease-in-out;
+  transition: opacity 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .jp-company-item:hover .jp-company-overlay {
@@ -515,7 +540,7 @@
 /* FEATURED JOBS */
 .jp-jobs {
   padding: 96px 0;
-  background: #f8f9fa;
+  background: var(--jp-surface-variant, #f8f9fa);
 }
 
 .jp-section-header {
@@ -528,15 +553,15 @@
 .jp-link {
   text-decoration: none;
   font-weight: 600;
-  transition: all 220ms ease-in-out;
+  transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .jp-link-primary {
-  color: #4F46E5;
+  color: var(--jp-primary, #4F46E5);
 }
 
 .jp-link-primary:hover {
-  color: #4338ca;
+  color: var(--jp-primary-strong, #4338ca);
 }
 
 .jp-jobs-grid {
@@ -546,29 +571,31 @@
 }
 
 .jp-job-card {
-  background: #ffffff;
+  background: var(--jp-surface, #ffffff);
   border-radius: 12px;
   padding: 24px;
   text-decoration: none;
   color: inherit;
-  transition: all 220ms ease-in-out;
+  transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  border: 1px solid transparent;
 }
 
 .jp-job-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--fx-card-shadow-hover, 0 8px 16px rgba(0,0,0,0.06));
+  border-color: color-mix(in srgb, var(--jp-primary, #4F46E5), transparent 85%);
 }
 
 .jp-job-card h3 {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--jp-text, #1a1a1a);
   margin: 0 0 8px 0;
 }
 
 .jp-job-card-company {
   font-size: 0.9375rem;
-  color: #6b7280;
+  color: var(--jp-text-secondary, #6b7280);
   margin: 0 0 16px 0;
 }
 
@@ -576,20 +603,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--jp-border, #e5e7eb);
   padding-top: 12px;
   margin-top: 12px;
 }
 
 .jp-job-location {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--jp-text-secondary, #6b7280);
 }
 
 .jp-job-salary {
   font-size: 0.9375rem;
   font-weight: 600;
-  color: #4F46E5;
+  color: var(--jp-primary, #4F46E5);
 }
 
 .jp-job-match {
@@ -604,8 +631,21 @@
 /* FINAL CTA */
 .jp-cta {
   padding: 96px 0;
-  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  background: linear-gradient(135deg, var(--jp-primary, #4F46E5) 0%, var(--jp-accent, #7C3AED) 100%);
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.jp-cta::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent 70%);
+  pointer-events: none;
 }
 
 .jp-cta h2 {
@@ -614,12 +654,16 @@
   color: #ffffff;
   margin: 0 0 32px 0;
   letter-spacing: -0.02em;
+  position: relative;
+  z-index: 1;
 }
 
 .jp-cta-buttons {
   display: flex;
   justify-content: center;
   gap: 16px;
+  position: relative;
+  z-index: 1;
 }
 
 .jp-cta .jp-btn {
@@ -628,12 +672,13 @@
 
 .jp-cta .jp-btn-primary {
   background: #ffffff;
-  color: #4F46E5;
+  color: var(--jp-primary, #4F46E5);
 }
 
 .jp-cta .jp-btn-primary:hover {
   background: #f9fafb;
-  color: #4338ca;
+  color: var(--jp-primary-strong, #4338ca);
+  transform: translateY(-2px);
 }
 
 .jp-cta .jp-btn-secondary {
@@ -643,8 +688,9 @@
 }
 
 .jp-cta .jp-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
   border-color: #ffffff;
+  transform: translateY(-2px);
 }
 
 /* Responsive Design */
