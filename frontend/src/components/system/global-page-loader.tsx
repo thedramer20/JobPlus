@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useRef } from "react";
 import { useIsFetching, useIsMutating } from "@tanstack/react-query";
 import { useNavigation } from "react-router-dom";
@@ -98,3 +99,4 @@ export function GlobalPageLoader() {
     </div>
   );
 }
+

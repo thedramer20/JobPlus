@@ -1,63 +1,225 @@
-/* Import Global Typography System */
-@import './typography.css';
-@import './wow-effects.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* === PASTE THIS INTO: src/styles/globals.css === */
+/* This REPLACES your current CSS root variables entirely */
 
 :root {
-  /* JobPlus Design System Variables - Light Mode Default */
-  --jp-surface: #ffffff;
-  --jp-surface-variant: #f8f9fa;
-  --jp-text: #1a1a1a;
-  --jp-text-secondary: #6b7280;
-  --jp-border: #e5e7eb;
-  --jp-primary: #2563eb;
-  --jp-success: #10b981;
-  --jp-warning: #f59e0b;
-  --jp-danger: #ef4444;
-  --jp-accent: #7c3aed;
+  /* ── BACKGROUNDS ── */
+  --bg-base:        #07070F;   /* The deepest background — almost black with blue tint */
+  --bg-surface:     #0D0D1A;   /* Cards, sidebars — slightly lighter */
+  --bg-elevated:    #141426;   /* Hover states, dropdowns, modals */
+  --bg-hover:       #1A1A30;   /* What shows when you hover over a card */
+  --bg-input:       #0F0F1E;   /* Inside form fields */
+  --bg-overlay:     rgba(7, 7, 15, 0.88); /* Backdrop behind modals */
 
-  /* Dark Mode Variables */
-  --jp-dark-surface: #1f2937;
-  --jp-dark-surface-variant: #374151;
-  --jp-dark-text: #f9fafb;
-  --jp-dark-text-secondary: #d1d5db;
-  --jp-dark-border: #4b5563;
-  --jp-dark-primary: #3b82f6;
-  --jp-dark-success: #34d399;
-  --jp-dark-warning: #fbbf24;
-  --jp-dark-danger: #f87171;
-  --jp-dark-accent: #a78bfa;
+  /* ── BRAND COLORS ── */
+  --brand:          #6C63FF;   /* Primary purple — buttons, links, highlights */
+  --brand-hover:    #7B73FF;   /* Slightly lighter for hover states */
+  --brand-dark:     #5549E8;   /* Pressed/active state */
+  --brand-muted:    rgba(108, 99, 255, 0.12); /* Very faint background tint */
+  --brand-border:   rgba(108, 99, 255, 0.35); /* Border that glows purple */
+  --brand-glow:     rgba(108, 99, 255, 0.20); /* Box shadow glow */
 
-  /* Typography */
-  --jp-font-family: Inter, system-ui, sans-serif;
-  --jp-font-size-h1: 2.25rem;
-  --jp-font-size-h2: 1.875rem;
-  --jp-font-size-h3: 1.5rem;
-  --jp-font-size-h4: 1.25rem;
-  --jp-font-size-h5: 1.125rem;
-  --jp-font-size-body: 1rem;
-  --jp-font-size-caption: 0.875rem;
-  --jp-line-height-h1: 2.5rem;
-  --jp-line-height-h2: 2.25rem;
-  --jp-line-height-h3: 2rem;
-  --jp-line-height-h4: 1.75rem;
-  --jp-line-height-h5: 1.5rem;
-  --jp-line-height-body: 1.5rem;
-  --jp-line-height-caption: 1.25rem;
-  --jp-font-weight-normal: 400;
-  --jp-font-weight-medium: 500;
-  --jp-font-weight-semibold: 600;
-  --jp-font-weight-bold: 700;
+  /* ── ACCENT COLOR (Teal) ── */
+  --accent:         #00D4AA;   /* Teal — for success, badges, match scores */
+  --accent-hover:   #00EFC0;
+  --accent-muted:   rgba(0, 212, 170, 0.12);
+  --accent-border:  rgba(0, 212, 170, 0.30);
 
-  /* Spacing */
-  --jp-space-0: 0px;
-  --jp-space-1: 4px;
-  --jp-space-2: 8px;
-  --jp-space-3: 12px;
-  --jp-space-4: 16px;
-  --jp-space-5: 20px;
-  --jp-space-6: 24px;
-  --jp-space-7: 32px;
-  --jp-space-8: 40px;
+  /* ── GRADIENTS ── */
+  --gradient-brand:    linear-gradient(135deg, #6C63FF 0%, #3DCFEF 100%);
+  --gradient-brand-v:  linear-gradient(180deg, #6C63FF 0%, #3DCFEF 100%);
+  --gradient-dark:     linear-gradient(135deg, #0D0D1A 0%, #07070F 100%);
+  --gradient-hero:     radial-gradient(ellipse 80% 60% at 50% -10%, rgba(108,99,255,0.20) 0%, transparent 70%);
+  --gradient-card:     linear-gradient(135deg, rgba(108,99,255,0.08) 0%, rgba(61,207,239,0.04) 100%);
+  --gradient-text:     linear-gradient(135deg, #FFFFFF 30%, #8B84FF 100%);
+
+  /* ── TEXT ── */
+  --text-primary:    #F0F0FF;   /* Main text — slightly cool white */
+  --text-secondary:  #7070A0;   /* Subdued — labels, meta, timestamps */
+  --text-muted:      #3A3A58;   /* Very faint — placeholders, disabled */
+  --text-brand:      #8B84FF;   /* Links, brand highlights */
+  --text-accent:     #00D4AA;   /* Teal text — match scores, success */
+  --text-danger:     #FF5A5A;
+  --text-warning:    #FFB547;
+  --text-success:    #22C55E;
+
+  /* ── BORDERS ── */
+  --border-faint:    rgba(255, 255, 255, 0.04);  /* Barely visible */
+  --border-subtle:   rgba(255, 255, 255, 0.07);  /* Card borders */
+  --border-normal:   rgba(255, 255, 255, 0.12);  /* Input borders */
+  --border-strong:   rgba(255, 255, 255, 0.20);  /* Active/focused borders */
+  --border-brand:    rgba(108, 99, 255, 0.40);   /* Focused input, selected */
+
+  /* ── STATUS ── */
+  --success:         #22C55E;
+  --success-bg:      rgba(34, 197, 94, 0.12);
+  --warning:         #F59E0B;
+  --warning-bg:      rgba(245, 158, 11, 0.12);
+  --danger:         #EF4444;
+  --danger-bg:      rgba(239, 68, 68, 0.12);
+  --info:           #60A5FA;
+  --info-bg:        rgba(96, 165, 250, 0.12);
+
+  /* ── SHADOWS ── */
+  --shadow-sm:    0 2px 8px rgba(0,0,0,0.50);
+  --shadow-md:    0 4px 20px rgba(0,0,0,0.60), 0 1px 4px rgba(0,0,0,0.40);
+  --shadow-lg:    0 8px 40px rgba(0,0,0,0.70), 0 2px 8px rgba(0,0,0,0.40);
+  --shadow-xl:    0 20px 60px rgba(0,0,0,0.80);
+  --shadow-brand: 0 4px 24px rgba(108,99,255,0.35);
+  --shadow-accent:0 4px 20px rgba(0,212,170,0.25);
+  --shadow-card:  0 0 0 1px rgba(255,255,255,0.06), 0 4px 20px rgba(0,0,0,0.50);
+  --shadow-nav:   0 1px 0 rgba(255,255,255,0.05), 0 8px 32px rgba(0,0,0,0.40);
+
+  /* ── GLASSMORPHISM ── */
+  --glass-bg:      rgba(13, 13, 26, 0.80);
+  --glass-border:  rgba(255, 255, 255, 0.07);
+  --glass-blur:    24px;
+}
+
+/* ── TYPOGRAPHY ── */
+:root {
+  --font-display: 'Syne', sans-serif;      /* ALL headlines, logo text, hero */
+  --font-body:    'DM Sans', sans-serif;   /* ALL body text, UI, buttons */
+
+  /* Size Scale */
+  --text-xs:   0.75rem;    /* 12px — timestamps, tiny labels */
+  --text-sm:   0.875rem;   /* 14px — body text, button text */
+  --text-base: 1rem;       /* 16px — default paragraph */
+  --text-lg:   1.125rem;   /* 18px — slightly larger body */
+  --text-xl:   1.25rem;    /* 20px — card titles */
+  --text-2xl:  1.5rem;     /* 24px — section headings */
+  --text-3xl:  1.875rem;   /* 30px — page titles */
+  --text-4xl:  1.25rem;    /* 36px — large headlines */
+  --text-5xl:  3rem;       /* 48px — hero sub-heading */
+  --text-hero: clamp(3rem, 7vw, 5.5rem); /* Responsive hero — big on desktop, shrinks on mobile */
+
+  /* Line Heights */
+  --leading-tight:  1.15;
+  --leading-normal: 1.60;
+  --leading-relaxed:1.75;
+
+  /* Letter Spacing */
+  --tracking-tight:  -0.03em;
+  --tracking-normal:  0em;
+  --tracking-wide:    0.06em;
+  --tracking-wider:   0.12em;
+}
+
+/* ── SPACING SYSTEM ── */
+:root {
+  /* Use ONLY these spacing values. Never write px values directly in components */
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  20px;
+  --sp-6:  24px;
+  --sp-8:  32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+  --sp-20: 80px;
+  --sp-24: 96px;
+
+  /* Border Radius */
+  --r-xs:   4px;
+  --r-sm:   8px;
+  --r-md:   12px;
+  --r-lg:   16px;
+  --r-xl:   24px;
+  --r-2xl:  32px;
+  --r-pill: 9999px;
+
+  /* Layout */
+  --nav-height:     68px;
+  --sidebar-w:      260px;
+  --content-max:    1200px;
+
+  /* Z-index layers */
+  --z-base:     1;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+  --z-nav:      600;
+}
+
+/* ── ANIMATION SYSTEM ── */
+:root {
+  --ease:        cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);  /* Bouncy/spring feel */
+  --ease-out:    cubic-bezier(0, 0, 0.2, 1);
+  --dur-fast:    150ms;
+  --dur-normal:  220ms;
+  --dur-slow:    380ms;
+}
+
+/* All interactive elements get smooth transitions */
+* {
+  transition-timing-function: var(--ease);
+}
+
+/* Page entrance animation */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0px); }
+}
+
+/* Shimmer for loading states */
+@keyframes shimmer {
+  0%   { background-position: -1200px 0; }
+  100% { background-position:  1200px 0; }
+}
+
+/* Glow pulse for active elements */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(108,99,255,0.30); }
+  50%       { box-shadow: 0 0 28px rgba(108,99,255,0.60); }
+}
+
+/* Text gradient shimmer */
+@keyframes gradientFlow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Floating (for hero cards) */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-10px) rotate(0.5deg); }
+  66%       { transform: translateY(-5px) rotate(-0.5deg); }
+}
+
+/* Stagger delays for lists */
+.stagger > *:nth-child(1) { animation-delay: 0.04s; }
+.stagger > *:nth-child(2) { animation-delay: 0.08s; }
+.stagger > *:nth-child(3) { animation-delay: 0.12s; }
+.stagger > *:nth-child(4) { animation-delay: 0.16s; }
+.stagger > *:nth-child(5) { animation-delay: 0.20s; }
+.stagger > *:nth-child(6) { animation-delay: 0.24s; }
+
+/* Base body styles */
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--text-primary);
+  background-color: var(--bg-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+}
   --jp-space-9: 48px;
   --jp-space-10: 64px;
 
@@ -8940,6 +9102,7 @@ html[data-ui-personality="dynamic"] .subtle-card {
     grid-template-columns: 1fr;
   }
 }
+
 
 /* Network Page Styles */
 .jp-network-root {

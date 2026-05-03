@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 import { recordIntentInteraction } from "../lib/ui-intelligence";
 import { authStore } from "../store/auth-store";
 
@@ -94,39 +95,205 @@ export function MessagesPage() {
   }
 
   return (
-    <section className="jp-messages-layout">
-      <aside className="surface jp-messages-list jp-reveal-up">
-        <div className="space-between" style={{ alignItems: "center" }}>
-          <h2 style={{ margin: 0 }}>{t("common.messages")}</h2>
-          <span className="jp-message-count-pill" aria-label={`${conversations.length} conversations`}>
-            {conversations.length}
-          </span>
-        </div>
-        <div className="stack jp-reveal-stagger" style={{ gap: "0.6rem" }}>
-          {conversations.map((conversation) => (
-            <button
+    <motion.section
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+      className="jp-messages-layout"
+      style={{
+        background: "var(--bg-base, #0A0A0F)",
+        minHeight: "100vh"
+      }}
+    >
+      <motion.aside
+        initial={{ x: -20, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.8 }}
+        className="surface jp-messages-list jp-reveal-up glass-card"
+        style={{
+          background: "rgba(255, 255, 255, 0.05)",
+          backdropFilter: "blur(20px)",
+          border: "1px solid rgba(255, 255, 255, 0.1)",
+          borderRadius: "16px",
+          padding: "24px"
+        }}
+      >
+        <motion.div
+          initial={{ y: 10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="space-between"
+          style={{ alignItems: "center", marginBottom: "24px" }}
+        >
+          <motion.h2
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            style={{
+              fontFamily: "var(--font-display, Syne, sans-serif)",
+              fontSize: "1.5rem",
+              fontWeight: 700,
+              color: "var(--text-primary, #F0F0FF)",
+              margin: 0
+            }}
+          >{t("common.messages")}</motion.h2>
+          <motion.span
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+            className="jp-message-count-pill"
+            aria-label={`${conversations.length} conversations`}
+            style={{
+              background: "rgba(108, 99, 255, 0.15)",
+              color: "#22C55E",
+              padding: "6px 16px",
+              borderRadius: "999px",
+              fontSize: "0.875rem",
+              fontWeight: 600
+            }}
+          >{conversations.length}</motion.span>
+        </motion.div>
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+          className="stack jp-reveal-stagger"
+          style={{ gap: "0.6rem" }}
+        >
+          {conversations.map((conversation, index) => (
+            <motion.button
               key={conversation.id}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{
+                delay: 0.9 + (index * 0.1),
+                duration: 0.5,
+                type: "spring",
+                stiffness: 200,
+                damping: 25
+              }}
+              whileHover={{ scale: 1.02, x: 4 }}
+              whileTap={{ scale: 0.98 }}
               type="button"
               onClick={() => {
                 recordIntentInteraction("messages", 1);
                 setActiveId(conversation.id);
               }}
               className={`jp-message-item jp-reveal ${conversation.id === activeId ? "is-active" : ""}`}
+              style={{
+                background: conversation.id === activeId 
+                  ? "rgba(108, 99, 255, 0.1)" 
+                  : "rgba(255, 255, 255, 0.05)",
+                backdropFilter: "blur(20px)",
+                border: conversation.id === activeId
+                  ? "1px solid rgba(108, 99, 255, 0.3)"
+                  : "1px solid rgba(255, 255, 255, 0.1)",
+                borderRadius: "12px",
+                padding: "16px",
+                width: "100%",
+                textAlign: "left"
+              }}
             >
-              <span className="jp-message-avatar">{conversation.avatar}</span>
-              <span className="jp-message-meta">
-                <strong>{conversation.name}</strong>
-                <small>{conversation.role} - {conversation.company}</small>
-                <small>{conversation.lastMessage}</small>
-              </span>
-              <span className="jp-message-end">
-                <small>{conversation.lastSeen}</small>
-                {conversation.unread ? <span className="jp-message-unread">{conversation.unread}</span> : null}
-              </span>
-            </button>
+              <motion.span
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 1 + (index * 0.1), duration: 0.4 }}
+                className="jp-message-avatar"
+                style={{
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "50%",
+                  background: "var(--brand-gradient, linear-gradient(135deg, #6C63FF 0%, #3DCFEF 100%))",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#ffffff",
+                  fontSize: "1rem",
+                  fontWeight: 600,
+                  marginRight: "12px"
+                }}
+              >{conversation.avatar}</motion.span>
+              <motion.span
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 1.1 + (index * 0.1), duration: 0.4 }}
+                className="jp-message-meta"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "4px"
+                }}
+              >
+                <motion.strong
+                  initial={{ y: 5, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 1.2 + (index * 0.1), duration: 0.4 }}
+                  style={{
+                    color: "var(--text-primary, #F0F0FF)",
+                    fontSize: "1rem",
+                    fontWeight: 600
+                  }}
+                >{conversation.name}</motion.strong>
+                <motion.small
+                  initial={{ y: 5, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 1.3 + (index * 0.1), duration: 0.4 }}
+                  style={{
+                    color: "var(--text-secondary, #8888AA)",
+                    fontSize: "0.875rem"
+                  }}
+                >{conversation.role} - {conversation.company}</motion.small>
+                <motion.small
+                  initial={{ y: 5, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 1.4 + (index * 0.1), duration: 0.4 }}
+                  style={{
+                    color: "var(--text-muted, #44445A)",
+                    fontSize: "0.75rem"
+                  }}
+                >{conversation.lastMessage}</motion.small>
+              </motion.span>
+              <motion.span
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 1.5 + (index * 0.1), duration: 0.4 }}
+                className="jp-message-end"
+                style={{
+                  display: "flex",
+                  gap: "8px",
+                  alignItems: "center"
+                }}
+              >
+                <motion.small
+                  initial={{ y: 5, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 1.6 + (index * 0.1), duration: 0.4 }}
+                  style={{
+                    color: "var(--text-secondary, #8888AA)",
+                    fontSize: "0.75rem"
+                  }}
+                >{conversation.lastSeen}</motion.small>
+                {conversation.unread ? (
+                  <motion.span
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 1.7 + (index * 0.1), duration: 0.4 }}
+                    className="jp-message-unread"
+                    style={{
+                      background: "rgba(239, 68, 68, 0.15)",
+                      color: "#EF4444",
+                      padding: "4px 8px",
+                      borderRadius: "999px",
+                      fontSize: "0.75rem",
+                      fontWeight: 600
+                    }}
+                  >{conversation.unread}</motion.span>
+                ) : null}
+              </motion.span>
+            </motion.button>
           ))}
-        </div>
-      </aside>
+        </motion.div>
+      </motion.aside>
 
       <article className="surface jp-messages-thread jp-reveal-up">
         <header className="space-between jp-reveal" style={{ alignItems: "center" }}>
@@ -194,7 +361,7 @@ export function MessagesPage() {
           </div>
         </div>
       </article>
-    </section>
+    </motion.section>
   );
 }
 

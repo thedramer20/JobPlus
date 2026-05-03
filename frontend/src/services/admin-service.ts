@@ -16,7 +16,7 @@ import type {
   AdminUserRow
 } from "../types/admin";
 
-const wait = (ms = 120) => new Promise((resolve) => setTimeout(resolve, ms));
+// Remove artificial delay - return data immediately
 
 const universities = [
   "Shanghai University of Engineering and Science",
@@ -379,7 +379,6 @@ function buildRolePermissions(): AdminRolePermission[] {
 }
 
 export async function getAdminKpis(): Promise<AdminKpi[]> {
-  await wait();
   return [
     { key: "users", title: "Total Users", value: users.length, deltaText: "+8.4% month over month", status: "up" },
     { key: "activeUsers", title: "Active Users Today", value: users.filter((user) => user.status === "active").length, deltaText: "+1.8% vs yesterday", status: "up" },
@@ -393,12 +392,10 @@ export async function getAdminKpis(): Promise<AdminKpi[]> {
 }
 
 export async function getAdminTrends(): Promise<AdminTrendPoint[]> {
-  await wait();
   return trendPoints;
 }
 
 export async function getAdminActivities(): Promise<AdminActivityItem[]> {
-  await wait();
   return [
     { id: "a1", type: "user", message: "New recruiter verification submitted by Nova Systems", at: "3 mins ago" },
     { id: "a2", type: "job", message: "High-risk job flagged for manual review", at: "11 mins ago" },
@@ -409,27 +406,22 @@ export async function getAdminActivities(): Promise<AdminActivityItem[]> {
 }
 
 export async function listAdminUsersData(): Promise<AdminUserRow[]> {
-  await wait();
   return users;
 }
 
 export async function listAdminCompaniesData(): Promise<AdminCompanyRow[]> {
-  await wait();
   return companies;
 }
 
 export async function listAdminJobsData(): Promise<AdminJobRow[]> {
-  await wait();
   return jobs;
 }
 
 export async function listAdminApplicationsData(): Promise<AdminApplicationRow[]> {
-  await wait();
   return applications;
 }
 
 export async function listAdminCategoriesData(): Promise<AdminCategoryRow[]> {
-  await wait();
   categories = categories.map((category) => ({
     ...category,
     totalJobs: jobs.filter((job) => job.category === category.name).length
@@ -438,47 +430,38 @@ export async function listAdminCategoriesData(): Promise<AdminCategoryRow[]> {
 }
 
 export async function listAdminReportsData(): Promise<AdminReportRow[]> {
-  await wait();
   return reports;
 }
 
 export async function listAdminNotificationsData(): Promise<AdminNotificationRow[]> {
-  await wait();
   return notifications;
 }
 
 export async function markNotificationAsRead(id: number): Promise<void> {
-  await wait();
   notifications = notifications.map((item) => (item.id === id ? { ...item, isRead: true } : item));
 }
 
 export async function getAdminSettings(): Promise<AdminSystemSettings> {
-  await wait();
   return settings;
 }
 
 export async function saveAdminSettings(payload: AdminSystemSettings): Promise<AdminSystemSettings> {
-  await wait();
   settings = payload;
   return settings;
 }
 
 export async function listAdminSupportTicketsData(): Promise<AdminSupportTicketRow[]> {
-  await wait();
   return tickets;
 }
 
 export async function listAdminAuditLogsData(): Promise<AdminAuditLogRow[]> {
-  await wait();
   return auditLogs;
 }
 
 export async function listAdminRolesData(): Promise<AdminRolePermission[]> {
-  await wait();
   return rolePermissions;
 }
 
 export async function listAdminSystemAlertsData(): Promise<AdminSystemAlert[]> {
-  await wait();
   return alerts;
 }

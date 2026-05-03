@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { authStore } from "../store/auth-store";
+import { motion } from "framer-motion";
 
 // Types for our network data
 interface Recruiter {

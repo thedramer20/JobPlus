@@ -14,9 +14,9 @@ This is the React frontend for JobPlus.
 ## Run locally
 
 1. Copy `.env.example` to `.env`
-2. Set `VITE_API_BASE_URL` to your Spring Boot backend
+2. Set `VITE_API_BASE_URL=http://localhost:9090` (Backend moved from 8080)
 3. Install dependencies with `npm install`
-4. Start the dev server with `npm run dev`
+4. Start the dev server with `start-dev.bat` (handles port cleanup and env setup)
 
 ## Build
 

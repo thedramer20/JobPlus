@@ -1,0 +1,389 @@
+
+/* =========================================================
+   JobPlus Premium 2026 Design Polish Layer - Enhanced
+   Non-destructive enhancement over existing design system
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   1. Enhanced Search Input Pattern
+   --------------------------------------------------------- */
+.jp-search {
+  position: relative;
+  display: block;
+}
+
+.jp-search__icon {
+  position: absolute;
+  inset-inline-start: 0.875rem;
+  top: 50%;
+  width: 1.125rem;
+  height: 1.125rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--text-tertiary);
+  opacity: 0.9;
+}
+
+.jp-search__input {
+  width: 100%;
+  min-height: 3rem;
+  padding-inline-start: 2.625rem;
+  padding-inline-end: 0.875rem;
+  border-radius: 0.875rem;
+  border: 1px solid var(--border-default);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+}
+
+.jp-search__input:focus-visible {
+  outline: none;
+  border-color: var(--color-brand-500);
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--color-brand-500) 22%, transparent),
+    var(--shadow-sm);
+}
+
+/* ---------------------------------------------------------
+   2. Premium Card Enhancements
+   --------------------------------------------------------- */
+.jp-card-polish {
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  transition:
+    transform var(--duration-base) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard),
+    background-color var(--duration-base) var(--ease-standard);
+  will-change: transform;
+}
+
+.jp-card-polish:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ---------------------------------------------------------
+   3. Glassmorphism Effects
+   --------------------------------------------------------- */
+.jp-glass {
+  background: color-mix(in srgb, var(--bg-surface) 72%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid var(--border-subtle);
+}
+
+[data-theme="dark"] .jp-glass {
+  background: color-mix(in srgb, var(--bg-surface) 82%, transparent);
+  border-color: color-mix(in srgb, var(--border-subtle) 20%, transparent);
+}
+
+/* ---------------------------------------------------------
+   4. Enhanced Scroll Reveal
+   --------------------------------------------------------- */
+.jp-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 320ms var(--ease-standard),
+    transform 420ms var(--ease-standard);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.jp-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.jp-reveal-scale {
+  opacity: 0;
+  transform: translateY(14px) scale(0.985);
+  transition:
+    opacity 320ms var(--ease-standard),
+    transform 420ms var(--ease-standard);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.jp-reveal-scale.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ---------------------------------------------------------
+   5. Button States
+   --------------------------------------------------------- */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  cursor: pointer;
+  transition:
+    transform var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+  user-select: none;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: var(--color-brand-600);
+  color: var(--text-on-brand);
+  border: 1px solid transparent;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-brand-700);
+}
+
+.btn-secondary {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--bg-subtle);
+  border-color: var(--border-strong);
+}
+
+.btn-danger {
+  background-color: var(--color-danger-500);
+  color: var(--text-on-brand);
+  border: 1px solid transparent;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: var(--color-danger-600);
+}
+
+/* ---------------------------------------------------------
+   6. Input States
+   --------------------------------------------------------- */
+.jp-input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+.jp-input:focus-visible {
+  outline: none;
+  border-color: var(--color-brand-500);
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--color-brand-500) 22%, transparent),
+    var(--shadow-sm);
+}
+
+.jp-input:invalid {
+  border-color: var(--color-danger-500);
+}
+
+.jp-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ---------------------------------------------------------
+   7. Chip/Filter Components
+   --------------------------------------------------------- */
+.jp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: var(--bg-subtle);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.jp-chip:hover {
+  background-color: var(--bg-surface);
+  border-color: var(--border-default);
+}
+
+.jp-chip.is-selected {
+  background-color: var(--color-brand-50);
+  color: var(--color-brand-600);
+  border-color: var(--color-brand-200);
+}
+
+[data-theme="dark"] .jp-chip.is-selected {
+  background-color: color-mix(in srgb, var(--color-brand-600) 20%, transparent);
+  color: var(--color-brand-100);
+  border-color: var(--color-brand-500);
+}
+
+/* ---------------------------------------------------------
+   8. Toast/Notification Animations
+   --------------------------------------------------------- */
+.jp-toast {
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  background-color: var(--bg-surface);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-subtle);
+  z-index: var(--z-toast);
+  animation: slideIn var(--duration-base) var(--ease-emphasis);
+}
+
+.jp-toast.is-dismissing {
+  animation: slideOut var(--duration-base) var(--ease-emphasis);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+/* ---------------------------------------------------------
+   9. Modal/Drawer Animations
+   --------------------------------------------------------- */
+.jp-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: var(--bg-overlay);
+  z-index: var(--z-modal-backdrop);
+  animation: fadeIn var(--duration-base) var(--ease-standard);
+}
+
+.jp-modal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  z-index: var(--z-modal);
+  animation: modalIn var(--duration-base) var(--ease-emphasis);
+}
+
+.jp-modal-content.is-closing {
+  animation: modalOut var(--duration-base) var(--ease-emphasis);
+}
+
+.jp-drawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 400px;
+  max-width: 90vw;
+  background-color: var(--bg-surface);
+  box-shadow: var(--shadow-xl);
+  z-index: var(--z-modal);
+  transform: translateX(100%);
+  transition: transform var(--duration-base) var(--ease-emphasis);
+}
+
+.jp-drawer.is-open {
+  transform: translateX(0);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes modalOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -52%);
+  }
+}
+
+/* ---------------------------------------------------------
+   10. Reduced Motion Support
+   --------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .jp-card-polish,
+  .jp-reveal,
+  .jp-reveal-scale,
+  .btn,
+  .jp-chip,
+  .jp-toast,
+  .jp-modal-content,
+  .jp-drawer {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .jp-reveal,
+  .jp-reveal-scale {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

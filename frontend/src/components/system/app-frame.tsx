@@ -18,7 +18,6 @@ export function AppFrame() {
     document.documentElement.setAttribute("data-ui-personality", uiPersonality);
   }, [location.pathname, uiPersonality]);
 
-  // Re-run scroll reveal on every route change so newly mounted elements animate
   useScrollReveal(location.pathname);
 
   return (

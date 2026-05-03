@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
 import { usePreferences } from "../context/PreferencesContext";
 import { authStore } from "../store/auth-store";
@@ -270,27 +271,254 @@ export function SettingsPage() {
   }
 
   return (
-    <section className="section-tight">
+    <motion.section
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+      className="section-tight"
+      style={{
+        background: "var(--bg-base, #0A0A0F)",
+        minHeight: "100vh"
+      }}
+    >
       <div className="container">
-        <div className="jp-settings-page">
-          <section className="surface jp-settings-shell">
-            <aside className="jp-settings-sidebar jp-reveal-up">
-              <div className="eyebrow">{t("common.settings")}</div>
-              <h2 className="headline" style={{ margin: "0.35rem 0 0.55rem", fontSize: "1.95rem" }}>{t("settingsPage.title")}</h2>
-              <p className="helper" style={{ marginTop: 0 }}>{t("settingsPage.subtitle")}</p>
-              <div className="jp-settings-nav-list">
-                {tabs.map((tab) => (
-                  <button key={tab.key} type="button" className={`jp-settings-nav-item ${activeTab === tab.key ? "is-active" : ""}`} onClick={() => setActiveTab(tab.key)}>
-                    <span><strong>{t(tab.labelKey)}</strong><small>{t(tab.descriptionKey)}</small></span>
-                  </button>
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.8 }}
+          className="jp-settings-page"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "280px 1fr",
+            gap: "32px"
+          }}
+        >
+          <motion.section
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="surface jp-settings-shell glass-card"
+            style={{
+              background: "rgba(255, 255, 255, 0.05)",
+              backdropFilter: "blur(20px)",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              borderRadius: "16px",
+              padding: "32px 24px"
+            }}
+          >
+            <motion.aside
+              initial={{ x: -10, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="jp-settings-sidebar jp-reveal-up"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "24px"
+              }}
+            >
+              <motion.div
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.7, duration: 0.6 }}
+                className="eyebrow"
+                style={{
+                  color: "var(--text-secondary, #8888AA)",
+                  fontSize: "0.875rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.5px",
+                  fontWeight: 600
+                }}
+              >{t("common.settings")}</motion.div>
+              <motion.h2
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.8, duration: 0.6 }}
+                className="headline"
+                style={{
+                  fontFamily: "var(--font-display, Syne, sans-serif)",
+                  fontSize: "1.75rem",
+                  fontWeight: 700,
+                  color: "var(--text-primary, #F0F0FF)",
+                  margin: "0.35rem 0 0.55rem"
+                }}
+              >{t("settingsPage.title")}</motion.h2>
+              <motion.p
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.9, duration: 0.6 }}
+                className="helper"
+                style={{
+                  color: "var(--text-secondary, #8888AA)",
+                  fontSize: "1rem",
+                  marginTop: 0
+                }}
+              >{t("settingsPage.subtitle")}</motion.p>
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 1, duration: 0.6 }}
+                className="jp-settings-nav-list"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "8px",
+                  marginTop: "1rem"
+                }}
+              >
+                {tabs.map((tab, index) => (
+                  <motion.button
+                    key={tab.key}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{
+                      delay: 1.1 + (index * 0.1),
+                      duration: 0.5,
+                      type: "spring",
+                      stiffness: 200,
+                      damping: 25
+                    }}
+                    whileHover={{ scale: 1.05, x: 4 }}
+                    whileTap={{ scale: 0.95 }}
+                    type="button"
+                    className={`jp-settings-nav-item ${activeTab === tab.key ? "is-active" : ""}`}
+                    onClick={() => setActiveTab(tab.key)}
+                    style={{
+                      background: activeTab === tab.key
+                        ? "rgba(108, 99, 255, 0.1)"
+                        : "transparent",
+                      border: activeTab === tab.key
+                        ? "1px solid rgba(108, 99, 255, 0.3)"
+                        : "1px solid transparent",
+                      borderRadius: "12px",
+                      padding: "16px 24px",
+                      width: "100%",
+                      textAlign: "left",
+                      cursor: "pointer"
+                    }}
+                  >
+                    <motion.span
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ delay: 1.2 + (index * 0.1), duration: 0.4 }}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "4px"
+                      }}
+                    >
+                      <motion.strong
+                        initial={{ y: 5, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 1.3 + (index * 0.1), duration: 0.4 }}
+                        style={{
+                          color: activeTab === tab.key
+                            ? "var(--text-primary, #F0F0FF)"
+                            : "var(--text-secondary, #8888AA)",
+                          fontSize: "1rem",
+                          fontWeight: 600
+                        }}
+                      >{t(tab.labelKey)}</motion.strong>
+                      <motion.small
+                        initial={{ y: 5, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 1.4 + (index * 0.1), duration: 0.4 }}
+                        style={{
+                          color: "var(--text-muted, #44445A)",
+                          fontSize: "0.875rem"
+                        }}
+                      >{t(tab.descriptionKey)}</motion.small>
+                    </motion.span>
+                  </motion.button>
                 ))}
-              </div>
-              <div className="jp-profile-strength-track" style={{ marginTop: "1rem" }}><span style={{ width: `${profileCompletion}%` }} /></div>
-              <div className="helper">{t("settingsPage.profileStrength", { value: profileCompletion })}</div>
-            </aside>
-            <main className="jp-settings-main">
-              {feedback ? <div className={`jp-settings-banner is-${feedback.type}`}>{feedback.text}</div> : null}
-              {loadingProfile ? <section className="jp-settings-section surface jp-reveal-up"><p className="helper">{t("settingsPage.loading")}</p></section> : null}
+              </motion.div>
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 1.2, duration: 0.6 }}
+                className="jp-profile-strength-track"
+                style={{ marginTop: "1rem" }}
+              >
+                <motion.span
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 1.3, duration: 0.4 }}
+                  style={{
+                    width: `${profileCompletion}%`,
+                    height: "4px",
+                    background: "var(--brand-gradient, linear-gradient(135deg, #6C63FF 0%, #3DCFEF 100%))",
+                    borderRadius: "999px",
+                    boxShadow: "0 4px 14px rgba(108, 99, 255, 0.35)"
+                  }}
+                />
+                <motion.div
+                  initial={{ y: 10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 1.4, duration: 0.4 }}
+                  className="helper"
+                  style={{
+                    color: "var(--text-secondary, #8888AA)",
+                    fontSize: "1rem",
+                    marginTop: "8px"
+                  }}
+                >{t("settingsPage.profileStrength", { value: profileCompletion })}</motion.div>
+              </motion.div>
+            </motion.aside>
+            <motion.main
+              initial={{ x: 20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.8, duration: 0.8 }}
+              className="jp-settings-main"
+              style={{
+                flex: 1
+              }}
+            >
+              {feedback ? (
+                <motion.div
+                  initial={{ y: -10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.9, duration: 0.6 }}
+                  className={`jp-settings-banner is-${feedback.type}`}
+                  style={{
+                    background: feedback.type === "success"
+                      ? "rgba(34, 197, 94, 0.15)"
+                      : feedback.type === "error"
+                        ? "rgba(239, 68, 68, 0.15)"
+                        : "rgba(108, 99, 255, 0.15)",
+                    backdropFilter: "blur(20px)",
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    borderRadius: "12px",
+                    padding: "16px 24px",
+                    marginBottom: "24px"
+                  }}
+                >{feedback.text}</motion.div>
+              ) : null}
+              {loadingProfile ? (
+                <motion.section
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 1, duration: 0.6 }}
+                  className="jp-settings-section surface jp-reveal-up glass-card"
+                  style={{
+                    background: "rgba(255, 255, 255, 0.05)",
+                    backdropFilter: "blur(20px)",
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    borderRadius: "16px",
+                    padding: "32px"
+                  }}
+                >
+                  <motion.p
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 1.1, duration: 0.4 }}
+                    className="helper"
+                    style={{
+                      color: "var(--text-secondary, #8888AA)",
+                      fontSize: "1rem"
+                    }}
+                  >{t("settingsPage.loading")}</motion.p>
+                </motion.section>
+              ) : null}
               {!loadingProfile && activeTab === "profile" ? (
                 <section className="jp-settings-section surface stack jp-reveal-up">
                   <header className="jp-settings-section-header">
@@ -479,11 +707,11 @@ export function SettingsPage() {
                   <div className="jp-settings-actions"><Link className="btn btn-secondary" to={user?.role === "candidate" ? "/app/profile" : "/profile/nadia.mensah"}>{t("settingsPage.openProfile")}</Link></div>
                 </section>
               ) : null}
-            </main>
-          </section>
-        </div>
+            </motion.main>
+          </motion.section>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 

@@ -1,0 +1,11 @@
+
+User-agent: *
+Allow: /
+
+Sitemap: https://jobplus.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Request-rate
+Request-rate: 1/1s

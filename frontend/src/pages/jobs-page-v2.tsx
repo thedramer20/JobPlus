@@ -48,7 +48,7 @@ export function JobsPage() {
   return (
     <div className="jp-jobs-root">
       {/* Header */}
-      <header className="jp-jobs-header">
+      <header className="jp-jobs-header jp-reveal">
         <div className="jp-jobs-container">
           <div className="jp-jobs-title">
             <h1>Find Your Next Opportunity</h1>
@@ -74,7 +74,7 @@ export function JobsPage() {
       </header>
 
       {/* Main Content */}
-      <div className="jp-jobs-container jp-jobs-main">
+      <div className="jp-jobs-container jp-jobs-main jp-reveal">
         {/* Left Sidebar - Filters */}
         <aside className="jp-filters-sidebar">
           <div className="jp-filters-panel">
@@ -263,7 +263,7 @@ export function JobsPage() {
 
         {/* Right Panel - Job Preview */}
         {selectedJob && (
-          <aside className="jp-job-preview">
+          <aside className="jp-job-preview jp-reveal">
             <div className="jp-preview-header">
               <div className="jp-preview-company">
                 <div className="jp-company-logo jp-preview-logo">

@@ -26,9 +26,13 @@ export function PasswordField({
 
   return (
     <label className="field jp-auth-field">
-      <span>
+      <span style={{
+        color: "var(--text-secondary, #8888AA)",
+        fontSize: "0.875rem",
+        fontWeight: 500
+      }}>
         {label}
-        {required ? <span className="jp-required-marker"> *</span> : null}
+        {required ? <span className="jp-required-marker" style={{ color: "var(--color-danger, #EF4444)" }}> *</span> : null}
       </span>
       <div className="jp-password-wrap">
         <input
@@ -38,6 +42,14 @@ export function PasswordField({
           autoComplete={autoComplete}
           onChange={(event) => onChange(event.target.value)}
           placeholder={placeholder}
+          style={{
+            background: "var(--bg-surface, #111118)",
+            borderColor: error ? "var(--color-danger, #EF4444)" : "var(--border-subtle, rgba(255,255,255,0.06))",
+            color: "var(--text-primary, #F0F0FF)",
+            "::placeholder": {
+              color: "var(--text-muted, #44445A)"
+            }
+          }}
         />
         <button
           type="button"
@@ -45,6 +57,9 @@ export function PasswordField({
           onClick={() => setVisible((prev) => !prev)}
           aria-label={visible ? "Hide password" : "Show password"}
           title={visible ? "Hide password" : "Show password"}
+          style={{
+            color: "var(--text-secondary, #8888AA)"
+          }}
         >
           {visible ? (
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.9" aria-hidden="true">
@@ -62,14 +77,37 @@ export function PasswordField({
         </button>
       </div>
       {showStrength ? (
-        <div className="jp-strength">
-          <span className={`jp-strength-dot ${strength.level >= 1 ? "is-active" : ""}`} />
-          <span className={`jp-strength-dot ${strength.level >= 2 ? "is-active" : ""}`} />
-          <span className={`jp-strength-dot ${strength.level >= 3 ? "is-active" : ""}`} />
-          <span className="helper">{strength.label}</span>
+        <div className="jp-strength" style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          marginTop: "8px"
+        }}>
+          <span className={`jp-strength-dot ${strength.level >= 1 ? "is-active" : ""}`} style={{
+            width: "8px",
+            height: "8px",
+            borderRadius: "50%",
+            background: strength.level >= 1 ? "var(--color-success, #22C55E)" : "var(--bg-elevated, #1A1A24)"
+          }} />
+          <span className={`jp-strength-dot ${strength.level >= 2 ? "is-active" : ""}`} style={{
+            width: "8px",
+            height: "8px",
+            borderRadius: "50%",
+            background: strength.level >= 2 ? "var(--color-warning, #F59E0B)" : "var(--bg-elevated, #1A1A24)"
+          }} />
+          <span className={`jp-strength-dot ${strength.level >= 3 ? "is-active" : ""}`} style={{
+            width: "8px",
+            height: "8px",
+            borderRadius: "50%",
+            background: strength.level >= 3 ? "var(--color-success, #22C55E)" : "var(--bg-elevated, #1A1A24)"
+          }} />
+          <span className="helper" style={{
+            color: "var(--text-secondary, #8888AA)",
+            fontSize: "0.875rem"
+          }}>{strength.label}</span>
         </div>
       ) : null}
-      {error ? <span className="jp-field-error">{error}</span> : null}
+      {error ? <span className="jp-field-error" style={{ color: "var(--color-danger, #EF4444)" }}>{error}</span> : null}
     </label>
   );
 }

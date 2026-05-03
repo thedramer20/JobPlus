@@ -163,13 +163,13 @@ export function LoginPage() {
         <div className="stack" style={{ gap: "0.6rem", marginTop: "0.25rem" }}>
           <div className="helper">{t("auth.quickDemoAccess")}</div>
           <div className="row" style={{ flexWrap: "wrap" }}>
-            <button type="button" className="btn btn-secondary" onClick={() => useDemoRole("candidate", setDemoRole, navigate)}>
+            <button type="button" className="btn btn-secondary" onClick={() => setDemoRole("candidate")}>
               {t("auth.candidateDemo")}
             </button>
-            <button type="button" className="btn btn-secondary" onClick={() => useDemoRole("employer", setDemoRole, navigate)}>
+            <button type="button" className="btn btn-secondary" onClick={() => setDemoRole("employer")}>
               {t("auth.employerDemo")}
             </button>
-            <button type="button" className="btn btn-secondary" onClick={() => useDemoRole("admin", setDemoRole, navigate)}>
+            <button type="button" className="btn btn-secondary" onClick={() => setDemoRole("admin")}>
               {t("auth.adminDemo")}
             </button>
           </div>

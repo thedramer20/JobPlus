@@ -1,4 +1,4 @@
-/* ==========================================
+ /* ==========================================
    JobPlus Homepage Styles - Clean & Premium
    ========================================== */
 
@@ -14,6 +14,19 @@
   overflow: hidden;
 }
 
+/* Gradient Mesh Background */
+.jp-hero-gradient-mesh {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(124, 58, 237, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 30% at 60% 80%, rgba(16, 185, 129, 0.04) 0%, transparent 50%),
+    linear-gradient(180deg, transparent 0%, rgba(79, 70, 229, 0.02) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
 .jp-hero-section::before {
   content: '';
   position: absolute;
@@ -25,7 +38,10 @@
   pointer-events: none;
 }
 
+/* Ensure content is above gradient mesh */
 .jp-hero-container {
+  position: relative;
+  z-index: 1;
   max-width: 1240px;
   margin: 0 auto;
   padding: 0 24px;
@@ -287,6 +303,52 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* STATS SECTION with Animated Counters */
+.jp-stats-section {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.02) 0%, rgba(124, 58, 237, 0.02) 100%);
+  padding: 64px 0;
+  border-top: 1px solid var(--jp-border, #e5e7eb);
+  border-bottom: 1px solid var(--jp-border, #e5e7eb);
+}
+
+.jp-stats-section .jp-stats-container {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+}
+
+.jp-stat-card {
+  background: var(--jp-surface, #ffffff);
+  border: 1px solid var(--jp-border, #e5e7eb);
+  border-radius: 16px;
+  padding: 24px 48px;
+  text-align: center;
+  transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.jp-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--fx-card-shadow-hover, 0 8px 16px rgba(0,0,0,0.06));
+  border-color: var(--jp-primary, #4F46E5);
+}
+
+.jp-stat-card .jp-stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--jp-primary, #4F46E5) 0%, var(--jp-accent, #7C3AED) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+
+.jp-stat-card .jp-stat-label {
+  font-size: 1rem;
+  color: var(--jp-text-secondary, #6b7280);
+  margin-top: 8px;
+  font-weight: 500;
 }
 
 /* SMART STATS STRIP */

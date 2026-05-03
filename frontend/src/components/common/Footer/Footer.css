@@ -1,0 +1,117 @@
+/* src/components/common/Footer/Footer.css */
+.jp-footer {
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-subtle);
+  padding: var(--sp-16) 0 var(--sp-8);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glow at the top edge */
+.jp-footer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%; transform: translateX(-50%);
+  width: 60%; height: 1px;
+  background: var(--gradient-brand);
+  opacity: 0.5;
+}
+
+.jp-footer__grid {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--sp-6);
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: var(--sp-8);
+}
+
+.jp-footer__col h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--sp-3);
+}
+
+.jp-footer__col h4 {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--sp-4);
+}
+
+.jp-footer__col p {
+  color: var(--text-secondary);
+  margin-bottom: var(--sp-4);
+  line-height: var(--leading-relaxed);
+}
+
+.jp-footer__col a {
+  display: block;
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin-bottom: var(--sp-2);
+  transition: color var(--dur-fast) var(--ease);
+}
+.jp-footer__col a:hover {
+  color: var(--brand);
+}
+
+.jp-footer__social {
+  display: flex;
+  gap: var(--sp-3);
+  margin-top: var(--sp-4);
+}
+.jp-footer__social a {
+  font-size: var(--text-xl);
+  transition: transform var(--dur-fast) var(--ease-spring);
+}
+.jp-footer__social a:hover {
+  transform: scale(1.1);
+}
+
+.jp-footer__ticker {
+  text-align: center;
+  padding: var(--sp-6);
+  margin-top: var(--sp-8);
+  border-top: 1px solid var(--border-subtle);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.jp-footer__ticker strong { color: var(--accent); }
+
+.jp-footer__bottom {
+  max-width: var(--content-max);
+  margin: var(--sp-6) auto 0;
+  padding: var(--sp-4) var(--sp-6) 0;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.jp-footer__bottom a {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+.jp-footer__bottom a:hover {
+  color: var(--brand);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .jp-footer__grid {
+    grid-template-columns: 1fr;
+    gap: var(--sp-6);
+  }
+  .jp-footer__bottom {
+    flex-direction: column;
+    gap: var(--sp-2);
+    text-align: center;
+  }
+}

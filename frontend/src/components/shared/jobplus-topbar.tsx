@@ -1,4 +1,5 @@
-import { type ReactNode } from "react";
+import React, { type ReactNode } from "react";
+import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { authStore } from "../../store/auth-store";
@@ -120,16 +121,22 @@ export function JobPlusTopbar() {
         </NavLink>
 
         <nav aria-label="Primary" className="jp-topbar-nav">
-          {topbarItems.map((item) => (
-            <NavLink
+{topbarItems.map((item) => (
+            <motion.div
               key={item.key}
-              to={item.path(user?.role)}
-              className={({ isActive }) => `jp-topbar-link ${isActive ? "is-active" : ""}`}
+              whileHover={{ y: -1, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
-              <span className="jp-topbar-link-icon" aria-hidden="true">{item.icon}</span>
-              <span className="jp-topbar-link-label">{t(item.labelKey)}</span>
-            </NavLink>
+              <NavLink
+                to={item.path(user?.role)}
+                className={({ isActive }) => `jp-topbar-link ${isActive ? "is-active" : ""}`}
+              >
+                <span className="jp-topbar-link-icon" aria-hidden="true">{item.icon}</span>
+                <span className="jp-topbar-link-label">{t(item.labelKey)}</span>
+              </NavLink>
+            </motion.div>
           ))}
+
         </nav>
 
         <div className="jp-topbar-actions">

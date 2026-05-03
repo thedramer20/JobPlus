@@ -299,13 +299,13 @@ ALTER TABLE users ADD COLUMN enabled BOOLEAN DEFAULT true;
 1. **Google OAuth**:
    - Go to https://console.cloud.google.com/
    - Create OAuth 2.0 credentials
-   - Add redirect URI: `http://localhost:3000/auth/callback`
+   - Add redirect URI: `http://localhost:5173/auth/callback`
    - Copy Client ID and Client Secret
 
 2. **GitHub OAuth**:
    - Go to https://github.com/settings/developers
    - Create OAuth App
-   - Set redirect URL: `http://localhost:3000/auth/callback`
+   - Set redirect URL: `http://localhost:5173/auth/callback`
    - Copy Client ID and Client Secret
 
 3. **Backend Configuration**:

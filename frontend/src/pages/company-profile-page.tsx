@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { ProfilePageSkeleton } from "../components/shared/content-skeletons";
 import { EmptyState } from "../components/shared/empty-state";
 import { JobCard } from "../components/shared/job-card";
@@ -72,28 +74,202 @@ export function CompanyProfilePage() {
           {/* Main Content */}
           <div className="jp-company-main">
             {/* Trust Metrics */}
-            <div className="jp-trust-metrics">
-              <div className="jp-metric-card surface">
-                <div className="jp-metric-icon">💼</div>
-                <div className="jp-metric-content">
-                  <div className="jp-metric-value">{jobs.filter((job) => job.companyId === company.id && job.status === "Open").length}</div>
-                  <div className="jp-metric-label">Open Positions</div>
-                </div>
-              </div>
-              <div className="jp-metric-card surface">
-                <div className="jp-metric-icon">🏢</div>
-                <div className="jp-metric-content">
-                  <div className="jp-metric-value">{jobs.filter((job) => job.companyId === company.id).length}</div>
-                  <div className="jp-metric-label">Total Jobs Posted</div>
-                </div>
-              </div>
-              <div className="jp-metric-card surface">
-                <div className="jp-metric-icon">✅</div>
-                <div className="jp-metric-content">
-                  <div className="jp-metric-value">{company.status ?? "Active"}</div>
-                  <div className="jp-metric-label">Company Status</div>
-                </div>
-              </div>
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+              className="jp-trust-metrics"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                gap: "24px",
+                marginTop: "32px"
+              }}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.8, duration: 0.6 }}
+                whileHover={{ scale: 1.05, y: -4 }}
+                className="jp-metric-card surface glass-card"
+                style={{
+                  background: "rgba(255, 255, 255, 0.05)",
+                  backdropFilter: "blur(20px)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  borderRadius: "16px",
+                  padding: "32px 24px"
+                }}
+              >
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 1, duration: 0.4 }}
+                  className="jp-metric-icon"
+                  style={{
+                    fontSize: "2rem",
+                    marginBottom: "8px"
+                  }}>💼</motion.div>
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 1.1, duration: 0.4 }}
+                  className="jp-metric-content"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "4px"
+                  }}
+                >
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 1.2, duration: 0.4 }}
+                    className="jp-metric-value"
+                    style={{
+                      fontSize: "2.5rem",
+                      fontWeight: 700,
+                      color: "var(--brand-primary, #6C63FF)",
+                      lineHeight: 1
+                    }}
+                  >{jobs.filter((job) => job.companyId === company.id && job.status === "Open").length}</motion.div>
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 1.3, duration: 0.4 }}
+                    className="jp-metric-label"
+                    style={{
+                      color: "var(--text-secondary, #8888AA)",
+                      fontSize: "0.875rem",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px"
+                    }}>Open Positions</motion.div>
+                </motion.div>
+              </motion.div>
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.8, duration: 0.6 }}
+                whileHover={{ scale: 1.05, y: -4 }}
+                className="jp-metric-card surface glass-card"
+                style={{
+                  background: "rgba(255, 255, 255, 0.05)",
+                  backdropFilter: "blur(20px)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  borderRadius: "16px",
+                  padding: "32px 24px"
+                }}
+              >
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 1.4, duration: 0.4 }}
+                  className="jp-metric-icon"
+                  style={{
+                    fontSize: "2rem",
+                    marginBottom: "8px"
+                  }}>🏢</motion.div>
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 1.5, duration: 0.4 }}
+                  className="jp-metric-content"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "4px"
+                  }}
+                >
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 1.6, duration: 0.4 }}
+                    className="jp-metric-value"
+                    style={{
+                      fontSize: "2.5rem",
+                      fontWeight: 700,
+                      color: "var(--brand-secondary, #00D4AA)",
+                      lineHeight: 1
+                    }}
+                  >{jobs.filter((job) => job.companyId === company.id).length}</motion.div>
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 1.7, duration: 0.4 }}
+                    className="jp-metric-label"
+                    style={{
+                      color: "var(--text-secondary, #8888AA)",
+                      fontSize: "0.875rem",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px"
+                    }}>Total Jobs Posted</motion.div>
+                </motion.div>
+              </motion.div>
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 1, duration: 0.6 }}
+                whileHover={{ scale: 1.05, y: -4 }}
+                className="jp-metric-card surface glass-card"
+                style={{
+                  background: "rgba(255, 255, 255, 0.05)",
+                  backdropFilter: "blur(20px)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  borderRadius: "16px",
+                  padding: "32px 24px"
+                }}
+              >
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 1.1, duration: 0.4 }}
+                  className="jp-metric-icon"
+                  style={{
+                    fontSize: "2rem",
+                    marginBottom: "8px"
+                  }}>✅</motion.div>
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 1.2, duration: 0.4 }}
+                  className="jp-metric-content"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "4px"
+                  }}
+                >
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 1.3, duration: 0.4 }}
+                    className="jp-metric-value"
+                    style={{
+                      fontSize: "2.5rem",
+                      fontWeight: 700,
+                      color: "var(--brand-gradient, linear-gradient(135deg, #6C63FF 0%, #3DCFEF 100%))",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                      lineHeight: 1
+                    }}
+                  >{company.status ?? "Active"}</motion.div>
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 1.4, duration: 0.4 }}
+                    className="jp-metric-label"
+                    style={{
+                      color: "var(--text-secondary, #8888AA)",
+                      fontSize: "0.875rem",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px"
+                    }}>Company Status</motion.div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
               {(company as any).employeeCount && (
                 <div className="jp-metric-card surface">
                   <div className="jp-metric-icon">👥</div>

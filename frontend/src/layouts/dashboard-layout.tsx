@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
+import { motion } from "framer-motion";
 import { roleNavigation } from "../constants/navigation";
 import { authStore } from "../store/auth-store";
 import { formatRole } from "../lib/utils";
@@ -41,12 +42,19 @@ export function DashboardLayout() {
           </div>
           <nav className="side-links jp-workspace-nav">
             {navItems?.map((item) => (
-              <NavLink key={item.path} to={item.path} className={({ isActive }) => `side-link jp-workspace-link ${isActive ? "active" : ""}`}>
-                <span className="jp-workspace-link-icon" aria-hidden="true">
-                  {getWorkspaceIcon(item.key)}
-                </span>
-                <span>{t(item.labelKey)}</span>
-              </NavLink>
+              <motion.div
+                key={item.path}
+                whileHover={{ y: -1, scale: 1.01 }}
+                whileTap={{ scale: 0.98 }}
+                className="jp-workspace-link-wrap"
+              >
+                <NavLink to={item.path} className={({ isActive }) => `side-link jp-workspace-link ${isActive ? "active" : ""}`}>
+                  <span className="jp-workspace-link-icon" aria-hidden="true">
+                    {getWorkspaceIcon(item.key)}
+                  </span>
+                  <span>{t(item.labelKey)}</span>
+                </NavLink>
+              </motion.div>
             ))}
           </nav>
           <button className="btn btn-secondary jp-workspace-signout" onClick={logout}>

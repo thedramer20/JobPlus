@@ -220,10 +220,15 @@ export function AdminLayout() {
                 <circle cx="11" cy="11" r="7" />
                 <path d="m20 20-3.2-3.2" />
               </svg>
-              <input type="search" placeholder="Search users, companies, jobs, incidents..." value={query} onChange={(event) => setQuery(event.target.value)} />
+              <input
+                type="search"
+                placeholder="Search users, companies, jobs, incidents..."
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+              />
               {query ? (
                 <button type="button" className="jp-admin-search-clear" onClick={() => setQuery("")} aria-label="Clear search">
-                  ×
+                  {"×"}
                 </button>
               ) : null}
               {query.trim().length > 1 && searchSuggestions.length > 0 ? (
@@ -250,18 +255,42 @@ export function AdminLayout() {
 
 function renderIcon(key: string) {
   const iconProps = { width: 16, height: 16, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.8 } as const;
-  if (key === "dashboard") return <svg {...iconProps}><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1.5" /><rect x="13" y="3.5" width="7.5" height="4.8" rx="1.5" /><rect x="13" y="10.7" width="7.5" height="9.8" rx="1.5" /><rect x="3.5" y="13" width="7.5" height="7.5" rx="1.5" /></svg>;
-  if (key === "users") return <svg {...iconProps}><path d="M16 20a4 4 0 0 0-8 0" /><circle cx="12" cy="10" r="3" /><path d="M5 20a3 3 0 0 1 3-3" /><path d="M19 20a3 3 0 0 0-3-3" /></svg>;
-  if (key === "companies") return <svg {...iconProps}><path d="M4.5 20V7a2 2 0 0 1 2-2h6v15" /><path d="M12.5 20v-8.7a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2V20" /></svg>;
-  if (key === "jobs" || key === "applications") return <svg {...iconProps}><path d="M8.5 7V5.8A1.8 1.8 0 0 1 10.3 4h3.4a1.8 1.8 0 0 1 1.8 1.8V7" /><rect x="3.8" y="7" width="16.4" height="12.2" rx="2" /></svg>;
-  if (key === "categories") return <svg {...iconProps}><path d="M4 6.5h7M4 12h7M4 17.5h7" /><rect x="13" y="4.5" width="7" height="4" rx="1" /><rect x="13" y="10" width="7" height="4" rx="1" /><rect x="13" y="15.5" width="7" height="4" rx="1" /></svg>;
-  if (key === "reports" || key === "monitoring") return <svg {...iconProps}><path d="M4.5 12h3l2-5 3.5 10 2-5h4.5" strokeLinecap="round" strokeLinejoin="round" /></svg>;
-  if (key === "notifications") return renderBellIcon();
-  if (key === "analytics") return <svg {...iconProps}><path d="M4 20V10" /><path d="M10 20V4" /><path d="M16 20v-7" /><path d="M22 20v-4" /></svg>;
-  if (key === "support") return <svg {...iconProps}><path d="M8 12a4 4 0 1 1 8 0v1.2a2 2 0 0 0 2 2H6a2 2 0 0 0 2-2Z" /><path d="M8.5 18h7" /></svg>;
-  if (key === "permissions") return <svg {...iconProps}><rect x="4" y="11" width="16" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>;
-  if (key === "audit") return <svg {...iconProps}><path d="M4 6h16" /><path d="M7 10h10" /><path d="M7 14h6" /><path d="M7 18h8" /></svg>;
-  if (key === "settings") return <svg {...iconProps}><path d="M12 8.2a3.8 3.8 0 1 1 0 7.6 3.8 3.8 0 0 1 0-7.6Z" /><path strokeLinecap="round" d="M19.3 15.1 21 16l-1.7 3-1.9-1a8.5 8.5 0 0 1-1.8 1l-.2 2H12l-.2-2a8.5 8.5 0 0 1-1.8-1l-1.9 1-1.7-3 1.7-.9a8.8 8.8 0 0 1 0-2.1L6.4 12l1.7-3 1.9 1a8.5 8.5 0 0 1 1.8-1l.2-2h3.4l.2 2a8.5 8.5 0 0 1 1.8 1l1.9-1 1.7 3-1.7.9a8.8 8.8 0 0 1 0 2.2Z" /></svg>;
+  if (key === "dashboard") {
+    return <svg {...iconProps}><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1.5" /><rect x="13" y="3.5" width="7.5" height="4.8" rx="1.5" /><rect x="13" y="10.7" width="7.5" height="9.8" rx="1.5" /><rect x="3.5" y="13" width="7.5" height="7.5" rx="1.5" /></svg>;
+  }
+  if (key === "users") {
+    return <svg {...iconProps}><path d="M16 20a4 4 0 0 0-8 0" /><circle cx="12" cy="10" r="3" /><path d="M5 20a3 3 0 0 1 3-3" /><path d="M19 20a3 3 0 0 0-3-3" /></svg>;
+  }
+  if (key === "companies") {
+    return <svg {...iconProps}><path d="M4.5 20V7a2 2 0 0 1 2-2h6v15" /><path d="M12.5 20v-8.7a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2V20" /></svg>;
+  }
+  if (key === "jobs" || key === "applications") {
+    return <svg {...iconProps}><path d="M8.5 7V5.8A1.8 1.8 0 0 1 10.3 4h3.4a1.8 1.8 0 0 1 1.8 1.8V7" /><rect x="3.8" y="7" width="16.4" height="12.2" rx="2" /></svg>;
+  }
+  if (key === "categories") {
+    return <svg {...iconProps}><path d="M4 6.5h7M4 12h7M4 17.5h7" /><rect x="13" y="4.5" width="7" height="4" rx="1" /><rect x="13" y="10" width="7" height="4" rx="1" /><rect x="13" y="15.5" width="7" height="4" rx="1" /></svg>;
+  }
+  if (key === "reports" || key === "monitoring") {
+    return <svg {...iconProps}><path d="M4.5 12h3l2-5 3.5 10 2-5h4.5" strokeLinecap="round" strokeLinejoin="round" /></svg>;
+  }
+  if (key === "notifications") {
+    return renderBellIcon();
+  }
+  if (key === "analytics") {
+    return <svg {...iconProps}><path d="M4 20V10" /><path d="M10 20V4" /><path d="M16 20v-7" /><path d="M22 20v-4" /></svg>;
+  }
+  if (key === "support") {
+    return <svg {...iconProps}><path d="M8 12a4 4 0 1 1 8 0v1.2a2 2 0 0 0 2 2H6a2 2 0 0 0 2-2Z" /><path d="M8.5 18h7" /></svg>;
+  }
+  if (key === "permissions") {
+    return <svg {...iconProps}><rect x="4" y="11" width="16" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>;
+  }
+  if (key === "audit") {
+    return <svg {...iconProps}><path d="M4 6h16" /><path d="M7 10h10" /><path d="M7 14h6" /><path d="M7 18h8" /></svg>;
+  }
+  if (key === "settings") {
+    return <svg {...iconProps}><path d="M12 8.2a3.8 3.8 0 1 1 0 7.6 3.8 3.8 0 0 1 0-7.6Z" /><path strokeLinecap="round" d="M19.3 15.1 21 16l-1.7 3-1.9-1a8.5 8.5 0 0 1-1.8 1l-.2 2H12l-.2-2a8.5 8.5 0 0 1-1.8-1l-1.9 1-1.7-3 1.7-.9a8.8 8.8 0 0 1 0-2.1L6.4 12l1.7-3 1.9 1a8.5 8.5 0 0 1 1.8-1l.2-2h3.4l.2 2a8.5 8.5 0 0 1 1.8 1l1.9-1 1.7 3-1.7.9a8.8 8.8 0 0 1 0 2.2Z" /></svg>;
+  }
   return <svg {...iconProps}><circle cx="12" cy="12" r="8.5" /><path strokeLinecap="round" d="M12 8.2v4.6l2.8 1.8" /></svg>;
 }
 

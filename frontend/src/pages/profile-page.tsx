@@ -2,6 +2,7 @@ import { useMemo, useState, type ReactNode } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { Link, useParams, useSearchParams } from "react-router-dom";
+import { motion } from "framer-motion";
 import { ProfilePageSkeleton } from "../components/shared/content-skeletons";
 import { EmptyState } from "../components/shared/empty-state";
 import { getMyCompany } from "../services/companies-service";
@@ -180,68 +181,600 @@ export function ProfilePage() {
   }
 
   return (
-    <section className="section">
+    <motion.section
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+      className="section"
+      style={{
+        background: "var(--bg-base, #0A0A0F)",
+        minHeight: "100vh"
+      }}
+    >
       <div className="container">
-        <div className="jp-profile-main stack">
-          {banner ? <div className="auth-note">{banner}</div> : null}
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.8 }}
+          className="jp-profile-main stack"
+        >
+          {banner ? (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
+              className="auth-note"
+              style={{
+                background: "rgba(239, 68, 68, 0.15)",
+                border: "1px solid rgba(239, 68, 68, 0.3)",
+                borderRadius: "10px",
+                padding: "12px 16px",
+                color: "var(--text-primary, #F0F0FF)",
+                fontSize: "0.875rem"
+              }}
+            >{banner}</motion.div>
+          ) : null}
           {loading ? <ProfilePageSkeleton /> : null}
 
-          <article className="surface jp-profile-header jp-reveal-up">
-            <div className="jp-profile-cover" />
-            <div className="jp-profile-header-content">
-              <div className="jp-profile-avatar">{identity.avatar ? <img src={identity.avatar} alt={identity.fullName} style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover" }} /> : identity.fullName.slice(0, 1)}</div>
-              <div className="jp-profile-identity stack" style={{ gap: "0.3rem" }}>
-                <h1 style={{ margin: 0 }}>{identity.fullName}</h1>
-                <div className="helper">{identity.title}</div>
-                <div className="helper">{identity.company} • {identity.location} • {identity.industry}</div>
-                <div className="row" style={{ flexWrap: "wrap", gap: "0.6rem" }}>
-                  <span className="tag">{identity.followers.toLocaleString()} followers</span>
-                  <span className="tag">{identity.connections.toLocaleString()} connections</span>
-                </div>
-              </div>
-              <div className="jp-profile-actions">
+          <motion.article
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="surface jp-profile-header jp-reveal-up"
+            style={{
+              background: "var(--bg-surface, #111118)",
+              border: "1px solid var(--border-subtle, rgba(255,255,255,0.06))",
+              borderRadius: "16px",
+              padding: "24px"
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              className="jp-profile-cover"
+              style={{
+                background: "var(--brand-gradient, linear-gradient(135deg, #6C63FF 0%, #3DCFEF 100%))",
+                height: "240px",
+                borderRadius: "16px 16px 0 0"
+              }}
+            />
+            <motion.div
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+              className="jp-profile-header-content"
+              style={{ marginTop: "-80px", position: "relative", zIndex: 1 }}
+            >
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.7, duration: 0.6 }}
+                whileHover={{ scale: 1.05 }}
+                className="jp-profile-avatar"
+                style={{
+                  width: "120px",
+                  height: "120px",
+                  borderRadius: "50%",
+                  border: "3px solid var(--bg-base, #0A0A0F)",
+                  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+                  overflow: "hidden"
+                }}
+              >
+                {identity.avatar ? (
+                  <motion.img
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.8, duration: 0.4 }}
+                    src={identity.avatar}
+                    alt={identity.fullName}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover"
+                    }}
+                  />
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.8, duration: 0.4 }}
+                    style={{
+                      width: "120px",
+                      height: "120px",
+                      borderRadius: "50%",
+                      background: "var(--brand-gradient, linear-gradient(135deg, #6C63FF 0%, #3DCFEF 100%))",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#ffffff",
+                      fontSize: "2.5rem",
+                      fontWeight: 700
+                    }}
+                  >
+                    {identity.fullName.slice(0, 1)}
+                  </motion.div>
+                )}
+              </motion.div>
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.9, duration: 0.6 }}
+                className="jp-profile-identity stack"
+                style={{ gap: "0.5rem" }}
+              >
+                <motion.h1
+                  initial={{ y: 10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 1, duration: 0.6 }}
+                  style={{
+                    fontFamily: "var(--font-display, Syne, sans-serif)",
+                    fontSize: "2rem",
+                    fontWeight: 700,
+                    color: "var(--text-primary, #F0F0FF)",
+                    margin: 0
+                  }}
+                >{identity.fullName}</motion.h1>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.1, duration: 0.6 }}
+                  className="helper"
+                  style={{
+                    color: "var(--text-secondary, #8888AA)",
+                    fontSize: "1rem",
+                    marginBottom: "4px"
+                  }}
+                >{identity.title}</motion.div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.2, duration: 0.6 }}
+                  className="helper"
+                  style={{
+                    color: "var(--text-secondary, #8888AA)",
+                    fontSize: "1rem"
+                  }}
+                >{identity.company}</motion.div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.3, duration: 0.6 }}
+                  className="helper"
+                  style={{
+                    color: "var(--text-secondary, #8888AA)",
+                    fontSize: "1rem"
+                  }}
+                >{identity.location}</motion.div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.4, duration: 0.6 }}
+                  className="helper"
+                  style={{
+                    color: "var(--text-muted, #44445A)",
+                    fontSize: "1rem"
+                  }}
+                >{identity.industry}</motion.div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.5, duration: 0.6 }}
+                  className="row"
+                  style={{
+                    flexWrap: "wrap",
+                    gap: "0.75rem",
+                    marginTop: "8px"
+                  }}
+                >
+                  <motion.span
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 1.6, duration: 0.4 }}
+                    whileHover={{ scale: 1.05 }}
+                    className="tag"
+                    style={{
+                      background: "rgba(255, 255, 255, 0.08)",
+                      color: "var(--text-primary, #F0F0FF)",
+                      padding: "6px 12px",
+                      borderRadius: "999px",
+                      fontSize: "0.875rem",
+                      fontWeight: 500
+                    }}
+                  >{identity.followers.toLocaleString()}</motion.span>
+                  <motion.span
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 1.7, duration: 0.4 }}
+                    whileHover={{ scale: 1.05 }}
+                    className="tag"
+                    style={{
+                      background: "rgba(0, 212, 170, 0.15)",
+                      color: "#ffffff",
+                      padding: "6px 12px",
+                      borderRadius: "999px",
+                      fontSize: "0.875rem",
+                      fontWeight: 500
+                    }}
+                  >{identity.connections.toLocaleString()}</motion.span>
+                </motion.div>
+              </motion.div>
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 1.8, duration: 0.6 }}
+                className="jp-profile-actions"
+                style={{
+                  display: "flex",
+                  gap: "12px",
+                  justifyContent: "center",
+                  marginTop: "24px"
+                }}
+              >
                 {viewingOwn ? (
                   <>
-                    <button className="btn btn-primary" onClick={openProfileEditor}>Edit Profile</button>
-                    <button className="btn btn-secondary" onClick={openAboutEditor}>Edit About</button>
-                    <button className="btn btn-secondary" onClick={() => setContactOpen(true)}>Contact Info</button>
-                    <Link className="btn btn-secondary" to={settingsPath}>Profile Settings</Link>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="btn btn-primary"
+                      style={{
+                        background: "var(--brand-gradient, linear-gradient(135deg, #6C63FF 0%, #3DCFEF 100%))",
+                        color: "#ffffff",
+                        padding: "12px 24px",
+                        borderRadius: "999px",
+                        fontSize: "1rem",
+                        fontWeight: 600,
+                        border: "none",
+                        boxShadow: "0 4px 14px rgba(108, 99, 255, 0.35)"
+                      }}
+                      onClick={openProfileEditor}
+                    >Edit Profile</motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="btn btn-secondary"
+                      style={{
+                        background: "var(--bg-elevated, #1A1A24)",
+                        color: "var(--text-primary, #F0F0FF)",
+                        padding: "12px 24px",
+                        borderRadius: "999px",
+                        fontSize: "1rem",
+                        fontWeight: 600,
+                        border: "1px solid var(--border-subtle, rgba(255,255,255,0.06))"
+                      }}
+                      onClick={openAboutEditor}
+                    >Edit About</motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="btn btn-secondary"
+                      style={{
+                        background: "var(--bg-elevated, #1A1A24)",
+                        color: "var(--text-primary, #F0F0FF)",
+                        padding: "12px 24px",
+                        borderRadius: "999px",
+                        fontSize: "1rem",
+                        fontWeight: 600,
+                        border: "1px solid var(--border-subtle, rgba(255,255,255,0.06))"
+                      }}
+                      onClick={() => setContactOpen(true)}
+                    >Contact Info</motion.button>
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                      <Link className="btn btn-secondary" to={settingsPath} style={{
+                        display: "inline-block",
+                        background: "var(--bg-elevated, #1A1A24)",
+                        color: "var(--text-primary, #F0F0FF)",
+                        padding: "12px 24px",
+                        borderRadius: "999px",
+                        fontSize: "1rem",
+                        fontWeight: 600,
+                        textDecoration: "none",
+                        border: "1px solid var(--border-subtle, rgba(255,255,255,0.06))"
+                      }}>Profile Settings</Link>
+                    </motion.div>
                   </>
                 ) : (
                   <>
-                    <button className={connectState === "connected" ? "btn btn-secondary" : "btn btn-primary"} onClick={clickConnect}>{connectState === "pending" ? "Pending" : connectState === "connected" ? "Connected" : "Connect"}</button>
-                    <button className="btn btn-secondary" onClick={() => setFollowed((v) => !v)}>{followed ? "Following" : "Follow"}</button>
-                    <button className="btn btn-secondary" onClick={() => setContactOpen(true)}>Message</button>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={connectState === "connected" ? "btn btn-secondary" : "btn btn-primary"}
+                      style={{
+                        background: connectState === "connected" ? "var(--bg-elevated, #1A1A24)" : "var(--brand-gradient, linear-gradient(135deg, #6C63FF 0%, #3DCFEF 100%))",
+                        color: "#ffffff",
+                        padding: "12px 24px",
+                        borderRadius: "999px",
+                        fontSize: "1rem",
+                        fontWeight: 600,
+                        border: "none",
+                        boxShadow: "0 4px 14px rgba(108, 99, 255, 0.35)"
+                      }}
+                      onClick={clickConnect}
+                    >{connectState === "pending" ? "Pending" : connectState === "connected" ? "Connected" : "Connect"}</motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="btn btn-secondary"
+                      style={{
+                        background: "var(--bg-elevated, #1A1A24)",
+                        color: "var(--text-primary, #F0F0FF)",
+                        padding: "12px 24px",
+                        borderRadius: "999px",
+                        fontSize: "1rem",
+                        fontWeight: 600,
+                        border: "1px solid var(--border-subtle, rgba(255,255,255,0.06))"
+                      }}
+                      onClick={() => setFollowed((v) => !v)}
+                    >{followed ? "Following" : "Follow"}</motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="btn btn-secondary"
+                      style={{
+                        background: "var(--bg-elevated, #1A1A24)",
+                        color: "var(--text-primary, #F0F0FF)",
+                        padding: "12px 24px",
+                        borderRadius: "999px",
+                        fontSize: "1rem",
+                        fontWeight: 600,
+                        border: "1px solid var(--border-subtle, rgba(255,255,255,0.06))"
+                      }}
+                      onClick={() => setContactOpen(true)}
+                    >Message</motion.button>
                   </>
                 )}
-              </div>
-            </div>
-          </article>
+              </motion.div>
+            </motion.div>
+          </motion.article>
 
-          <article className="surface jp-profile-card">
-            <div className="space-between" style={{ alignItems: "center" }}>
-              <h2 style={{ margin: 0 }}>Profile Conversion System</h2>
-              <span className="pill">Score {profileConversion.score}%</span>
+          <motion.article
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 1.4, duration: 0.6 }}
+            className="surface jp-profile-card glass-card"
+            style={{
+              background: "rgba(255, 255, 255, 0.05)",
+              backdropFilter: "blur(20px)",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              borderRadius: "16px",
+              padding: "32px"
+            }}
+          >
+            <div className="space-between" style={{ alignItems: "center", justifyContent: "space-between" }}>
+              <motion.h2
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 1.5, duration: 0.6 }}
+                style={{
+                  fontFamily: "var(--font-display, Syne, sans-serif)",
+                  fontSize: "1.5rem",
+                  fontWeight: 700,
+                  color: "var(--text-primary, #F0F0FF)",
+                  margin: 0
+                }}>Profile Conversion System</motion.h2>
+              <motion.span
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 1.6, duration: 0.4 }}
+                className="pill"
+                style={{
+                  background: "rgba(108, 99, 255, 0.15)",
+                  color: "#22C55E",
+                  padding: "6px 16px",
+                  borderRadius: "999px",
+                  fontSize: "0.875rem",
+                  fontWeight: 600
+                }}>Score {profileConversion.score}%</motion.span>
             </div>
-            <div className="jp-conversion-bars">
-              <div className="jp-conversion-row"><span>Completeness</span><strong>{profileConversion.completeness}%</strong></div>
-              <div className="jp-conversion-row"><span>Engagement strength</span><strong>{profileConversion.engagement}%</strong></div>
-              <div className="jp-conversion-row"><span>Recruiter response signal</span><strong>{profileConversion.recruiterResponse}%</strong></div>
+            <div className="jp-conversion-bars" style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              gap: "16px",
+              marginTop: "24px"
+            }}>
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 1.7, duration: 0.5 }}
+                whileHover={{ scale: 1.05, y: -4 }}
+                className="jp-conversion-row"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "8px"
+                }}
+                <span style={{
+                  color: "var(--text-secondary, #8888AA)",
+                  fontSize: "0.875rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.5px"
+                }}>Completeness</span>
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 1.8, duration: 0.4 }}
+                  style={{
+                    fontSize: "1.5rem",
+                    fontWeight: 700,
+                    color: "var(--brand-primary, #6C63FF)",
+                    lineHeight: 1
+                  }}
+                >{profileConversion.completeness}%</motion.div>
+              </motion.div>
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 1.9, duration: 0.5 }}
+                whileHover={{ scale: 1.05, y: -4 }}
+                className="jp-conversion-row"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "8px"
+                }}
+                <span style={{
+                  color: "var(--text-secondary, #8888AA)",
+                  fontSize: "0.875rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.5px"
+                }}>Engagement strength</span>
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 2, duration: 0.4 }}
+                  style={{
+                    fontSize: "1.5rem",
+                    fontWeight: 700,
+                    color: "var(--brand-secondary, #00D4AA)",
+                    lineHeight: 1
+                  }}
+                >{profileConversion.engagement}%</motion.div>
+              </motion.div>
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 2.1, duration: 0.5 }}
+                whileHover={{ scale: 1.05, y: -4 }}
+                className="jp-conversion-row"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "8px"
+                }}
+                <span style={{
+                  color: "var(--text-secondary, #8888AA)",
+                  fontSize: "0.875rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.5px"
+                }}>Recruiter response signal</span>
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 2.2, duration: 0.4 }}
+                  style={{
+                    fontSize: "1.5rem",
+                    fontWeight: 700,
+                    color: "var(--brand-gradient, linear-gradient(135deg, #6C63FF 0%, #3DCFEF 100%))",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    lineHeight: 1
+                  }}
+                >{profileConversion.recruiterResponse}%</motion.div>
+              </motion.div>
             </div>
             {profileConversion.fixes.length ? (
-              <ul className="jp-quality-list" style={{ marginTop: "0.6rem" }}>
-                {profileConversion.fixes.map((fix) => (
-                  <li key={fix}>{fix}</li>
+              <motion.ul
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 2.3, duration: 0.6 }}
+                className="jp-quality-list"
+                style={{
+                  marginTop: "24px",
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+                  gap: "12px"
+                }}
+              >
+                {profileConversion.fixes.map((fix, index) => (
+                  <motion.li
+                    key={fix}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{
+                      delay: 2.4 + (index * 0.1),
+                      duration: 0.5,
+                      type: "spring",
+                      stiffness: 200,
+                      damping: 25
+                    }}
+                    style={{
+                      color: "var(--text-secondary, #8888AA)",
+                      fontSize: "0.875rem",
+                      padding: "8px 12px",
+                      background: "rgba(108, 99, 255, 0.05)",
+                      borderRadius: "8px"
+                    }}
+                  >{fix}</motion.li>
                 ))}
-              </ul>
+              </motion.ul>
             ) : (
-              <p className="helper" style={{ marginTop: "0.55rem" }}>
-                Your profile is recruiter-ready. Keep momentum with targeted outreach this week.
-              </p>
+              <motion.p
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 2.3, duration: 0.6 }}
+                className="helper"
+                style={{
+                  marginTop: "24px",
+                  color: "var(--text-secondary, #8888AA)",
+                  fontSize: "1rem"
+                }}>Your profile is recruiter-ready. Keep momentum with targeted outreach this week.</motion.p>
             )}
-          </article>
+          </motion.article>
 
-          <article id="about-section" className="surface jp-profile-card jp-reveal-up"><div className="space-between"><h2 style={{ margin: 0 }}>About</h2>{viewingOwn ? <button className="btn btn-secondary" onClick={openAboutEditor}>Edit</button> : null}</div><p className="jp-profile-text">{aboutText}</p></article>
+          <motion.article
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 1.6, duration: 0.8 }}
+            id="about-section"
+            className="surface jp-profile-card jp-reveal-up glass-card"
+            style={{
+              background: "rgba(255, 255, 255, 0.05)",
+              backdropFilter: "blur(20px)",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              borderRadius: "16px",
+              padding: "32px"
+            }}
+            <div className="space-between" style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center"
+            }}>
+              <motion.h2
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 1.8, duration: 0.6 }}
+                style={{
+                  fontFamily: "var(--font-display, Syne, sans-serif)",
+                  fontSize: "1.5rem",
+                  fontWeight: 700,
+                  color: "var(--text-primary, #F0F0FF)",
+                  margin: 0
+                }}
+              >About</motion.h2>
+              {viewingOwn ? (
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn btn-secondary"
+                  style={{
+                    background: "var(--bg-elevated, #1A1A24)",
+                    color: "var(--text-primary, #F0F0FF)",
+                    padding: "10px 20px",
+                    borderRadius: "999px",
+                    fontSize: "1rem",
+                    fontWeight: 600,
+                    border: "1px solid var(--border-subtle, rgba(255,255,255,0.06))"
+                  }}
+                  onClick={openAboutEditor}
+                >Edit</motion.button>
+              ) : null}
+            </div>
+            <motion.p
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 1.9, duration: 0.6 }}
+              className="jp-profile-text"
+              style={{
+                color: "var(--text-secondary, #8888AA)",
+                fontSize: "1.125rem",
+                lineHeight: 1.6
+              }}
+            >{aboutText}</motion.p>
+          </motion.article>
 
           <article className="surface jp-profile-card">
             <div className="space-between">
@@ -269,7 +802,7 @@ export function ProfilePage() {
                 </div>
               </div>
             ) : null}
-          </article>
+          </motion.article>
 
           {viewingOwn && user?.role === "employer" && companyQuery.data ? (
             <article className="surface jp-profile-card">
@@ -317,7 +850,7 @@ export function ProfilePage() {
       {expOpen ? <Modal title={editingExpId ? "Edit Experience" : "Add Experience"} onClose={() => setExpOpen(false)}><FormGrid fields={[["Role", expDraft.role, (v) => setExpDraft((c) => ({ ...c, role: v }))], ["Company", expDraft.company, (v) => setExpDraft((c) => ({ ...c, company: v }))], ["Period", expDraft.period, (v) => setExpDraft((c) => ({ ...c, period: v }))], ["Location", expDraft.location, (v) => setExpDraft((c) => ({ ...c, location: v }))], ["Type", expDraft.type, (v) => setExpDraft((c) => ({ ...c, type: v }))], ["Badge", expDraft.logo, (v) => setExpDraft((c) => ({ ...c, logo: v.toUpperCase().slice(0, 4) }))]]} /><div className="field"><label>Description</label><textarea className="textarea" value={expDraft.description} onChange={(event) => setExpDraft((c) => ({ ...c, description: event.target.value }))} /></div><Actions onCancel={() => setExpOpen(false)} onSave={saveExperience} /></Modal> : null}
       {eduOpen ? <Modal title={editingEduId ? "Edit Education" : "Add Education"} onClose={() => setEduOpen(false)}><FormGrid fields={[["School", eduDraft.school, (v) => setEduDraft((c) => ({ ...c, school: v }))], ["Degree", eduDraft.degree, (v) => setEduDraft((c) => ({ ...c, degree: v }))], ["Field", eduDraft.field, (v) => setEduDraft((c) => ({ ...c, field: v }))], ["Period", eduDraft.period, (v) => setEduDraft((c) => ({ ...c, period: v }))], ["Badge", eduDraft.logo, (v) => setEduDraft((c) => ({ ...c, logo: v.toUpperCase().slice(0, 4) }))]]} /><Actions onCancel={() => setEduOpen(false)} onSave={saveEducation} /></Modal> : null}
       {skillOpen ? <Modal title={editingSkillName ? "Edit Skill" : "Add Skill"} onClose={() => setSkillOpen(false)}><div className="form-grid"><div className="field"><label>Skill</label><input className="input" value={skillDraft.name} onChange={(event) => setSkillDraft((current) => ({ ...current, name: event.target.value }))} /></div><div className="field"><label>Endorsements</label><input className="input" type="number" min={1} value={skillDraft.endorsements} onChange={(event) => setSkillDraft((current) => ({ ...current, endorsements: Number(event.target.value) }))} /></div></div><Actions onCancel={() => setSkillOpen(false)} onSave={saveSkill} /></Modal> : null}
-    </section>
+    </motion.section>
   );
 }
 
