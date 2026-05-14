@@ -68,11 +68,17 @@
 [data-theme="dark"],
 :root {
   /* === BACKGROUNDS === */
-  --bg-base: #0A0A0F;
-  --bg-surface: #111118;
-  --bg-elevated: #1A1A24;
+  --bg-0: #07070F;          /* Page background - darker */
+  --bg-1: #111128;          /* Cards - clearly lighter than bg-0 */
+  --bg-2: #181838;          /* Elevated - dropdowns etc */
+  --bg-3: #1E1E44;          /* Hover states */
+  
+  /* Legacy variable mappings */
+  --bg-base: #07070F;       /* Maps to bg-0 */
+  --bg-surface: #111128;    /* Maps to bg-1 (cards) */
+  --bg-elevated: #181838;   /* Maps to bg-2 */
   --bg-glass: rgba(255, 255, 255, 0.04);
-  --bg-app: #0A0A0F;
+  --bg-app: #07070F;
 
   /* === BRAND COLORS === */
   --brand-primary: #6C63FF;
@@ -80,9 +86,14 @@
   --brand-gradient: linear-gradient(135deg, #6C63FF 0%, #3DCFEF 100%);
 
   /* === TEXT === */
-  --text-primary: #F0F0FF;
-  --text-secondary: #8888AA;
-  --text-muted: #44445A;
+  --t-100: #F1F0FF;         /* Primary text - brighter */
+  --t-200: #9998BB;         /* Secondary text */
+  --t-300: #5A5A7A;         /* Muted text */
+  
+  /* Legacy variable mappings */
+  --text-primary: #F1F0FF;
+  --text-secondary: #9998BB;
+  --text-muted: #5A5A7A;
   --text-on-brand: #ffffff;
 
   /* === BORDERS === */

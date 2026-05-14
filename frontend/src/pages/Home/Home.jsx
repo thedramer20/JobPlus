@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Play, ArrowRight } from 'lucide-react';
 import './Home.css';
+import FloatingCardStack from '../../components/FloatingCardStack';
 
 const WORDS = ['Dream', 'Perfect', 'Next', 'Ideal'];
 
@@ -114,47 +115,7 @@ const Home = () => {
 
           {/* RIGHT SIDE */}
           <div className="hero__right">
-            <div className="hero__cards-stack">
-              <div className="hero__glow"></div>
-
-              {/* Card 1 (back) */}
-              <div className="hero__card hero__card--back">
-                <div className="hero__card-header">
-                  <div className="hero__card-logo">
-                    <img src="/api/placeholder/44/44" alt="Company" />
-                  </div>
-                  <div className="hero__card-match">89% match</div>
-                </div>
-                <div className="hero__card-content">
-                  <h3>Senior React Developer</h3>
-                  <p>TechCorp Inc.</p>
-                  <div className="hero__card-meta">
-                    <span>$120k - $150k</span>
-                    <span>•</span>
-                    <span>San Francisco, CA</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Card 2 (front) */}
-              <div className="hero__card hero__card--front">
-                <div className="hero__card-header">
-                  <div className="hero__card-logo">
-                    <img src="/api/placeholder/44/44" alt="Company" />
-                  </div>
-                  <div className="hero__card-match">94% match</div>
-                </div>
-                <div className="hero__card-content">
-                  <h3>Full Stack Engineer</h3>
-                  <p>InnovateLabs</p>
-                  <div className="hero__card-meta">
-                    <span>$95k - $125k</span>
-                    <span>•</span>
-                    <span>Remote</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <FloatingCardStack />
           </div>
         </div>
       </section>

@@ -1,0 +1,48 @@
+/* src/components/common/Logo/Logo.css */
+
+.jp-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.jp-logo__mark {
+  flex-shrink: 0;
+  transition: transform var(--dur-normal) var(--ease-spring),
+              filter var(--dur-normal) var(--ease);
+}
+
+.jp-logo:hover .jp-logo__mark {
+  transform: scale(1.08) rotate(-3deg);
+  filter: drop-shadow(0 0 12px rgba(108, 99, 255, 0.60));
+}
+
+/* SIZES */
+.jp-logo--sm .jp-logo__mark svg  { width: 28px; height: 28px; }
+.jp-logo--md .jp-logo__mark svg  { width: 36px; height: 36px; }
+.jp-logo--lg .jp-logo__mark svg  { width: 44px; height: 44px; }
+
+/* WORDMARK TEXT */
+.jp-logo__text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.jp-logo--sm .jp-logo__text { font-size: 17px; }
+.jp-logo--md .jp-logo__text { font-size: 20px; }
+.jp-logo--lg .jp-logo__text { font-size: 26px; }
+
+.jp-logo__text-job  { color: var(--text-primary); }
+.jp-logo__text-plus {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Transition on hover for wordmark */
+.jp-logo:hover .jp-logo__text-job  { color: #ffffff; }

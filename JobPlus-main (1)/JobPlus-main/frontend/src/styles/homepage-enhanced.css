@@ -1,0 +1,367 @@
+
+/* =========================================================
+   JobPlus Home Page - Enhanced Styles
+   Modern design with premium polish and animations
+   ========================================================= */
+
+.jp-home-root {
+  min-height: 100vh;
+  background: var(--bg-app);
+  color: var(--text-primary);
+}
+
+/* === Hero Section === */
+.jp-hero-section {
+  position: relative;
+  padding: var(--space-10) 0;
+  background: linear-gradient(135deg, var(--color-brand-50) 0%, var(--color-brand-100) 100%);
+  overflow: hidden;
+}
+
+[data-theme="dark"] .jp-hero-section {
+  background: linear-gradient(135deg, var(--color-brand-900) 0%, var(--color-brand-800) 100%);
+}
+
+.jp-hero-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.jp-hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.jp-hero-text {
+  max-width: 600px;
+}
+
+.jp-hero-headline {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 var(--space-4);
+  color: var(--text-primary);
+}
+
+.jp-hero-subtext {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-6);
+}
+
+/* === Search Bar === */
+.jp-hero-search {
+  margin-bottom: var(--space-6);
+}
+
+.jp-search-wrapper {
+  position: relative;
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-subtle);
+}
+
+.jp-search-button {
+  white-space: nowrap;
+}
+
+/* === CTA Buttons === */
+.jp-hero-cta {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+/* === Floating Cards === */
+.jp-hero-visual {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.jp-float-card {
+  position: relative;
+  padding: var(--space-5);
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.jp-float-card-header {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+}
+
+.jp-match-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--color-success-500);
+  color: var(--text-on-brand);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.jp-float-card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 var(--space-2);
+  color: var(--text-primary);
+}
+
+.jp-float-card-company {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-3);
+}
+
+.jp-float-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.jp-salary {
+  font-weight: 600;
+  color: var(--color-brand-600);
+}
+
+.jp-match-reason {
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  background: var(--color-info-50);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  color: var(--color-info-700);
+}
+
+[data-theme="dark"] .jp-match-reason {
+  background: color-mix(in srgb, var(--color-info-500) 10%, transparent);
+  color: var(--color-info-200);
+}
+
+/* === Stats Section === */
+.jp-stats-section {
+  padding: var(--space-10) 0;
+  background: var(--bg-subtle);
+}
+
+.jp-stats-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
+.jp-stat-card {
+  text-align: center;
+  padding: var(--space-6);
+  background: var(--bg-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.jp-stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-brand-600);
+  margin-bottom: var(--space-2);
+}
+
+.jp-stat-label {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* === Featured Jobs Section === */
+.jp-featured-jobs-section {
+  padding: var(--space-10) 0;
+}
+
+.jp-section-header {
+  max-width: 1240px;
+  margin: 0 auto var(--space-6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.jp-section-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.jp-jobs-grid {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-5);
+}
+
+.jp-job-card {
+  padding: var(--space-5);
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.jp-job-card h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.jp-job-company,
+.jp-job-location {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.jp-job-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* === Featured Companies Section === */
+.jp-companies-section {
+  padding: var(--space-10) 0;
+  background: var(--bg-subtle);
+}
+
+.jp-companies-grid {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-5);
+}
+
+/* === CTA Section === */
+.jp-cta-section {
+  padding: var(--space-10) 0;
+  background: linear-gradient(135deg, var(--color-brand-600) 0%, var(--color-brand-700) 100%);
+}
+
+.jp-cta-card {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--space-10);
+  text-align: center;
+  color: var(--text-on-brand);
+}
+
+.jp-cta-card h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 var(--space-4);
+  color: var(--text-on-brand);
+}
+
+.jp-cta-card p {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  margin: 0 0 var(--space-6);
+  color: var(--text-on-brand);
+  opacity: 0.95;
+}
+
+.jp-cta-actions {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* === Loading State === */
+.jp-loading-state {
+  text-align: center;
+  padding: var(--space-10);
+  color: var(--text-secondary);
+  font-size: 1.125rem;
+}
+
+/* === Responsive Design === */
+@media (max-width: 1024px) {
+  .jp-hero-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .jp-hero-content {
+    align-items: center;
+  }
+
+  .jp-hero-visual {
+    display: none;
+  }
+
+  .jp-stats-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .jp-section-header {
+    flex-direction: column;
+    gap: var(--space-4);
+    align-items: flex-start;
+  }
+
+  .jp-jobs-grid,
+  .jp-companies-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .jp-cta-card h2 {
+    font-size: 2rem;
+  }
+}
+
+/* === Reduced Motion Support === */
+@media (prefers-reduced-motion: reduce) {
+  .jp-float-card,
+  .jp-stat-card,
+  .jp-job-card,
+  .jp-cta-card {
+    transition: none !important;
+    animation: none !important;
+  }
+}

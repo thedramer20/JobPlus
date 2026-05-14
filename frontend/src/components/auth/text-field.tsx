@@ -40,9 +40,7 @@ export function TextField({
           background: "var(--bg-surface, #111118)",
           borderColor: error ? "var(--color-danger, #EF4444)" : "var(--border-subtle, rgba(255,255,255,0.06))",
           color: "var(--text-primary, #F0F0FF)",
-          "::placeholder": {
-            color: "var(--text-muted, #44445A)"
-          }
+
         }}
       />
       {error ? <span className="jp-field-error" style={{ color: "var(--color-danger, #EF4444)" }}>{error}</span> : null}

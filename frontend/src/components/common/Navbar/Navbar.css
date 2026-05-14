@@ -22,10 +22,14 @@
   height: 100%;
   padding: 0 var(--sp-6);             /* 0 24px */
   display: flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-4);                   /* 16px */
+  overflow: hidden;
 }
+
 
 /* ── LEFT ── */
 .jp-nav__left {

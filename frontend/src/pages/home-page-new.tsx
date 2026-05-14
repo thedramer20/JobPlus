@@ -37,6 +37,26 @@ function useAnimatedCounter(endValue: number, duration: number = 2000) {
 export function HomePage() {
   const [isVisible, setIsVisible] = useState(false);
 
+  const ANIMATED_WORDS = ["Dream", "Perfect", "Next", "Ideal"] as const;
+  const [wordIndex, setWordIndex] = useState(0);
+  const [wordAnimating, setWordAnimating] = useState(false);
+
+  const animatedHeroWord = ANIMATED_WORDS[wordIndex];
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setWordAnimating(true);
+      window.setTimeout(() => {
+        setWordIndex((i) => (i + 1) % ANIMATED_WORDS.length);
+        setWordAnimating(false);
+      }, 300);
+    }, 3000);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+
+
   // Animate elements on mount
   useEffect(() => {
     setIsVisible(true);
@@ -120,18 +140,21 @@ export function HomePage() {
                 className="jp-hero-headline"
                 style={{
                   fontFamily: "var(--font-display, Syne, sans-serif)",
-                  fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
+                  fontSize: "var(--text-hero, clamp(3rem, 7vw, 5.5rem))",
                   fontWeight: 800,
-                  lineHeight: 1.1,
+                  lineHeight: 1.06,
                   color: "var(--text-primary, #F0F0FF)",
                   margin: 0,
-                  background: "var(--brand-gradient, linear-gradient(135deg, #6C63FF 0%, #3DCFEF 100%))",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text"
+                  letterSpacing: "var(--tracking-tight, -0.03em)",
+                  overflowWrap: "anywhere",
+                  wordBreak: "break-word"
                 }}
               >
-                Build better careers. Build better teams. All in one intelligent marketplace.
+                <span style={{ display: "block" }}>Build better</span>
+                <span style={{ display: "block" }}>
+                  <span className="jp-hero-animated-word" aria-live="polite">{animatedHeroWord}</span>
+                </span>
+                <span style={{ display: "block" }}>Powered by AI.</span>
               </motion.h1>
               <motion.p
                 initial={{ y: 20, opacity: 0 }}

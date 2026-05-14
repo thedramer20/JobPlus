@@ -41,6 +41,7 @@ const Jobs = () => {
         location: 'San Francisco, CA',
         remote: false,
         type: 'Full-time',
+        experience: 'Senior',
         salary: { min: 120000, max: 150000, currency: 'USD' },
         skills: ['React', 'TypeScript', 'Node.js', 'GraphQL'],
         postedAt: '2 days ago',
@@ -66,6 +67,7 @@ const Jobs = () => {
         location: 'Remote',
         remote: true,
         type: 'Full-time',
+        experience: 'Mid',
         salary: { min: 130000, max: 160000, currency: 'USD' },
         skills: ['Product Strategy', 'Analytics', 'Agile', 'SQL'],
         postedAt: '1 week ago',
@@ -91,6 +93,7 @@ const Jobs = () => {
         location: 'New York, NY',
         remote: false,
         type: 'Full-time',
+        experience: 'Mid',
         salary: { min: 90000, max: 120000, currency: 'USD' },
         skills: ['UX Design', 'Figma', 'User Research', 'Prototyping'],
         postedAt: '3 days ago',
@@ -544,106 +547,6 @@ const Jobs = () => {
             <JobDetailPanel job={selectedJob} />
           )}
         </AnimatePresence>
-      </div>
-    </div>
-  );
-};
-
-export default Jobs;
-                </select>
-              </div>
-
-              <div className="filter-group">
-                <label>Salary Range</label>
-                <select
-                  value={filters.salary}
-                  onChange={(e) => handleFilterChange('salary', e.target.value)}
-                >
-                  <option value="">Any Salary</option>
-                  <option value="0-50000">$0 - $50k</option>
-                  <option value="50000-100000">$50k - $100k</option>
-                  <option value="100000-150000">$100k - $150k</option>
-                  <option value="150000+">$150k+</option>
-                </select>
-              </div>
-
-              <div className="filter-group">
-                <label>Category</label>
-                <select
-                  value={filters.category}
-                  onChange={(e) => handleFilterChange('category', e.target.value)}
-                >
-                  <option value="">All Categories</option>
-                  <option value="Technology">Technology</option>
-                  <option value="Design">Design</option>
-                  <option value="Marketing">Marketing</option>
-                  <option value="Sales">Sales</option>
-                </select>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* RESULTS */}
-      <div className="jobs__content">
-        <div className="jobs__results">
-          <div className="results-header">
-            <h2>{filteredJobs.length} Jobs Found</h2>
-            <div className="results-sort">
-              <span>Sort by:</span>
-              <select>
-                <option>Most Relevant</option>
-                <option>Newest</option>
-                <option>Salary: High to Low</option>
-                <option>Salary: Low to High</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="jobs__grid">
-            {filteredJobs.map(job => (
-              <JobCard
-                key={job.id}
-                job={job}
-                onSaveToggle={handleSaveToggle}
-              />
-            ))}
-          </div>
-
-          {filteredJobs.length === 0 && (
-            <div className="no-results">
-              <div className="no-results__icon">🔍</div>
-              <h3>No jobs found</h3>
-              <p>Try adjusting your search criteria or filters</p>
-            </div>
-          )}
-        </div>
-
-        {/* SIDEBAR */}
-        <div className="jobs__sidebar">
-          <div className="sidebar-card">
-            <h3>💡 Job Search Tips</h3>
-            <ul>
-              <li>Use specific keywords from the job description</li>
-              <li>Include location if you're not open to remote work</li>
-              <li>Set up job alerts to get notified of new opportunities</li>
-              <li>Update your profile regularly to improve matches</li>
-            </ul>
-          </div>
-
-          <div className="sidebar-card">
-            <h3>📈 Your Profile Strength</h3>
-            <div className="profile-strength">
-              <div className="strength-bar">
-                <div className="strength-fill" style={{ width: '75%' }}></div>
-              </div>
-              <span>75% Complete</span>
-            </div>
-            <p>Complete your profile to get better job matches!</p>
-            <button className="btn btn--primary">Improve Profile</button>
-          </div>
-        </div>
       </div>
     </div>
   );

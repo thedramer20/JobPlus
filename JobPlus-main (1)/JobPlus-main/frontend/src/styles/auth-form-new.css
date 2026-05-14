@@ -1,0 +1,291 @@
+
+/* ==========================================
+   JobPlus Auth Form - Premium Inputs
+   ========================================== */
+
+/* Field Container */
+.jp-auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.jp-auth-field > span:first-child {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.jp-required-marker {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+/* Input Styles */
+.jp-auth-field .input {
+  width: 100%;
+  height: 48px;
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: #1a1a1a;
+  background: #ffffff;
+  transition: all 220ms ease-in-out;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.jp-auth-field .input::placeholder {
+  color: #9ca3af;
+}
+
+.jp-auth-field .input:hover {
+  border-color: #d1d5db;
+}
+
+.jp-auth-field .input:focus {
+  border-color: #4F46E5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1), 0 4px 12px rgba(79, 70, 229, 0.15);
+}
+
+.jp-auth-field .input.jp-input-error {
+  border-color: #ef4444;
+}
+
+.jp-auth-field .input.jp-input-error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1), 0 4px 12px rgba(239, 68, 68, 0.15);
+}
+
+/* Password Field */
+.jp-password-wrap {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.jp-password-wrap .input {
+  padding-right: 52px;
+  height: 48px;
+  box-sizing: border-box;
+}
+
+.jp-password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  transition: all 220ms ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+}
+
+.jp-password-toggle:hover {
+  color: #4F46E5;
+  background: rgba(79, 70, 229, 0.05);
+}
+
+.jp-password-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Password Strength */
+.jp-strength {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.jp-strength-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  transition: background 220ms ease-in-out;
+}
+
+.jp-strength-dot.is-active {
+  background: #10b981;
+}
+
+/* Error Message */
+.jp-field-error {
+  font-size: 0.875rem;
+  color: #ef4444;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.jp-field-error::before {
+  content: "⚠";
+  font-size: 0.875rem;
+}
+
+/* Checkbox */
+.jp-auth-field input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #e5e7eb;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 220ms ease-in-out;
+  margin-right: 8px;
+}
+
+.jp-auth-field input[type="checkbox"]:hover {
+  border-color: #4F46E5;
+}
+
+.jp-auth-field input[type="checkbox"]:checked {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  border-color: transparent;
+}
+
+.jp-auth-field input[type="checkbox"]:checked:hover {
+  background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
+}
+
+/* Social Buttons */
+.jp-auth-card .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.jp-auth-card .btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 220ms ease-in-out;
+}
+
+.jp-auth-card .btn:hover::before {
+  opacity: 1;
+}
+
+.jp-auth-card .btn svg {
+  flex-shrink: 0;
+}
+
+/* Inline Message */
+.jp-auth-card .inline-message {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.jp-auth-card .inline-message[type="error"] {
+  background: rgba(239, 68, 68, 0.05);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.jp-auth-card .inline-message[type="success"] {
+  background: rgba(16, 185, 129, 0.05);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+/* Or Divider */
+.jp-auth-card .or-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 24px 0;
+  color: #9ca3af;
+  font-size: 0.9375rem;
+}
+
+.jp-auth-card .or-divider::before,
+.jp-auth-card .or-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+/* Social Button */
+.jp-social-button {
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  color: #1a1a1a;
+  transition: all 220ms ease-in-out;
+}
+
+.jp-social-button:hover:not(:disabled) {
+  border-color: #4F46E5;
+  background: rgba(79, 70, 229, 0.02);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+}
+
+.jp-social-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.jp-social-button span:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+/* Role Selector */
+.jp-auth-card .row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.jp-auth-card .row .btn {
+  flex: 1;
+  min-width: 120px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .jp-auth-field .input {
+    padding: 12px 14px;
+    font-size: 0.9375rem;
+  }
+
+  .jp-auth-card .btn {
+    padding: 12px 20px;
+    font-size: 0.9375rem;
+  }
+
+  .jp-password-toggle {
+    right: 10px;
+    padding: 6px;
+  }
+}

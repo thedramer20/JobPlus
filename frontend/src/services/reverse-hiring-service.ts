@@ -225,7 +225,7 @@ export function analyzeReverseHiringData(
 ): ReverseHiringAnalytics {
   const totalRequests = requests.length;
   const activeRequests = requests.filter(req => 
-    new Date(req.createdDate || Date.now()).getTime() > Date.now() - 30 * 24 * 60 * 60 * 1000
+    new Date((req as any).createdDate ?? Date.now()).getTime() > Date.now() - 30 * 24 * 60 * 60 * 1000
   ).length;
 
   // Calculate match scores for all combinations
@@ -269,12 +269,15 @@ export function analyzeReverseHiringData(
     .sort((a, b) => b.count - a.count)
     .slice(0, 5);
 
-  // Salary distribution
-  const salaryRanges = {
-    below: 0,
-    within: 0,
-    above: 0
-  };
+    // Salary distribution
+    const salaryRanges = {
+      below: 0,
+      within: 0,
+      above: 0
+    };
+
+    // (legacy typo fix) expose the computed object as salaryDistribution
+    let salaryDistribution = salaryRanges;
 
   requests.forEach(request => {
     const { min, max } = request.salaryRange;

@@ -583,9 +583,6 @@
     align-items: flex-start;
   }
 }
-  color: var(--text-primary);
-  margin-bottom: var(--sp-2);
-}
 
 .jobs__header p {
   font-family: var(--font-body);

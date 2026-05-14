@@ -38,6 +38,7 @@ export const Button: React.FC<ButtonProps> = ({
   return (
     <motion.button
       whileTap={{ scale: 0.98 }}
+      drag={false}
       className={clsx(
         baseStyles,
         variants[variant],

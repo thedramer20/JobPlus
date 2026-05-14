@@ -304,7 +304,11 @@ Best regards,
     });
   }
 
-  return suggestions;
+  return suggestions as Array<{
+    type: "message" | "email" | "call";
+    timing: string;
+    template: string;
+  }>;
 }
 
 export function useApplications() {
@@ -316,13 +320,15 @@ export function useApplications() {
       return [
         {
           id: 1,
+          status: "under-review" as Application["status"],
           jobId: 123,
           jobTitle: "Senior Software Engineer",
           company: "Tech Corp",
           appliedDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
           currentStage: "under-review",
           stages: APPLICATION_STAGES.slice(0, 3),
-          status: "under-review",
+          // status is the application.status (typed union)
+          status: "under-review" as Application["status"],
           nextSteps: ["Wait for recruiter response", "Prepare for potential screening"],
           lastUpdate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
           notes: [
@@ -335,7 +341,7 @@ export function useApplications() {
               name: "Resume_TechCorp.pdf",
               type: "resume",
               uploadedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-              status: "approved"
+              status: "approved" as (typeof APPLICATION_STAGES)[number] extends never ? never : "approved"
             }
           ],
           followUps: []

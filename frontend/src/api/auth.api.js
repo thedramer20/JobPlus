@@ -1,9 +1,12 @@
 // src/api/auth.api.js — the API calls Navbar depends on
 import axios from 'axios';
 
-const BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+const BASE = import.meta.env.VITE_API_URL;
 
-const api = axios.create({ baseURL: BASE });
+const api = axios.create({
+  baseURL: BASE,
+  timeout: 5000 // 5 second timeout for all requests
+});
 
 // Attach JWT to every request
 api.interceptors.request.use(config => {

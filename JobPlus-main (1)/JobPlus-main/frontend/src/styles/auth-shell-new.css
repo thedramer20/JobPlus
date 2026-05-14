@@ -1,0 +1,369 @@
+
+/* ==========================================
+   JobPlus Auth Shell - Premium Design
+   ========================================== */
+
+.jp-auth-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  padding: 48px 0;
+}
+
+.jp-auth-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* LEFT SIDE - BRAND */
+.jp-auth-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 48px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.03) 0%, rgba(124, 58, 237, 0.03) 100%);
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Logo */
+.jp-auth-logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.jp-auth-logo .jp-logo-lockup {
+  gap: 0.75rem;
+}
+
+.jp-auth-logo .jp-logo-icon {
+  width: 56px;
+  height: 56px;
+  filter: drop-shadow(0 6px 16px rgba(37, 99, 235, 0.25));
+}
+
+.jp-auth-logo .jp-logo-wordmark {
+  width: 160px;
+  height: auto;
+}
+
+.jp-logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -0.02em;
+}
+
+/* Headline */
+.jp-auth-headline {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.jp-auth-subtitle {
+  font-size: 1.125rem;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Floating Job Cards */
+.jp-auth-floating {
+  position: relative;
+  height: 400px;
+  margin: 24px 0;
+}
+
+.jp-float-card {
+  position: absolute;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: all 220ms ease-in-out;
+  animation: float 6s ease-in-out infinite;
+}
+
+.jp-float-card-1 {
+  top: 0;
+  left: 0;
+  width: 280px;
+  animation-delay: 0s;
+}
+
+.jp-float-card-2 {
+  top: 120px;
+  left: 120px;
+  width: 280px;
+  animation-delay: 2s;
+}
+
+.jp-float-card-3 {
+  top: 240px;
+  left: 0;
+  width: 280px;
+  animation-delay: 4s;
+}
+
+.jp-float-card:hover {
+  transform: scale(1.02) translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.jp-float-card-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.jp-match-badge {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.jp-float-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+}
+
+.jp-float-card-company {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0 0 12px 0;
+}
+
+.jp-float-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.jp-salary {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4F46E5;
+}
+
+.jp-location {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Trust Line */
+.jp-auth-trust {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(79, 70, 229, 0.1);
+}
+
+.jp-trust-icon {
+  width: 24px;
+  height: 24px;
+  color: #4F46E5;
+}
+
+.jp-trust-text {
+  font-size: 0.9375rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* RIGHT SIDE - FORM */
+.jp-auth-form-zone {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 32px 0;
+}
+
+/* Auth Card Styles */
+.jp-auth-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.jp-auth-card header h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+}
+
+.jp-auth-card header p {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0 0 32px 0;
+}
+
+/* Form Elements */
+.jp-auth-card .stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.jp-auth-card .space-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.jp-auth-card .helper {
+  font-size: 0.9375rem;
+  color: #6b7280;
+}
+
+.jp-auth-card .helper a {
+  color: #4F46E5;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 220ms ease-in-out;
+}
+
+.jp-auth-card .helper a:hover {
+  color: #4338ca;
+}
+
+/* Buttons */
+.jp-auth-card .btn {
+  width: 100%;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 220ms ease-in-out;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.jp-auth-card .btn-primary {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  color: #ffffff;
+  border: none;
+}
+
+.jp-auth-card .btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.jp-auth-card .btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.jp-auth-card .btn-secondary {
+  background: #ffffff;
+  color: #4F46E5;
+  border-color: #4F46E5;
+}
+
+.jp-auth-card .btn-secondary:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #4338ca;
+  color: #4338ca;
+}
+
+/* Social Buttons */
+.jp-auth-card .stack:last-child {
+  margin-top: 24px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .jp-auth-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .jp-auth-brand {
+    padding: 32px;
+  }
+
+  .jp-auth-floating {
+    height: 320px;
+  }
+
+  .jp-float-card {
+    width: 240px;
+  }
+
+  .jp-float-card-1 {
+    top: 0;
+    left: 0;
+  }
+
+  .jp-float-card-2 {
+    top: 100px;
+    left: 80px;
+  }
+
+  .jp-float-card-3 {
+    top: 200px;
+    left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .jp-auth-shell {
+    padding: 24px 0;
+  }
+
+  .jp-auth-grid {
+    gap: 32px;
+  }
+
+  .jp-auth-brand {
+    padding: 24px;
+  }
+
+  .jp-auth-headline {
+    font-size: 2rem;
+  }
+
+  .jp-auth-floating {
+    display: none;
+  }
+
+  .jp-auth-card {
+    padding: 24px;
+  }
+
+  .jp-auth-card header h2 {
+    font-size: 1.5rem;
+  }
+}
